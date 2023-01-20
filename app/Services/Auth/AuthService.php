@@ -31,20 +31,17 @@ class AuthService
 
     /**
      * @param array $data
-     * @return void
-     * @throws \Exception
+     * @return Response
+     * @throws BusinessException
      */
-    public static function doLogin(array $data)
+    public static function doLogin(array $data): Response
     {
         $user=User::getByUserName($data['username']);
-        if (!$user){
-           self::checkLoginLimit($data['username']);
-           throw new BusinessException(Enum::USER_NOT_FOUND);
-        }
-        if (!password_verify($data['password'],$user['password'])){
+        if (!$user || !password_verify($data['password'],$user['password'])){
             self::checkLoginLimit($data['username']);
             throw new BusinessException(Enum::PASSWORD_ERROR);
         }
+        return ok(Enum::LOGIN_SUCCESS);
     }
     public static function captcha(): \support\Response
     {

@@ -1,6 +1,6 @@
 <?php
 return [
-    'enable' => true,
+    'enable' => false,
     'captcha' => [
         // 验证码存储key前缀
         'prefix'  => 'captcha',

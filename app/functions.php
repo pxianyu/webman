@@ -57,3 +57,10 @@ if (! function_exists('checkCode')){
         return false === Captcha::check($code,$key);
     }
 }
+
+if (! function_exists('returnData')){
+    function returnData(string $msg,array $data=[],int $code=0): array
+    {
+        return ['code'=>$code,'data'=>$data, 'msg' => $msg];
+    }
+}

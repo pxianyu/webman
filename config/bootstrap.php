@@ -15,4 +15,5 @@
 return [
     support\bootstrap\Session::class,
     support\bootstrap\LaravelDb::class,
+    \app\Lib\SqlDebug::class
 ];

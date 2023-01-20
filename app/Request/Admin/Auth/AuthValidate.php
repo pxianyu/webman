@@ -6,17 +6,27 @@ use app\Request\BaseValidate;
 
 class AuthValidate extends BaseValidate
 {
-    public array  $rule = [
-        'username'  =>  'required|max:25',
-        'password'  =>  'required',
-        'key'       =>   'required',
-        'code'      =>   'required',
-    ];
-    public array  $message  =   [
-        'username.required' => '名称必须填写',
-        'username.max'     => '名称最多不能超过25个字符',
-        'password.required'   => '年龄必须是数字',
-        'code.required'        => '验证码不能为空',
-        'key.required'         =>"参数异常",
-    ];
+    public function rules(): array
+    {
+        $rule=[
+            'username'  =>  'required|max:25',
+            'password'  =>  'required'
+        ];
+        if (config('plugin.tinywan.captcha.app.enable')){
+            $rule=array_merge($rule,['key'=>'required','code'=>'required']);
+        }
+        return $rule;
+    }
+    public function messages(): array
+    {
+        $message=[
+            'username.required' => '用户名必须填写',
+            'username.max'     => '用户名最多不能超过25个字符',
+            'password.required'   => '密码必须是数字'
+        ];
+        if (config('plugin.tinywan.captcha.app.enable')){
+            $message=array_merge($message,['code.required'=>'验证码不能为空','key.required'=>'key不能为空']);
+        }
+        return $message;
+    }
 }

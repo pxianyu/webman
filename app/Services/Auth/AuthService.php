@@ -2,10 +2,11 @@
 declare(strict_types=1);
 namespace app\Services\Auth;
 
-use app\Exception\BusinessException;
 use app\Exception\Enum;
-use app\model\User;
+use app\model\Admin;
 use app\Request\Admin\Auth\AuthValidate;
+use Exception;
+use Illuminate\Support\Carbon;
 use support\Log;
 use support\Redis;
 use support\Response;
@@ -13,18 +14,25 @@ use Tinywan\Captcha\Captcha;
 
 class AuthService
 {
-    public static function login(array $input): \support\Response
+    public static function login(array $input): Response
     {
         try {
-            $data=  (new AuthValidate())->goCheck($input);
-            if (checkCode($data['code'],$data['key'])){
-                self::checkLoginLimit($data['username']);
-                return error(Enum::CAPTCHA_ERROR);
+            list('code'=>$code,'data'=>$data,'msg'=>$msg)=  (new AuthValidate())->goCheck($input);
+            if ($code){
+                return error($msg,$code);
             }
-            self::doLogin($data);
-            return ok();
-        }catch (\Exception $exception){
-            return error($exception->getMessage());
+            if (config('plugin.tinywan.captcha.app.enable')){
+                if (checkCode($data['code'],$data['key'])){
+                    if (self::checkLoginLimit($data['username'])){
+                        return error(Enum::LOGIN_COUNT_ERROR);
+                    }
+                    return error(Enum::CAPTCHA_ERROR);
+                }
+            }
+         return   self::doLogin($data);
+        }catch (Exception $exception){
+            Log::error($exception->getMessage());
+            return error(Enum::SYSTEM_ERROR);
         }
 
     }
@@ -32,23 +40,32 @@ class AuthService
     /**
      * @param array $data
      * @return Response
-     * @throws BusinessException
      */
     public static function doLogin(array $data): Response
     {
-        $user=User::getByUserName($data['username']);
+        $user=Admin::getByUserName($data['username']);
         if (!$user || !password_verify($data['password'],$user['password'])){
-            self::checkLoginLimit($data['username']);
-            throw new BusinessException(Enum::PASSWORD_ERROR);
+            if (self::checkLoginLimit($data['username'])){
+                return error(Enum::LOGIN_COUNT_ERROR);
+            }
+            return error(Enum::PASSWORD_ERROR);
         }
+        if ($user->status !=1){
+            return  error(Enum::ACCOUNT_ERROR);
+        }
+        $user->last_login_ip=request()->getRealIp();
+        $user->last_login_time=Carbon::now();
+        $user->increment('login_num');
+        $user->save();
         return ok(Enum::LOGIN_SUCCESS);
     }
-    public static function captcha(): \support\Response
+    public static function captcha(): Response
     {
         try {
             $captcha=Captcha::base64();
             return json($captcha);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             return error(Enum::CAPTCHA_CREATE_ERROR);
         }
     }
@@ -58,22 +75,20 @@ class AuthService
      *
      * @param string $username
      * @param int $limit
-     * @return bool|Response
-     * @throws \Exception
+     * @return bool
      */
-    protected static function checkLoginLimit(string $username,int $limit=5): \support\Response|bool
+    protected static function checkLoginLimit(string $username,int $limit=5): bool
     {
         if (Redis::exists($username)){
             Redis::incr($username);
             $count=Redis::get($username);
-
             if ($limit<(int)$count){
-                throw new BusinessException(Enum::LOGIN_ERROR);
+                return true;
             }
         }else{
             Redis::incr($username);
             Redis::expire($username,300);
         }
-        return true;
+        return false;
     }
 }

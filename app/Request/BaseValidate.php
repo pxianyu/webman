@@ -2,19 +2,16 @@
 
 namespace app\Request;
 
-use support\Response;
-
 
 class BaseValidate
 {
-    public array  $rule;
-    public  array $message;
-    public function goCheck($params): Response|array
+
+    public function goCheck($params): array
     {
-        $validator= validator($params,$this->rule,$this->message);
+        $validator= validator($params,$this->rules(),$this->messages());
         if ($validator->fails()){
-            return json(['code'=>422,'message'=>$validator->errors()->first()]);
+            return returnData($validator->errors()->first(),[],422);
         }
-        return $validator->validated();
+        return returnData('',$validator->validated());
     }
 }

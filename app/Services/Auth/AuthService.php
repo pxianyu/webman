@@ -62,8 +62,13 @@ class AuthService
     public static function captcha(): Response
     {
         try {
-            $captcha=Captcha::base64();
-            return json($captcha);
+            if (config('plugin.tinywan.captcha.app.enable')){
+                $captcha=Captcha::base64();
+                return successData($captcha);
+            }else{
+                return error('验证码功能没有打开',423);
+            }
+
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return error(Enum::CAPTCHA_CREATE_ERROR);

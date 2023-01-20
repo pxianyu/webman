@@ -9,10 +9,6 @@ use Webman\Http\Response;
 use Throwable;
 class BaseExceptionHandler extends  Handler
 {
-    public function report(Throwable $exception)
-    {
-        parent::report($exception);
-    }
 
     public function render(Request $request, Throwable $exception) : Response
     {

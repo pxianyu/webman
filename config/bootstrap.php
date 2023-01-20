@@ -14,5 +14,6 @@
 
 return [
     support\bootstrap\Session::class,
-    support\bootstrap\LaravelDb::class
+    support\bootstrap\LaravelDb::class,
+    //app\Lib\SqlLog::class  记录sql
 ];

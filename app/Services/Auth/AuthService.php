@@ -2,24 +2,49 @@
 declare(strict_types=1);
 namespace app\Services\Auth;
 
+use app\Exception\BusinessException;
+use app\Exception\Enum;
+use app\model\User;
 use app\Request\Admin\Auth\AuthValidate;
-use Illuminate\Support\Facades\Auth;
+use support\Log;
+use support\Redis;
+use support\Response;
 use Tinywan\Captcha\Captcha;
 
 class AuthService
 {
     public static function login(array $input): \support\Response
     {
-        $data=  (new AuthValidate())->goCheck($input);
-        if (checkCode($data['code'],$data['key'])){
-            return error('验证码不正确');
+        try {
+            $data=  (new AuthValidate())->goCheck($input);
+            if (checkCode($data['code'],$data['key'])){
+                self::checkLoginLimit($data['username']);
+                return error(Enum::CAPTCHA_ERROR);
+            }
+            self::doLogin($data);
+            return ok();
+        }catch (\Exception $exception){
+            return error($exception->getMessage());
         }
-        self::doLogin($data);
-        return ok();
+
     }
+
+    /**
+     * @param array $data
+     * @return void
+     * @throws \Exception
+     */
     public static function doLogin(array $data)
     {
-
+        $user=User::getByUserName($data['username']);
+        if (!$user){
+           self::checkLoginLimit($data['username']);
+           throw new BusinessException(Enum::USER_NOT_FOUND);
+        }
+        if (!password_verify($data['password'],$user['password'])){
+            self::checkLoginLimit($data['username']);
+            throw new BusinessException(Enum::PASSWORD_ERROR);
+        }
     }
     public static function captcha(): \support\Response
     {
@@ -27,7 +52,31 @@ class AuthService
             $captcha=Captcha::base64();
             return json($captcha);
         } catch (\Exception $e) {
-            return json(['code'=>400,'message'=>'验证码生成失败','err'=>$e->getTrace()]);
+            return error(Enum::CAPTCHA_CREATE_ERROR);
         }
+    }
+
+    /**
+     * 检查登录频率限制
+     *
+     * @param string $username
+     * @param int $limit
+     * @return bool|Response
+     * @throws \Exception
+     */
+    protected static function checkLoginLimit(string $username,int $limit=5): \support\Response|bool
+    {
+        if (Redis::exists($username)){
+            Redis::incr($username);
+            $count=Redis::get($username);
+
+            if ($limit<(int)$count){
+                throw new BusinessException(Enum::LOGIN_ERROR);
+            }
+        }else{
+            Redis::incr($username);
+            Redis::expire($username,300);
+        }
+        return true;
     }
 }

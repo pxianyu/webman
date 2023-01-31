@@ -21,10 +21,11 @@ class AdminService extends BaseService
             'username'=>$request->input('username') ,
             'password'=>Auth::bcrypt($request->input('password')??''),
             'status'=>$request->input('status')??1,
-            'nickname'=>$request->input('nickname'),
             'is_root'=>$request->input('is_root')??1
         ];
-
+        if ($request->input('nickname','')) {
+           $data['nickname']= $request->input('nickname');
+        }
         if ($request->input('password','') == '') {
             unset($data['password']);
         }

@@ -19,6 +19,7 @@ Route::group('/auth', function () {
     Route::post('/admins', [app\controller\Admin\Auth\AdminController::class,'create']);
     Route::get('/admins', [app\controller\Admin\Auth\AdminController::class,'index']);
     Route::get('/admins/{id:\d+}', [app\controller\Admin\Auth\AdminController::class,'show']);
+    Route::put('/admins/{id:\d+}', [app\controller\Admin\Auth\AdminController::class,'update']);
 });
 
 

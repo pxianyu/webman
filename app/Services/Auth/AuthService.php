@@ -8,10 +8,12 @@ use app\Request\Admin\Auth\AuthValidate;
 use app\Services\BaseService;
 use Exception;
 use Illuminate\Support\Carbon;
+use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Log;
 use support\Redis;
 use support\Response;
 use Tinywan\Captcha\Captcha;
+
 
 class AuthService extends BaseService
 {
@@ -59,11 +61,13 @@ class AuthService extends BaseService
         if ($user->status !=1){
             return  error(Enum::ACCOUNT_ERROR);
         }
+
         $user->last_login_ip=request()->getRealIp();
         $user->last_login_time=Carbon::now();
         $user->increment('login_num');
         $user->save();
-        return ok(Enum::LOGIN_SUCCESS);
+        $tokenObject=Auth::guard('admin_api')->login( $user);
+        return successJsonData($tokenObject,Enum::LOGIN_SUCCESS);
     }
 
     /**

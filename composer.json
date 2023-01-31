@@ -46,9 +46,9 @@
     "predis/predis": "^2.1",
     "vlucas/phpdotenv": "^5.5",
     "webman-tech/laravel-validation": "^1.1",
-    "shopwwi/webman-auth": "^1.0",
     "ext-gd": "*",
-    "webman/log": "^1.1"
+    "webman/log": "^1.1",
+    "shopwwi/webman-auth": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

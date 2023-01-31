@@ -31,7 +31,7 @@ class Admin extends Model
 
     public static function  getByUserName(string $username): \Illuminate\Database\Eloquent\Model|null
     {
-        return self::where('username',$username)->first();
+        return self::where('username', $username)->first();
     }
 
 }

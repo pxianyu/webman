@@ -16,8 +16,12 @@ class AdminController
     {
         return $adminService->store($request);
     }
-    public function show(Request $request,$id,AdminService $adminService): Response
+    public function show(Request $request,int $id,AdminService $adminService): Response
     {
         return $adminService->show($id);
+    }
+    public function update(Request $request,int $id,AdminService $adminService): Response
+    {
+        return $adminService->updateById($request,$id);
     }
 }

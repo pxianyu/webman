@@ -23,10 +23,9 @@ class BaseService
         $model->save();
         return ok();
     }
-    public function updateById(Request $request): Response
+    public function updateById(Request $request,int $id): Response
     {
         $this->setForm($request);
-        $id=$request->input('id');
         $model=$this->model->find($id);
         $res=$model->update($this->form);
         if(!$res){

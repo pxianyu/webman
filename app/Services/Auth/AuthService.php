@@ -5,6 +5,7 @@ namespace app\Services\Auth;
 use app\Exception\Enum;
 use app\model\Admin;
 use app\Request\Admin\Auth\AuthValidate;
+use app\Services\BaseService;
 use Exception;
 use Illuminate\Support\Carbon;
 use support\Log;
@@ -12,8 +13,12 @@ use support\Redis;
 use support\Response;
 use Tinywan\Captcha\Captcha;
 
-class AuthService
+class AuthService extends BaseService
 {
+    /**
+     * @param array $input
+     * @return Response
+     */
     public static function login(array $input): Response
     {
         try {
@@ -29,6 +34,7 @@ class AuthService
                     return error(Enum::CAPTCHA_ERROR);
                 }
             }
+
          return   self::doLogin($data);
         }catch (Exception $exception){
             Log::error($exception->getMessage());
@@ -59,6 +65,10 @@ class AuthService
         $user->save();
         return ok(Enum::LOGIN_SUCCESS);
     }
+
+    /**
+     * @return Response
+     */
     public static function captcha(): Response
     {
         try {

@@ -9,7 +9,7 @@ use Tinywan\Captcha\Captcha;
 function ok(string $message='操作成功',int $code=200,array $data=[]):Response
 {
     $result=['code'=>$code,'message'=>$message,'data'=>$data];
-    return new Response($code, ['Content-Type' => 'application/json'], json_encode($result, JSON_UNESCAPED_UNICODE));
+    return new Response($code, ['Content-Type' => 'application/json'], json_encode($result, JSON_UNESCAPED_UNICODE||JSON_FORCE_OBJECT));
 }
 function success(string $message,int $code=200): Response
 {
@@ -19,11 +19,15 @@ function successData(array $data,string $message='操作成功',int $code=200): 
 {
     return ok($message,$code,$data);
 }
-function error(string $message,int $code=400): Response
+function error(string $message='操作失败',int $code=400): Response
 {
     return ok($message,$code);
 }
-
+function successJsonData(object $data ,string $message='操作成功',int $code=200):Response
+{
+    $result=['code'=>$code,'message'=>$message,'data'=>$data];
+    return new Response($code, ['Content-Type' => 'application/json'], json_encode($result, JSON_UNESCAPED_UNICODE||JSON_FORCE_OBJECT));
+}
 
 /**
  * 转换字节数为其他单位

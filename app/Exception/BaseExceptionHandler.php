@@ -13,8 +13,8 @@ class BaseExceptionHandler extends  Handler
     public function render(Request $request, Throwable $exception) : Response
     {
         // 数据验证异常
-        if ($exception instanceof ValidationException) {
-            return json(['message' => $exception->getMessage(), 'code' => 50015]);
+        if ($exception->getCode() == 422) {
+            return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
         }
 
         // 业务异常

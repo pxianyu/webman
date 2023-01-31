@@ -9,9 +9,9 @@ class SqlLog implements Bootstrap
 {
     /** 记录sql到日志
      * @param $worker
-     * @return mixed|void
+     * @return void
      */
-    public static function start($worker)
+    public static function start($worker): void
     {
         Db::connection()->listen(function (QueryExecuted $queryExecuted){
             $sql=json_encode($queryExecuted->bindings);

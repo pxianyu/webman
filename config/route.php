@@ -16,6 +16,9 @@ use Webman\Route;
 Route::group('/auth', function () {
     Route::post('/login', [app\controller\Admin\Auth\AuthController::class,'index']);
     Route::get('/captcha', [app\controller\Admin\Auth\AuthController::class,'captcha']);
+    Route::post('/admins', [app\controller\Admin\Auth\AdminController::class,'create']);
+    Route::get('/admins', [app\controller\Admin\Auth\AdminController::class,'index']);
+    Route::get('/admins/{id:\d+}', [app\controller\Admin\Auth\AdminController::class,'show']);
 });
 
 

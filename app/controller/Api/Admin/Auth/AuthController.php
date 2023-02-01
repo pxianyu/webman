@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace app\controller\Admin\Auth;
+namespace app\controller\Api\Admin\Auth;
 
 
 use app\Services\Auth\AuthService;

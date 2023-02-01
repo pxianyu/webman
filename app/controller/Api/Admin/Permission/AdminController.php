@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controller\Admin\Auth;
+namespace app\controller\Api\Admin\Permission;
 
 use app\Services\Admin\AdminService;
 use support\Request;

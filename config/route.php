@@ -12,15 +12,21 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+
+use app\controller\Api\Admin\Auth\AuthController;
+use app\controller\Api\Admin\Permission\AdminController;
+use app\controller\Api\Admin\Permission\RoleController;
 use Webman\Route;
-Route::group('/auth', function () {
-    Route::post('/login', [app\controller\Admin\Auth\AuthController::class,'index'])->name('login');
-    Route::get('/captcha', [app\controller\Admin\Auth\AuthController::class,'captcha'])->name('cptcha');
-    Route::post('/logout', [app\controller\Admin\Auth\AuthController::class,'logout'])->name('logout');
-    Route::post('/me', [app\controller\Admin\Auth\AuthController::class,'me'])->name('me');
+
+Route::group('/api/admin', function () {
+    Route::post('/login', [AuthController::class,'index'])->name('login');
+    Route::get('/captcha', [AuthController::class,'captcha'])->name('cptcha');
+    Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+    Route::post('/me', [AuthController::class,'me'])->name('me');
 });
-Route::group('admin',function (){
-    Route::resource('/admins', app\controller\Admin\Auth\AdminController::class);
+Route::group('/api/admin',function (){
+    Route::resource('/admins', AdminController::class);
+    Route::resource('/roles', RoleController::class);
 });
 
 

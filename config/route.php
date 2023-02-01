@@ -19,7 +19,7 @@ use app\controller\Api\Admin\Permission\RoleController;
 use Webman\Route;
 
 Route::group('/api/admin', function () {
-    Route::post('/login', [AuthController::class,'index'])->name('login');
+    Route::post('/login', [AuthController::class,'login'])->name('login');
     Route::get('/captcha', [AuthController::class,'captcha'])->name('cptcha');
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
     Route::post('/me', [AuthController::class,'me'])->name('me');
@@ -27,6 +27,7 @@ Route::group('/api/admin', function () {
 Route::group('/api/admin',function (){
     Route::resource('/admins', AdminController::class);
     Route::resource('/roles', RoleController::class);
+    Route::post('/roles/empower',[AdminController::class,'empower'])->name('empower');
 });
 
 

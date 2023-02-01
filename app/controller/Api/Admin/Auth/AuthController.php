@@ -15,7 +15,7 @@ class AuthController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function login(Request $request): Response
     {
           return AuthService::login($request->all());
     }

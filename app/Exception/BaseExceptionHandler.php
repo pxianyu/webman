@@ -2,6 +2,7 @@
 
 namespace app\Exception;
 
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use support\exception\Handler;

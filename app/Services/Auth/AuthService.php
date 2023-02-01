@@ -6,6 +6,7 @@ use app\Exception\Enum;
 use app\model\Admin;
 use app\Request\Admin\Auth\AuthValidate;
 use app\Services\BaseService;
+use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Support\Carbon;
 use Shopwwi\WebmanAuth\Facade\Auth;

@@ -28,4 +28,8 @@ class AdminController
     {
         return $adminService->destroyById($id);
     }
+    public function empower(Request $request,AdminService $adminService): Response
+    {
+        return $adminService->empower($request);
+    }
 }

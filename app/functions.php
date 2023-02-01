@@ -1,5 +1,6 @@
 <?php
 
+use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Response;
 use Tinywan\Captcha\Captcha;
 
@@ -66,5 +67,15 @@ if (! function_exists('returnData')){
     function returnData(string $msg,array $data=[],int $code=0): array
     {
         return ['code'=>$code,'data'=>$data, 'msg' => $msg];
+    }
+}
+if (! function_exists('getUserId')){
+    function getUserId()
+    {
+        $user=Auth::guard('admin_api')->user(true);
+        if (!$user){
+            return  null;
+        }
+        return $user['id'];
     }
 }

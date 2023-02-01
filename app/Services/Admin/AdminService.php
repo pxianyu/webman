@@ -3,9 +3,12 @@
 namespace app\Services\Admin;
 
 use app\model\Admin;
+use app\model\UserRoles;
+use app\Request\Admin\Admin\UserRoleValidate;
 use app\Services\BaseService;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Request;
+use support\Response;
 
 class AdminService extends BaseService
 {
@@ -30,5 +33,17 @@ class AdminService extends BaseService
             unset($data['password']);
         }
         $this->form= $data;
+    }
+    public function empower(Request $request): Response
+    {
+        list('code'=>$code,'data'=>$data,'msg'=>$msg)=  (new UserRoleValidate())->goCheck($request->all());
+        if ($code){
+            return error($msg,$code);
+        }
+        UserRoles::create([
+            'admin_id' => $data['admin_id'],
+            'role_id' => $data['role_id']
+        ]);
+        return ok();
     }
 }

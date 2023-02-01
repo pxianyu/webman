@@ -4,6 +4,7 @@ namespace app\controller\Admin\Auth;
 
 
 use app\Services\Auth\AuthService;
+use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Request;
 use support\Response;
 
@@ -25,5 +26,19 @@ class AuthController
     public function captcha(): Response
     {
         return AuthService::captcha();
+    }
+
+    public function logout(): Response
+    {
+        Auth::guard('admin_api')->logout();
+        return ok();
+    }
+
+    /** 个人信息
+     * @return Response
+     */
+    public function me(): Response
+    {
+        return successJsonData(Auth::guard('admin_api')->user());
     }
 }

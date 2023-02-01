@@ -10,9 +10,9 @@ class AdminController
 {
     public function index(Request $request,AdminService $adminService)
     {
-        return $adminService->getData();
+        return $adminService->getOrderByIdAllData();
     }
-    public function create(Request $request,AdminService $adminService): Response
+    public function store(Request $request,AdminService $adminService): Response
     {
         return $adminService->store($request);
     }
@@ -23,5 +23,9 @@ class AdminController
     public function update(Request $request,int $id,AdminService $adminService): Response
     {
         return $adminService->updateById($request,$id);
+    }
+    public function destroy(Request $request,int $id,AdminService $adminService): Response
+    {
+        return $adminService->destroyById($id);
     }
 }

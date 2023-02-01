@@ -13,44 +13,73 @@ class BaseService
      * @param $model
      * @return Response
      */
-    public function updateStatus($request,$model): Response
+    public function updateStatus(Request $request,int $id): Response
     {
         $type=$request->input('type');
-        if (!$type){
+        if (!$type || !is_integer($type)){
             return error('参数错误');
         }
+        $model=$this->model->find($id);
         $model->$type=$model->$type?0:1;
         $model->save();
         return ok();
     }
+
+    /** 根据id更新数据
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
     public function updateById(Request $request,int $id): Response
     {
         $this->setForm($request);
-        $model=$this->model->find($id);
+        $model=$this->model->findorfail($id);
         $res=$model->update($this->form);
-        if(!$res){
+        if($res===false){
             return error();
         }
         return ok();
     }
-    //获取排序后的所有数据
-    public function getData(): Response
+
+    /** 根据id删除数据
+     * @param int $id
+     * @return Response
+     */
+    public function destroyById(int $id): Response
+    {
+        $res=$this->model->destroy($id);
+        if($res===false){
+            return error();
+        }
+        return ok();
+    }
+
+    /** 获取id排序所有数据
+     * @return Response
+     */
+    public function getOrderByIdAllData(): Response
     {
         return successData($this->model->orderBy('id','asc')->get()->toArray());
     }
 
 
-    // 获取所有数据
+    /** 获取所有数据
+     * @return Response
+     */
     public function getAll(): Response
     {
         return successData($this->model->all()->toArray());
     }
 
+    /** 设置表单字段
+     * @param Request $request
+     * @return void
+     */
     public function setForm(Request $request): void
     {
         $this->form=$request->all();
     }
-    /** 创建
+    /** 新增数据
      * @param Request $request
      * @return Response
      */
@@ -64,13 +93,13 @@ class BaseService
         return ok();
     }
 
-    /** 详细
+    /** 详细详细
      * @param int $id
      * @return Response
      */
     public function show(int $id): Response
     {
-        return successJsonData($this->model->find($id));
+        return successJsonData($this->model->findorfail($id));
     }
 
 }

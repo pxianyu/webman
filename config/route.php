@@ -14,15 +14,18 @@
 
 use Webman\Route;
 Route::group('/auth', function () {
-    Route::post('/login', [app\controller\Admin\Auth\AuthController::class,'index']);
-    Route::get('/captcha', [app\controller\Admin\Auth\AuthController::class,'captcha']);
-    Route::post('/admins', [app\controller\Admin\Auth\AdminController::class,'create']);
-    Route::get('/admins', [app\controller\Admin\Auth\AdminController::class,'index']);
-    Route::get('/admins/{id:\d+}', [app\controller\Admin\Auth\AdminController::class,'show']);
-    Route::put('/admins/{id:\d+}', [app\controller\Admin\Auth\AdminController::class,'update']);
+    Route::post('/login', [app\controller\Admin\Auth\AuthController::class,'index'])->name('login');
+    Route::get('/captcha', [app\controller\Admin\Auth\AuthController::class,'captcha'])->name('cptcha');
+    Route::post('/logout', [app\controller\Admin\Auth\AuthController::class,'logout'])->name('logout');
+    Route::post('/me', [app\controller\Admin\Auth\AuthController::class,'me'])->name('me');
+});
+Route::group('admin',function (){
+    Route::resource('/admins', app\controller\Admin\Auth\AdminController::class);
 });
 
 
 
 
-
+Route::fallback(function(){
+    return json(['code' => 404, 'msg' => '404 not found']);
+});

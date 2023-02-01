@@ -2,11 +2,13 @@
 
 namespace app\Exception;
 
-use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use support\exception\Handler;
+use Throwable;
 use Webman\Http\Request;
 use Webman\Http\Response;
-use Throwable;
+
 class BaseExceptionHandler extends  Handler
 {
 
@@ -16,7 +18,14 @@ class BaseExceptionHandler extends  Handler
         if ($exception->getCode() == 422) {
             return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
         }
-
+        // 模型异常
+        if ($exception instanceof  ModelNotFoundException) {
+            return json(['message' => Enum::NOT_FOUND_ERROR, 'code' => 404]);
+        }
+        // 查询异常
+        if ($exception instanceof  QueryException) {
+            return json(['message' => Enum::QUERY_ERROR, 'code' => 501]);
+        }
         // 业务异常
         if ($exception instanceof BusinessException) {
             return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);

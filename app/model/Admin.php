@@ -20,7 +20,7 @@ class Admin extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable=['username','password','nickname','status','is_root'];
 

@@ -37,5 +37,35 @@ CREATE TABLE `admins` (
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
---密码 admin123.
-INSERT INTO `admins` VALUES ('1', 'admins', '$2y$07$BhsuVTNGt6QRy532Doz9UeYLKuibkAMlaMGKN4jpkCGB2b6SSw02K', '0', '127.0.0.1', '2023-01-20 16:47:15', '王旋', '4', '0', '2023-01-20 16:47:15', '2023-01-20 16:47:15');
+--密码 admin123
+INSERT INTO `admins` VALUES ('1', 'admins1', '$2y$07$68tutssSF7bmmLW3IPUF8uhY/syXrtplmQYhKJWReTNbk0gUpJ7IO', '1', '127.0.0.1', '2023-02-01 09:26:38', '王旋', '21', '1', '2023-02-01 10:26:38', '2023-01-31 18:24:01', '0', '0');
+-- ----------------------------
+-- Table structure for roles
+-- ----------------------------
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+                         `id` int(11) NOT NULL AUTO_INCREMENT,
+                         `name` varchar(255) NOT NULL,
+                         `desc` varchar(255) DEFAULT NULL,
+                         `created_at` datetime DEFAULT NULL,
+                         `updated_at` datetime DEFAULT NULL,
+                         `delete_flg` tinyint(1) NOT NULL DEFAULT '0',
+                         PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+
+-- ----------------------------
+-- Table structure for user_roles
+-- ----------------------------
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE `user_roles` (
+                              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                              `admin_id` int(11) DEFAULT NULL,
+                              `role_id` int(11) DEFAULT NULL,
+                              PRIMARY KEY (`id`),
+                              KEY `admin_id` (`admin_id`,`role_id`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of user_roles
+-- ----------------------------

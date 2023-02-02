@@ -8,7 +8,7 @@ use support\Response;
 
 class RoleController
 {
-    public function index(Request $request,RoleService $service)
+    public function index(Request $request,RoleService $service): Response
     {
         return $service->getOrderByIdAllData();
     }

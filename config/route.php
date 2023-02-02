@@ -16,6 +16,7 @@
 use app\controller\Api\Admin\Auth\AuthController;
 use app\controller\Api\Admin\Permission\AdminController;
 use app\controller\Api\Admin\Permission\RoleController;
+use app\controller\Api\Admin\Permission\PermissionController;
 use support\Response;
 use Webman\Route;
 
@@ -29,6 +30,7 @@ Route::group('/api/admin',function (){
     Route::resource('/admins', AdminController::class);
     Route::resource('/roles', RoleController::class);
     Route::post('/roles/empower',[AdminController::class,'empower'])->name('empower');
+    Route::resource('/permissions', PermissionController::class);
 });
 
 

@@ -16,6 +16,7 @@
 use app\controller\Api\Admin\Auth\AuthController;
 use app\controller\Api\Admin\Permission\AdminController;
 use app\controller\Api\Admin\Permission\RoleController;
+use support\Response;
 use Webman\Route;
 
 Route::group('/api/admin', function () {
@@ -34,5 +35,5 @@ Route::group('/api/admin',function (){
 
 
 Route::fallback(function(){
-    return json(['code' => 404, 'msg' => '404 not found']);
+    return  new Response(200, ['Content-Type' => 'application/json','Access-Control-Allow-Origin'=>'*'], \json_encode(['code' => 404, 'msg' => '404 not found'], JSON_UNESCAPED_UNICODE));
 });

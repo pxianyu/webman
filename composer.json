@@ -81,7 +81,6 @@
     ]
   },
   "require-dev": {
-    "kriss/webman-eloquent-ide-helper": "^1.0",
-    "hg/apidoc": "^4.2"
+    "kriss/webman-eloquent-ide-helper": "^1.0"
   }
 }

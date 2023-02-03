@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c9b0e6b95d6d13b31630c26684b29b0",
+    "content-hash": "b7fc2e148444e9cc8187a71997a36764",
     "packages": [
         {
             "name": "brick/math",
@@ -5492,82 +5492,6 @@
             "time": "2022-11-17T09:50:14+00:00"
         },
         {
-            "name": "doctrine/annotations",
-            "version": "1.14.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "fb0d71a7393298a7b232cbf4c8b1f73f3ec3d5af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/fb0d71a7393298a7b232cbf4c8b1f73f3ec3d5af",
-                "reference": "fb0d71a7393298a7b232cbf4c8b1f73f3ec3d5af",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/lexer": "^1 || ^2",
-                "ext-tokenizer": "*",
-                "php": "^7.1 || ^8.0",
-                "psr/cache": "^1 || ^2 || ^3"
-            },
-            "require-dev": {
-                "doctrine/cache": "^1.11 || ^2.0",
-                "doctrine/coding-standard": "^9 || ^10",
-                "phpstan/phpstan": "~1.4.10 || ^1.8.0",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "symfony/cache": "^4.4 || ^5.4 || ^6",
-                "vimeo/psalm": "^4.10"
-            },
-            "suggest": {
-                "php": "PHP 8.0 or higher comes with attributes, a native replacement for annotations"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Common\\Annotations\\": "lib/Doctrine/Common/Annotations"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Docblock Annotations Parser",
-            "homepage": "https://www.doctrine-project.org/projects/annotations.html",
-            "keywords": [
-                "annotations",
-                "docblock",
-                "parser"
-            ],
-            "support": {
-                "issues": "https://github.com/doctrine/annotations/issues",
-                "source": "https://github.com/doctrine/annotations/tree/1.14.3"
-            },
-            "time": "2023-02-01T09:20:38+00:00"
-        },
-        {
             "name": "doctrine/cache",
             "version": "2.2.0",
             "source": {
@@ -5862,75 +5786,6 @@
                 }
             ],
             "time": "2022-10-12T20:51:15+00:00"
-        },
-        {
-            "name": "hg/apidoc",
-            "version": "v4.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/HGthecode/apidoc-php.git",
-                "reference": "5ab50b2fd0cfccfc0c04409d0fda509cb0d1cb6c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/HGthecode/apidoc-php/zipball/5ab50b2fd0cfccfc0c04409d0fda509cb0d1cb6c",
-                "reference": "5ab50b2fd0cfccfc0c04409d0fda509cb0d1cb6c",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/annotations": "^1.6",
-                "php": ">=7.1"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "hg\\apidoc\\providers\\LaravelService"
-                    ]
-                },
-                "think": {
-                    "services": [
-                        "hg\\apidoc\\providers\\ThinkPHPService"
-                    ],
-                    "config": {
-                        "apidoc": "src/config.php"
-                    }
-                },
-                "hyperf": {
-                    "config": "hg\\apidoc\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "hg\\apidoc\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "hg-code",
-                    "email": "376401263@qq.com"
-                }
-            ],
-            "description": "根据注解生成API文档，兼容Laravel、ThinkPHP、Hyperf、Webman等框架；在线调试、Markdown文档、多应用/多版本、Mock数据、授权访问、接口生成器、代码生成器等众多实用功能",
-            "keywords": [
-                "apidoc",
-                "api文档",
-                "markdown",
-                "php接口文档",
-                "接口文档",
-                "注解",
-                "注释生成",
-                "自动生成api"
-            ],
-            "support": {
-                "issues": "https://github.com/HGthecode/apidoc-php/issues",
-                "source": "https://github.com/HGthecode/apidoc-php/tree/v4.2.1"
-            },
-            "time": "2023-01-28T06:36:10+00:00"
         },
         {
             "name": "illuminate/console",

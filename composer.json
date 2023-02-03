@@ -52,7 +52,6 @@
     "shopwwi/webman-auth": "^1.0",
     "webman/gateway-worker": "^1.0",
     "webman/redis-queue": "^1.2",
-    "yzh52521/webman-task": "^1.35",
     "webman-tech/laravel-cache": "^1.1",
     "webman-tech/laravel-http-client": "^1.1"
   },

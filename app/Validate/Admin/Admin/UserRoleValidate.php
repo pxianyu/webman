@@ -1,8 +1,8 @@
 <?php
 
-namespace app\Request\Admin\Admin;
+namespace app\Validate\Admin\Admin;
 
-use app\Request\BaseValidate;
+use app\Validate\BaseValidate;
 
 class UserRoleValidate extends BaseValidate
 {

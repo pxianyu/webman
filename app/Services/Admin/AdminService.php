@@ -4,34 +4,42 @@ namespace app\Services\Admin;
 
 use app\model\Admin;
 use app\model\UserRoles;
-use app\Request\Admin\Admin\UserRoleValidate;
+use app\Validate\Admin\Admin\AdminValidate;
+use app\Validate\Admin\Admin\UserRoleValidate;
 use app\Services\BaseService;
+use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Request;
 use support\Response;
-
+use support\exception\BusinessException;
 class AdminService extends BaseService
 {
     public $model;
     public $form;
+    public $validate;
     public function __construct()
     {
         $this->model = new Admin();
+        $this->validate = new AdminValidate();
     }
+
+    /**
+     * @throws ValidationException
+     * @throws BusinessException
+     */
     public function setForm(Request $request): void
     {
-        $data=[
-            'username'=>$request->input('username') ,
-            'password'=>Auth::bcrypt($request->input('password')??''),
-            'status'=>$request->input('status')??1,
-            'is_root'=>$request->input('is_root')??1
-        ];
-        if ($request->input('nickname','')) {
-           $data['nickname']= $request->input('nickname');
+        list('code'=>$code,'data'=>$data,'msg'=>$msg)=  $this->validate->goCheck($request->all());
+        if ($code){
+            throw new BusinessException($msg,$code);
         }
-        if ($request->input('password','') == '') {
+        if (array_key_exists('password',$data)){
+            $data['password']=Auth::bcrypt($data['password']);
+        }else{
             unset($data['password']);
         }
+        $data['is_root']=$data['is_root']??1;
+        $data['status']=$data['status']??1;
         $this->form= $data;
     }
     public function empower(Request $request): Response

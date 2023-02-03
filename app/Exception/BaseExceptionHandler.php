@@ -2,14 +2,14 @@
 
 namespace app\Exception;
 
-use Illuminate\Validation\ValidationException;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use support\exception\Handler;
 use Throwable;
 use Webman\Http\Request;
 use Webman\Http\Response;
-
+use Illuminate\Validation\ValidationException;
 class BaseExceptionHandler extends  Handler
 {
 
@@ -17,6 +17,9 @@ class BaseExceptionHandler extends  Handler
     {
         // 数据验证异常
         if ($exception->getCode() == 422) {
+            return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
+        }
+        if ($exception instanceof ValidationException){
             return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
         }
         // 模型异常

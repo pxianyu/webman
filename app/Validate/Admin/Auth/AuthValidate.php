@@ -1,8 +1,8 @@
 <?php
-declare(strict_types=1);
-namespace app\Request\Admin\Auth;
 
-use app\Request\BaseValidate;
+namespace app\Validate\Admin\Auth;
+
+use app\Validate\BaseValidate;
 
 class AuthValidate extends BaseValidate
 {

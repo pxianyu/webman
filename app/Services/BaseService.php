@@ -8,9 +8,10 @@ class BaseService
 {
     public $form;
     public $model;
+
     /** 更新状态
-     * @param $request
-     * @param $model
+     * @param Request $request
+     * @param int $id
      * @return Response
      */
     public function updateStatus(Request $request,int $id): Response
@@ -19,7 +20,7 @@ class BaseService
         if (!$type || !is_integer($type)){
             return error('参数错误');
         }
-        $model=$this->model->find($id);
+        $model=$this->model->findorfail($id);
         $model->$type=$model->$type?0:1;
         $model->save();
         return ok();
@@ -100,6 +101,10 @@ class BaseService
     public function show(int $id): Response
     {
         return successJsonData($this->model->findorfail($id));
+    }
+    public function update()
+    {
+
     }
 
 }

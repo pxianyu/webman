@@ -1,9 +1,7 @@
 <?php
 
-namespace app\Request;
+namespace app\Validate;
 
-
-use Dotenv\Exception\ValidationException;
 
 class BaseValidate
 {

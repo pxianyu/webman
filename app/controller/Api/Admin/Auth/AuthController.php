@@ -28,6 +28,9 @@ class AuthController
         return AuthService::captcha();
     }
 
+    /** 退出登录
+     * @return Response
+     */
     public function logout(): Response
     {
         Auth::guard('admin_api')->logout();

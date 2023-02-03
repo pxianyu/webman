@@ -20,18 +20,18 @@ use app\controller\Api\Admin\Permission\PermissionController;
 use support\Response;
 use Webman\Route;
 
+Route::post('/api/admin/login', [AuthController::class,'login'])->name('login');
+Route::get('/api/admin/captcha', [AuthController::class,'captcha'])->name('cptcha');
 Route::group('/api/admin', function () {
-    Route::post('/login', [AuthController::class,'login'])->name('login');
-    Route::get('/captcha', [AuthController::class,'captcha'])->name('cptcha');
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
     Route::post('/me', [AuthController::class,'me'])->name('me');
-});
+})->middleware([\app\middleware\AuthCheckTest::class]);
 Route::group('/api/admin',function (){
     Route::resource('/admins', AdminController::class);
     Route::resource('/roles', RoleController::class);
     Route::post('/roles/empower',[AdminController::class,'empower'])->name('empower');
     Route::resource('/permissions', PermissionController::class);
-});
+})->middleware([\app\middleware\AuthCheckTest::class]);
 
 
 

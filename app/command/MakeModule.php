@@ -4,6 +4,8 @@ namespace app\command;
 
 
 use Doctrine\Inflector\InflectorFactory;
+use Illuminate\Support\Arr;
+use Shopwwi\WebmanAuth\Facade\Str;
 use support\Db;
 
 use Symfony\Component\Console\Command\Command;
@@ -131,10 +133,14 @@ EOF;
                 $table_val = "'$table'";
                 $table = "{$prefix}{$table}";
             }
+            $fillable=[];
             foreach (Db::select("select COLUMN_NAME,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS where table_name = '$table' and table_schema = '$database'") as $item) {
                 if ($item->COLUMN_KEY === 'PRI') {
                     $pk = $item->COLUMN_NAME;
                     $item->COLUMN_COMMENT .= "(主键)";
+                }
+                if ($item->COLUMN_NAME!='id'){
+                    $fillable[]="'{$item->COLUMN_NAME}'";
                 }
                 $type = $this->getType($item->DATA_TYPE);
                 $properties .= " * @property $type \${$item->COLUMN_NAME} {$item->COLUMN_COMMENT}\n";
@@ -142,6 +148,7 @@ EOF;
         } catch (\Throwable $e) {}
         $properties = rtrim($properties) ?: ' *';
         $tableName=$table?:$table_val;
+        $fillable='['.implode(',',$fillable).']';
         $model_content = <<<EOF
 <?php
 
@@ -174,7 +181,7 @@ class $class extends Model
      * @var bool
      */
     public \$timestamps = false;
-    
+    protected \$fillable=$fillable;
     
 }
 

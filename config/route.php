@@ -18,6 +18,8 @@ use app\controller\Api\Admin\Permission\AdminController;
 use app\controller\Api\Admin\Permission\MenuController;
 use app\controller\Api\Admin\Permission\RoleController;
 use app\controller\Api\Admin\Permission\PermissionController;
+use app\controller\Api\Admin\System\ConfigController;
+use app\controller\Api\Admin\System\ConfigGroupController;
 use support\Response;
 use Webman\Route;
 
@@ -33,6 +35,9 @@ Route::group('/api/admin',function (){
     Route::post('/roles/empower',[AdminController::class,'empower'])->name('empower');
     Route::resource('/permissions', PermissionController::class);
     Route::resource('/menus', MenuController::class);
+    Route::resource('/configs', ConfigController::class);
+    Route::resource('/configGroups', ConfigGroupController::class);
+
 })->middleware([\app\middleware\AuthCheckTest::class]);
 
 

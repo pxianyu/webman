@@ -45,7 +45,7 @@ class Menu extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable=['pid','title','name','icon','path','component','roles','menuType','redirect','sort','isHide','isAffix','isLink','isKeepAlive','isIframe','created_at','updated_at'];
     
 }

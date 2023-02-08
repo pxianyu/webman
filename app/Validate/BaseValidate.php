@@ -31,4 +31,8 @@ class BaseValidate
     {
         return [];
     }
+    public function messages(): array
+    {
+        return [];
+    }
 }

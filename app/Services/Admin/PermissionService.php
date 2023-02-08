@@ -16,7 +16,7 @@ class PermissionService extends BaseService
     }
     public function setForm(Request $request): void
     {
-       $data=$request->only($this->model->getFillable());
+        $data=$request->only($this->model->getFillable());
 
         $this->form= $data;
     }

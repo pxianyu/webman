@@ -18,6 +18,8 @@ use app\controller\Api\Admin\Permission\AdminController;
 use app\controller\Api\Admin\Permission\MenuController;
 use app\controller\Api\Admin\Permission\RoleController;
 use app\controller\Api\Admin\Permission\PermissionController;
+use app\controller\Api\Admin\System\BannerController;
+use app\controller\Api\Admin\System\BannerGroupController;
 use app\controller\Api\Admin\System\ConfigController;
 use app\controller\Api\Admin\System\ConfigGroupController;
 use support\Response;
@@ -37,6 +39,8 @@ Route::group('/api/admin',function (){
     Route::resource('/menus', MenuController::class);
     Route::resource('/configs', ConfigController::class);
     Route::resource('/configGroups', ConfigGroupController::class);
+    Route::resource('/bannerGroups', BannerGroupController::class);
+    Route::resource('/banners', BannerController::class);
 
 })->middleware([\app\middleware\AuthCheckTest::class]);
 

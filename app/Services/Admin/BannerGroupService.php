@@ -2,21 +2,21 @@
 
 namespace app\Services\Admin;
 
-use app\Validate\Admin\Admin\ConfigValidate;
+use app\Validate\Admin\Admin\BannerGroupValidate;
 use support\Request;
 use Illuminate\Validation\ValidationException;
 use support\exception\BusinessException;
 use app\Services\BaseService;
-use app\model\Config;
-class ConfigService extends BaseService
+use app\model\BannerGroup;
+class BannerGroupService extends BaseService
 {
     public $model;
     public $form;
-    public ConfigValidate $validate;
+    public BannerGroupValidate $validate;
     public function __construct()
     {
-        $this->model = new Config();
-        $this->validate=new ConfigValidate();
+        $this->model = new BannerGroup();
+        $this->validate= new BannerGroupValidate();
     }
     /**
      * @throws ValidationException

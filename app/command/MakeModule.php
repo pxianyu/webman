@@ -255,13 +255,7 @@ class $serviceName extends BaseService
         if (\$code){
             throw new BusinessException(\$msg,\$code);
         }
-        if (array_key_exists('password',\$data)){
-            \$data['password']=Auth::bcrypt(\$data['password']);
-        }else{
-            unset(\$data['password']);
-        }
-        \$data['is_root']=\$data['is_root']??1;
-        \$data['status']=\$data['status']??1;
+    
         \$this->form= \$data;
     }
 }

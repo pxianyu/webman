@@ -8,6 +8,7 @@ use app\Validate\Admin\Auth\AuthValidate;
 use app\Services\BaseService;
 use Exception;
 use Illuminate\Support\Carbon;
+use WebmanTech\LaravelCache\Facades\Cache;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Log;
 use support\Redis;
@@ -98,15 +99,17 @@ class AuthService extends BaseService
      */
     protected static function checkLoginLimit(string $username,int $limit=5): bool
     {
-        if (Redis::exists($username)){
-            Redis::incr($username);
-            $count=Redis::get($username);
+        $cache=Cache::store('redis');
+        if ($cache->has($username)){
+            $cache->increment($username);
+            $count=$cache->get($username);
             if ($limit<(int)$count){
                 return true;
             }
         }else{
-            Redis::incr($username);
-            Redis::expire($username,300);
+            $value=$cache->increment($username);
+            $cache->set($username,$value,300);
+//            Redis::expire($username,300);
         }
         return false;
     }

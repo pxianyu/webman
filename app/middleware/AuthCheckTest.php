@@ -15,7 +15,7 @@ class AuthCheckTest implements MiddlewareInterface
     public function process(Request $request, callable $handler) :Response
     {
         // 不需要登录的路由别名
-        $notLoinAction=['login','captcha'];
+        $notLoinAction=['admin.login','admin.captcha'];
         $route=$request->route;
         if ($route){
             // 用户未登录

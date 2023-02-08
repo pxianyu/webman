@@ -25,16 +25,16 @@ use app\controller\Api\Admin\System\ConfigGroupController;
 use support\Response;
 use Webman\Route;
 
-Route::post('/api/admin/login', [AuthController::class,'login'])->name('login');
-Route::get('/api/admin/captcha', [AuthController::class,'captcha'])->name('cptcha');
+Route::post('/api/admin/login', [AuthController::class,'login'])->name('admin.login');
+Route::get('/api/admin/captcha', [AuthController::class,'captcha'])->name('admin.captcha');
 Route::group('/api/admin', function () {
-    Route::post('/logout', [AuthController::class,'logout'])->name('logout');
-    Route::post('/me', [AuthController::class,'me'])->name('me');
+    Route::post('/logout', [AuthController::class,'logout'])->name('admin.logout');
+    Route::post('/me', [AuthController::class,'me'])->name('admin.me');
 })->middleware([\app\middleware\AuthCheckTest::class]);
 Route::group('/api/admin',function (){
     Route::resource('/admins', AdminController::class);
     Route::resource('/roles', RoleController::class);
-    Route::post('/roles/empower',[AdminController::class,'empower'])->name('empower');
+    Route::post('/roles/empower',[AdminController::class,'empower'])->name('roles.empower');
     Route::resource('/permissions', PermissionController::class);
     Route::resource('/menus', MenuController::class);
     Route::resource('/configs', ConfigController::class);

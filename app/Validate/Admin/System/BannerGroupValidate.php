@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Validate\Admin\Admin;
+namespace app\Validate\Admin\System;
 
 use app\Validate\BaseValidate;
 

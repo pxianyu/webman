@@ -2,7 +2,7 @@
 
 namespace app\controller\Api\Admin\System;
 
-use app\Services\Admin\ConfigService;
+use app\Services\System\ConfigService;
 use support\Request;
 use support\Response;
 

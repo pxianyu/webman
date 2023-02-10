@@ -1,13 +1,15 @@
 <?php
 
-namespace app\Services\Admin;
+namespace app\Services\System;
 
-use app\Validate\Admin\Admin\ConfigValidate;
-use support\Request;
-use Illuminate\Validation\ValidationException;
-use support\exception\BusinessException;
-use app\Services\BaseService;
+
+use app\Exception\BusinessException;
 use app\model\Config;
+use app\Services\BaseService;
+use app\Validate\Admin\System\ConfigValidate;
+use Illuminate\Validation\ValidationException;
+use support\Request;
+
 class ConfigService extends BaseService
 {
     public $model;

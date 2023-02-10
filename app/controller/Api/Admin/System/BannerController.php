@@ -2,7 +2,7 @@
 
 namespace app\controller\Api\Admin\System;
 
-use app\Services\Admin\BannerService;
+use app\Services\System\BannerService;
 use support\Request;
 use support\Response;
 

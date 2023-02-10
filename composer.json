@@ -53,7 +53,8 @@
     "webman/gateway-worker": "^1.0",
     "webman/redis-queue": "^1.2",
     "webman-tech/laravel-cache": "^1.1",
-    "webman-tech/laravel-http-client": "^1.1"
+    "webman-tech/laravel-http-client": "^1.1",
+    "ext-simplexml": "*"
   },
   "suggest": {
     "ext-event": "For better performance. "

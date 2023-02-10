@@ -5,6 +5,7 @@ namespace app\Exception;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use support\exception\BusinessException;
 use support\exception\Handler;
 use Throwable;
 use Webman\Http\Request;
@@ -13,6 +14,10 @@ use Illuminate\Validation\ValidationException;
 class BaseExceptionHandler extends  Handler
 {
 
+    public $dontReport = [
+        BusinessException::class,
+        BusinessException::class
+    ];
     public function render(Request $request, Throwable $exception) : Response
     {
         // 数据验证异常

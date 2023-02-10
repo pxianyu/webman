@@ -20,10 +20,6 @@ use support\Translation;
 use support\view\Blade;
 use support\view\Raw;
 use support\view\ThinkPHP;
-use support\view\Twig;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Webman\App;
 use Webman\Config;
 use Webman\Route;
@@ -239,20 +235,6 @@ function think_view(string $template, array $vars = [], string $app = null): Res
     return new Response(200, [], ThinkPHP::render($template, $vars, $app));
 }
 
-/**
- * Twig view response
- * @param string $template
- * @param array $vars
- * @param string|null $app
- * @return Response
- * @throws LoaderError
- * @throws RuntimeError
- * @throws SyntaxError
- */
-function twig_view(string $template, array $vars = [], string $app = null): Response
-{
-    return new Response(200, [], Twig::render($template, $vars, $app));
-}
 
 /**
  * Get request
@@ -479,7 +461,7 @@ function worker_start($processName, $config)
  */
 function get_realpath(string $filePath): string
 {
-    if (strpos($filePath, 'phar://') === 0) {
+    if (str_starts_with($filePath, 'phar://')) {
         return $filePath;
     } else {
         return realpath($filePath);

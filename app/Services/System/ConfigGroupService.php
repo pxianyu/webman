@@ -1,22 +1,23 @@
 <?php
 
-namespace app\Services\Admin;
+namespace app\Services\System;
 
-use app\Validate\Admin\Admin\BannerGroupValidate;
-use support\Request;
-use Illuminate\Validation\ValidationException;
-use support\exception\BusinessException;
+use app\Exception\BusinessException;
+use app\model\ConfigGroup;
 use app\Services\BaseService;
-use app\model\BannerGroup;
-class BannerGroupService extends BaseService
+use app\Validate\Admin\System\ConfigGroupValidate;
+use Illuminate\Validation\ValidationException;
+use support\Request;
+
+class ConfigGroupService extends BaseService
 {
     public $model;
     public $form;
-    public BannerGroupValidate $validate;
+    public ConfigGroupValidate $validate;
     public function __construct()
     {
-        $this->model = new BannerGroup();
-        $this->validate= new BannerGroupValidate();
+        $this->model = new ConfigGroup();
+        $this->validate=new ConfigGroupValidate();
     }
     /**
      * @throws ValidationException

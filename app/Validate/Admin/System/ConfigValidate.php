@@ -3,13 +3,18 @@
 namespace app\Validate\Admin\System;
 
 use app\Validate\BaseValidate;
+use Illuminate\Validation\Rule;
 
 class ConfigValidate extends BaseValidate
 {
     public function getRulesStore(): array
     {
+        $route=request()->route;
         return [
-            'name'  =>  'required|string',
+            'name'  =>  [
+                'required',
+                Rule::unique('configs')->ignore($route?$route->param('id'):'')
+            ],
             'value'  =>  'required|string',
             'type'  =>  'required|integer',
             'group'  =>  'required|string',
@@ -20,9 +25,12 @@ class ConfigValidate extends BaseValidate
     }
     public function getRulesUpdate(): array
     {
-        $update=request()->route;
+        $route=request()->route;
         return [
-            'name'  =>  'required|string',
+            'name'  =>  [
+                'required',
+                Rule::unique('configs')->ignore($route?$route->param('id'):'')
+            ],
             'value'  =>  'required|string',
             'type'  =>  'required|integer',
             'group'  =>  'required|string',
@@ -35,6 +43,7 @@ class ConfigValidate extends BaseValidate
     {
         return [
             'name.required' => '配置名称不能为空',
+            'name.unique' => '配置名称不能重复',
             'name.string' => '配置名称必须为字符串',
             'value.required' => '配置值不能为空',
             'value.string' => '配置值必须为字符串',

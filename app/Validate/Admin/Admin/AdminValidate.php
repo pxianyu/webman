@@ -9,8 +9,12 @@ class AdminValidate extends BaseValidate
 {
     public function getRulesByStore(): array
     {
+        $route=request()->route;
         return [
-            'username'  =>  'required',
+            'username'  =>  [
+                'required',
+                Rule::unique('admins')->ignore($route?$route->param('id'):'')
+            ],
             'password'  =>  'required',
             'status'    =>  'sometimes|required|in_array:0,1',
             'nickname'  =>  'required'
@@ -18,11 +22,11 @@ class AdminValidate extends BaseValidate
     }
     public function getRulesByUpdate(): array
     {
-        $update=request()->route;
+        $route=request()->route;
         return [
             'username'  =>  [
                 'required',
-                Rule::unique('admins')->ignore($update?$update->param('id'):'')
+                Rule::unique('admins')->ignore($route?$route->param('id'):'')
             ],
             'status'    =>  'sometimes|required|in_array:0,1',
             'nickname'  =>  'required'

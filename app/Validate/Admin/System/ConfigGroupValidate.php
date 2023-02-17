@@ -3,22 +3,30 @@
 namespace app\Validate\Admin\System;
 
 use app\Validate\BaseValidate;
+use Illuminate\Validation\Rule;
 
 class ConfigGroupValidate extends BaseValidate
 {
     public function getRulesStore(): array
     {
+        $route=request()->route;
         return [
-            'name'  =>  'required|string',
+            'name'  =>  [
+                'required',
+                Rule::unique('config_groups')->ignore($route?$route->param('id'):'')
+            ],
             'sort'  =>  'required|integer',
             'status'  =>  'required|integer',
         ];
     }
     public function getRulesUpdate(): array
     {
-        $update=request()->route;
+        $route=request()->route;
         return [
-            'name'  =>  'required|string',
+            'name'  =>  [
+                'required',
+                Rule::unique('config_groups')->ignore($route?$route->param('id'):'')
+            ],
             'sort'  =>  'required|integer',
             'status'  =>  'required|integer',
         ];
@@ -27,6 +35,7 @@ class ConfigGroupValidate extends BaseValidate
     {
         return [
             'name.required' => '配置分组名称不能为空',
+            'name.unique' => '配置分组名称不能重复',
             'name.string' => '配置分组名称必须为字符串',
             'sort.required' => '排序不能为空',
             'sort.integer' => '排序必须为整数',

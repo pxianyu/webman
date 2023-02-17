@@ -3,13 +3,15 @@
 namespace app\Validate;
 
 
+use Illuminate\Validation\ValidationException;
+
 class BaseValidate
 {
 
     /**
      * @param $params
      * @return array
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function goCheck($params): array
     {

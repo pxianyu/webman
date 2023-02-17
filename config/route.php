@@ -24,13 +24,13 @@ use app\controller\Api\Admin\System\ConfigController;
 use app\controller\Api\Admin\System\ConfigGroupController;
 use support\Response;
 use Webman\Route;
-
+use app\middleware\AuthCheckTest;
 Route::post('/api/admin/login', [AuthController::class,'login'])->name('admin.login');
 Route::get('/api/admin/captcha', [AuthController::class,'captcha'])->name('admin.captcha');
 Route::group('/api/admin', function () {
     Route::post('/logout', [AuthController::class,'logout'])->name('admin.logout');
     Route::post('/me', [AuthController::class,'me'])->name('admin.me');
-})->middleware([\app\middleware\AuthCheckTest::class]);
+})->middleware([AuthCheckTest::class]);
 Route::group('/api/admin',function (){
     Route::resource('/admins', AdminController::class);
     Route::resource('/roles', RoleController::class);
@@ -42,7 +42,7 @@ Route::group('/api/admin',function (){
     Route::resource('/bannerGroups', BannerGroupController::class);
     Route::resource('/banners', BannerController::class);
 
-})->middleware([\app\middleware\AuthCheckTest::class]);
+})->middleware([AuthCheckTest::class]);
 
 
 

@@ -7,6 +7,7 @@ use app\model\UserRoles;
 use app\Validate\Admin\Admin\AdminValidate;
 use app\Validate\Admin\Admin\UserRoleValidate;
 use app\Services\BaseService;
+use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Request;
@@ -14,14 +15,13 @@ use support\Response;
 use support\exception\BusinessException;
 class AdminService extends BaseService
 {
-    public $model;
-    public $form;
-    public $validate;
-    public function __construct()
-    {
-        $this->model = new Admin();
-        $this->validate = new AdminValidate();
-    }
+    #[Inject(Admin::class)]
+    protected $model;
+
+    protected $form;
+
+    #[Inject(AdminValidate::class)]
+    protected AdminValidate $validate;
 
     /**
      * @throws ValidationException

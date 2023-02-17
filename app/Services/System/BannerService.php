@@ -6,19 +6,20 @@ use app\Exception\BusinessException;
 use app\model\Banner;
 use app\Services\BaseService;
 use app\Validate\Admin\System\BannerValidate;
+use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
 use support\Request;
 
 class BannerService extends BaseService
 {
-    public $model;
-    public $form;
-    public BannerValidate $validate;
-    public function __construct()
-    {
-        $this->model = new Banner();
-        $this->validate= new BannerValidate();
-    }
+    #[Inject(Banner::class)]
+    protected $model;
+
+    protected $form;
+
+    #[Inject(BannerValidate::class)]
+    protected BannerValidate $validate;
+
     /**
      * @throws ValidationException
      * @throws BusinessException

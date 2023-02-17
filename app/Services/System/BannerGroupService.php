@@ -6,19 +6,19 @@ use app\Exception\BusinessException;
 use app\model\BannerGroup;
 use app\Services\BaseService;
 use app\Validate\Admin\System\BannerGroupValidate;
+use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
 use support\Request;
 
 class BannerGroupService extends BaseService
 {
-    public $model;
-    public $form;
-    public BannerGroupValidate $validate;
-    public function __construct()
-    {
-        $this->model = new BannerGroup();
-        $this->validate= new BannerGroupValidate();
-    }
+    #[Inject(BannerGroup::class)]
+    protected $model;
+
+    protected $form;
+
+    #[Inject(BannerGroupValidate::class)]
+    protected BannerGroupValidate $validate;
     /**
      * @throws ValidationException
      * @throws BusinessException

@@ -7,19 +7,20 @@ use app\Exception\BusinessException;
 use app\model\Config;
 use app\Services\BaseService;
 use app\Validate\Admin\System\ConfigValidate;
+use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
 use support\Request;
 
 class ConfigService extends BaseService
 {
-    public $model;
-    public $form;
-    public ConfigValidate $validate;
-    public function __construct()
-    {
-        $this->model = new Config();
-        $this->validate=new ConfigValidate();
-    }
+    #[Inject(Config::class)]
+    protected $model;
+
+    protected $form;
+
+    #[Inject(ConfigValidate::class)]
+    protected ConfigValidate $validate;
+
     /**
      * @throws ValidationException
      * @throws BusinessException

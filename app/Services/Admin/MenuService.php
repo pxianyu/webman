@@ -3,6 +3,7 @@
 namespace app\Services\Admin;
 
 use app\Validate\Admin\Admin\MenuValidate;
+use DI\Attribute\Inject;
 use support\Request;
 use Illuminate\Validation\ValidationException;
 use support\exception\BusinessException;
@@ -10,14 +11,14 @@ use app\Services\BaseService;
 use app\model\Menu;
 class MenuService extends BaseService
 {
-    public $model;
-    public $form;
-    public MenuValidate $validate;
-    public function __construct()
-    {
-        $this->model = new Menu();
-        $this->validate= new MenuValidate();
-    }
+    #[Inject(Menu::class)]
+    protected $model;
+
+    protected $form;
+
+    #[Inject(MenuValidate::class)]
+    protected MenuValidate $validate;
+
     /**
      * @throws ValidationException
      * @throws BusinessException

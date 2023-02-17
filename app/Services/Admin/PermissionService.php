@@ -4,16 +4,16 @@ namespace app\Services\Admin;
 
 use app\model\Permission;
 use app\Services\BaseService;
+use DI\Attribute\Inject;
 use support\Request;
 
 class PermissionService extends BaseService
 {
-    public $model;
-    public $form;
-    public function __construct()
-    {
-        $this->model = new Permission();
-    }
+    #[Inject(Permission::class)]
+    protected $model;
+
+    protected $form;
+
     public function setForm(Request $request): void
     {
         $data=$request->only($this->model->getFillable());

@@ -6,8 +6,8 @@ use support\Request;
 use support\Response;
 class BaseService
 {
-    public $form;
-    public $model;
+    protected $form;
+    protected $model;
 
     /** 更新状态
      * @param Request $request

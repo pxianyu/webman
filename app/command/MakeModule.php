@@ -234,17 +234,16 @@ namespace $serviceNameSpace;
 use support\Request;
 use Illuminate\Validation\ValidationException;
 use support\\exception\BusinessException;
-use app\Services\BaseService;
+use DI\Attribute\Inject;
 use $m_name;
+
 class $serviceName extends BaseService
 {
-    public \$model;
-    public \$form;
-    public \$validate;
-    public function __construct()
-    {
-        \$this->model = new $modelName();
-    }
+    #[Inject($modelName::class)]
+    protected \$model;
+    protected \$form;
+    protected \$validate;
+
     /**
      * @throws ValidationException
      * @throws BusinessException

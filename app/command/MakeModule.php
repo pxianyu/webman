@@ -44,29 +44,32 @@ class MakeModule extends Command
         $output->writeln("Make service $name");
         $name = str_replace('\\', '/', $name);
 
-        list('name'=>$controller_name,'file'=>$controller_file,'namespace'=>$controller_namespace)=$this->getControllerName($name);
+        ['name' => $controller_name, 'file' => $controller_file, 'namespace' => $controller_namespace] = $this->getControllerName($name);
         $serviceName= str_replace('\\', '/', $serviceName);
-        list('name'=>$serviceName,'file'=>$serviceFile,'namespace'=>$serviceNameSpace)=$this->getServicesName($serviceName);
+        ['name' => $serviceName, 'file' => $serviceFile, 'namespace' => $serviceNameSpace] = $this->getServicesName($serviceName);
         $this->createController($controller_name, $controller_namespace, $controller_file,$serviceName,$serviceNameSpace);
         $modelName = $input->getArgument('model');
         $modelName = Util::nameToClass($modelName);
         $output->writeln("Make model $modelName");
-        list('name'=>$modelName,'file'=>$file,'namespace'=>$namespace)=$this->getModelName($modelName);
+        ['name' => $modelName, 'file' => $file, 'namespace' => $namespace] = $this->getModelName($modelName);
         $this->createModel($modelName, $namespace, $file);
         $this->createService($serviceName, $serviceNameSpace, $serviceFile,$modelName,$namespace);
         return self::SUCCESS;
     }
+
     /**
      * @param $name
      * @param $namespace
      * @param $file
+     * @param $serviceName
+     * @param $serviceNameSpace
      * @return void
      */
-    protected function createController($name, $namespace, $file,$serviceName,$serviceNameSpace)
+    protected function createController($name, $namespace, $file,$serviceName,$serviceNameSpace): void
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
+        if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $service=$serviceNameSpace.'\\'.$serviceName;
         $controller_content = <<<EOF
@@ -112,11 +115,11 @@ EOF;
      * @param $file
      * @return void
      */
-    protected function createModel($class, $namespace, $file)
+    protected function createModel($class, $namespace, $file): void
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
+        if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $table = Util::classToName($class);
         $table_val = 'null';
@@ -126,9 +129,9 @@ EOF;
             $prefix = config('database.connections.mysql.prefix') ?? '';
             $database = config('database.connections.mysql.database');
             $inflector = InflectorFactory::create()->build();
-            $table_plura = $inflector->pluralize($inflector->tableize($class));
-            if (Db::select("show tables like '%{$prefix}{$table_plura}%'")) {
-                $table = "{$prefix}{$table_plura}";
+            $table_plural = $inflector->pluralize($inflector->tableize($class));
+            if (Db::select("show tables like '%{$prefix}{$table_plural}%'")) {
+                $table = "{$prefix}{$table_plural}";
             } else if (Db::select("show tables like '%{$prefix}{$table}%'")) {
                 $table_val = "'$table'";
                 $table = "{$prefix}{$table}";
@@ -193,37 +196,24 @@ EOF;
      * @param string $type
      * @return string
      */
-    protected function getType(string $type)
+    protected function getType(string $type): ?string
     {
-        if (strpos($type, 'int') !== false) {
+        if (str_contains($type, 'int')) {
             return 'integer';
         }
-        switch ($type) {
-            case 'varchar':
-            case 'string':
-            case 'text':
-            case 'date':
-            case 'time':
-            case 'guid':
-            case 'datetimetz':
-            case 'datetime':
-            case 'decimal':
-            case 'enum':
-                return 'string';
-            case 'boolean':
-                return 'integer';
-            case 'float':
-                return 'float';
-            default:
-                return 'mixed';
-        }
+        return match ($type) {
+            'varchar', 'string', 'text', 'date', 'time', 'guid', 'datetimetz', 'datetime', 'decimal', 'enum' => 'string',
+            'boolean' => 'integer',
+            'float' => 'float',
+            default => 'mixed',
+        };
     }
 
-    private function createService(string $serviceName, string $serviceNameSpace, string $serviceFile,$modelName,$modelNameSpace)
+    private function createService(string $serviceName, string $serviceNameSpace, string $serviceFile,$modelName,$modelNameSpace): void
     {
         $path = pathinfo($serviceFile, PATHINFO_DIRNAME);
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
+        if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $m_name=$modelNameSpace.'\\'.$modelName;
         $controller_content = <<<EOF
@@ -262,7 +252,7 @@ class $serviceName extends BaseService
 EOF;
         file_put_contents($serviceFile, $controller_content);
     }
-    protected function getControllerName($name)
+    protected function getControllerName($name): array
     {
         if (!($pos = strrpos($name, '/'))) {
             $name = ucfirst($name);
@@ -291,7 +281,7 @@ EOF;
         }
         return ['name'=>$name,'file'=>$file,'namespace'=>$namespace];
     }
-    protected function getServicesName($name)
+    protected function getServicesName($name): array
     {
         if (!($pos = strrpos($name, '/'))) {
             $name = ucfirst($name);
@@ -320,7 +310,7 @@ EOF;
         }
         return ['name'=>$name,'file'=>$file,'namespace'=>$namespace];
     }
-    protected function getModelName($name)
+    protected function getModelName($name): array
     {
         if (!($pos = strrpos($name, '/'))) {
             $name = ucfirst($name);

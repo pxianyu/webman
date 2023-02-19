@@ -8,7 +8,7 @@ use support\Response;
 
 class AdminController
 {
-    public function index(Request $request,AdminService $adminService)
+    public function index(Request $request,AdminService $adminService): Response
     {
         return $adminService->getOrderByIdAllData();
     }

@@ -14,7 +14,7 @@ class SqlLog implements Bootstrap
     public static function start($worker): void
     {
         Db::connection()->listen(function (QueryExecuted $queryExecuted){
-            $sql=json_encode($queryExecuted->bindings);
+            $sql= json_encode($queryExecuted->bindings, JSON_THROW_ON_ERROR);
             Log::channel('sql')->debug("[{$queryExecuted->time} ms] {$queryExecuted->sql} {$sql}");
         });
 

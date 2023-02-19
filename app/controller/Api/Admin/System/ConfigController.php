@@ -8,7 +8,7 @@ use support\Response;
 
 class ConfigController
 {
-    public function index(Request $request,ConfigService $Service)
+    public function index(Request $request,ConfigService $Service): Response
     {
         return $Service->getOrderByIdAllData();
     }

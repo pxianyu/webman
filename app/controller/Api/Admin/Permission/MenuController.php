@@ -8,7 +8,7 @@ use support\Response;
 
 class MenuController
 {
-    public function index(Request $request,MenuService $Service)
+    public function index(Request $request,MenuService $Service): Response
     {
         return $Service->getOrderByIdAllData();
     }

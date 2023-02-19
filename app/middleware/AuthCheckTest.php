@@ -17,11 +17,9 @@ class AuthCheckTest implements MiddlewareInterface
         // 不需要登录的路由别名
         $notLoinAction=['admin.login','admin.captcha'];
         $route=$request->route;
-        if ($route){
-            // 用户未登录
-            if (!in_array($request->route->getName(),$notLoinAction)  && !Auth::guard('admin_api')->user(true)) {
-                return error(Enum::NOT_LOGIN,401);
-            }
+        // 用户未登录
+        if ($route && !in_array($request->route->getName(), $notLoinAction, true) && !Auth::guard('admin_api')->user(true)) {
+            return error(Enum::NOT_LOGIN,401);
         }
         return $handler($request);
     }

@@ -2,9 +2,9 @@
 
 namespace app\model;
 
-use support\Model;
 
-class Admin extends Model
+
+class Admin extends BaseModel
 {
     protected $table = 'admins';
 
@@ -33,7 +33,7 @@ class Admin extends Model
     ];
     public static function  getByUserName(string $username): \Illuminate\Database\Eloquent\Model|null
     {
-        return self::where('username', $username)->first();
+        return self::username($username)->first();
     }
 
 }

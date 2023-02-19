@@ -8,7 +8,7 @@ use support\Response;
 
 class BannerController
 {
-    public function index(Request $request,BannerService $Service)
+    public function index(Request $request,BannerService $Service): Response
     {
         return $Service->getOrderByIdAllData();
     }

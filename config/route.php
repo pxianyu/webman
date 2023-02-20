@@ -15,6 +15,8 @@
 
 use app\controller\Api\Admin\Auth\AuthController;
 use app\controller\Api\Admin\Permission\AdminController;
+use app\controller\Api\Admin\Permission\DepartmentController;
+use app\controller\Api\Admin\Permission\JobController;
 use app\controller\Api\Admin\Permission\MenuController;
 use app\controller\Api\Admin\Permission\RoleController;
 use app\controller\Api\Admin\Permission\PermissionController;
@@ -24,6 +26,7 @@ use app\controller\Api\Admin\System\ConfigController;
 use app\controller\Api\Admin\System\ConfigGroupController;
 use support\Response;
 use Webman\Route;
+use app\Lib\ApiRoute;
 use app\middleware\AuthCheckTest;
 Route::post('/api/admin/login', [AuthController::class,'login'])->name('admin.login');
 Route::get('/api/admin/captcha', [AuthController::class,'captcha'])->name('admin.captcha');
@@ -32,15 +35,17 @@ Route::group('/api/admin', function () {
     Route::post('/me', [AuthController::class,'me'])->name('admin.me');
 })->middleware([AuthCheckTest::class]);
 Route::group('/api/admin',function (){
-    Route::resource('/admins', AdminController::class,['index','show','store','update','destroy']);
-    Route::resource('/roles', RoleController::class,['index','show','store','update','destroy']);
+    ApiRoute::resource('/admins', AdminController::class);
+    ApiRoute::resource('/roles', RoleController::class);
     Route::post('/roles/empower',[AdminController::class,'empower'])->name('roles.empower');
-    Route::resource('/permissions', PermissionController::class,['index','show','store','update','destroy']);
-    Route::resource('/menus', MenuController::class,['index','show','store','update','destroy']);
-    Route::resource('/configs', ConfigController::class,['index','show','store','update','destroy']);
-    Route::resource('/configGroups', ConfigGroupController::class,['index','show','store','update','destroy']);
-    Route::resource('/bannerGroups', BannerGroupController::class,['index','show','store','update','destroy']);
-    Route::resource('/banners', BannerController::class,['index','show','store','update','destroy']);
+    ApiRoute::resource('/permissions', PermissionController::class);
+    ApiRoute::resource('/menus', MenuController::class);
+    ApiRoute::resource('/configs', ConfigController::class);
+    ApiRoute::resource('/configGroups', ConfigGroupController::class);
+    ApiRoute::resource('/bannerGroups', BannerGroupController::class);
+    ApiRoute::resource('/banners', BannerController::class);
+    ApiRoute::resource('/jobs', JobController::class);
+    ApiRoute::resource('departments', DepartmentController::class);
 
 })->middleware([AuthCheckTest::class]);
 

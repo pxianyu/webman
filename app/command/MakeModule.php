@@ -4,14 +4,13 @@ namespace app\command;
 
 
 use Doctrine\Inflector\InflectorFactory;
-use Illuminate\Support\Arr;
-use Shopwwi\WebmanAuth\Facade\Str;
+use RuntimeException;
 use support\Db;
-
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 use Webman\Console\Util;
 
 
@@ -23,7 +22,7 @@ class MakeModule extends Command
     /**
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('name', InputArgument::REQUIRED, 'Name description');
         $this->addArgument('model', InputArgument::REQUIRED, 'Model description');
@@ -69,7 +68,7 @@ class MakeModule extends Command
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
         if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $service=$serviceNameSpace.'\\'.$serviceName;
         $controller_content = <<<EOF
@@ -82,9 +81,9 @@ use support\Response;
 use $service;
 class $name
 {
-    public function index(Request \$request,$serviceName \$Service)
+    public function index(Request \$request,$serviceName \$Service): Response
     {
-        return \$Service->getOrderByIdAllData();
+        return \$Service->index(\$request);
     }
     public function store(Request \$request,$serviceName \$Service): Response
     {
@@ -119,7 +118,7 @@ EOF;
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
         if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $table = Util::classToName($class);
         $table_val = 'null';
@@ -130,11 +129,11 @@ EOF;
             $database = config('database.connections.mysql.database');
             $inflector = InflectorFactory::create()->build();
             $table_plural = $inflector->pluralize($inflector->tableize($class));
-            if (Db::select("show tables like '%{$prefix}{$table_plural}%'")) {
-                $table = "{$prefix}{$table_plural}";
-            } else if (Db::select("show tables like '%{$prefix}{$table}%'")) {
+            if (Db::select("show tables like '%$prefix$table_plural%'")) {
+                $table = "$prefix$table_plural";
+            } else if (Db::select("show tables like '%$prefix$table%'")) {
                 $table_val = "'$table'";
-                $table = "{$prefix}{$table}";
+                $table = "$prefix$table";
             }
             $fillable=[];
             foreach (Db::select("select COLUMN_NAME,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS where table_name = '$table' and table_schema = '$database'") as $item) {
@@ -143,12 +142,12 @@ EOF;
                     $item->COLUMN_COMMENT .= "(主键)";
                 }
                 if ($item->COLUMN_NAME!='id'){
-                    $fillable[]="'{$item->COLUMN_NAME}'";
+                    $fillable[]="'$item->COLUMN_NAME'";
                 }
                 $type = $this->getType($item->DATA_TYPE);
-                $properties .= " * @property $type \${$item->COLUMN_NAME} {$item->COLUMN_COMMENT}\n";
+                $properties .= " * @property $type \$$item->COLUMN_NAME $item->COLUMN_COMMENT\n";
             }
-        } catch (\Throwable $e) {}
+        } catch (Throwable $e) {}
         $properties = rtrim($properties) ?: ' *';
         $tableName=$table?:$table_val;
         $fillable='['.implode(',',$fillable).']';
@@ -194,7 +193,7 @@ EOF;
 
     /**
      * @param string $type
-     * @return string
+     * @return string|null
      */
     protected function getType(string $type): ?string
     {
@@ -213,14 +212,14 @@ EOF;
     {
         $path = pathinfo($serviceFile, PATHINFO_DIRNAME);
         if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $m_name=$modelNameSpace.'\\'.$modelName;
         $controller_content = <<<EOF
 <?php
 
 namespace $serviceNameSpace;
-
+use app\Services\BaseService;
 use support\Request;
 use Illuminate\Validation\ValidationException;
 use support\\exception\BusinessException;
@@ -240,7 +239,7 @@ class $serviceName extends BaseService
      */
     public function setForm(Request \$request): void
     {
-        list('code'=>\$code,'data'=>\$data,'msg'=>\$msg)=  \$this->validate->goCheck(\$request->all());
+        ['code'=>\$code,'data'=>\$data,'msg'=>\$msg]=  \$this->validate->goCheck(\$request->all());
         if (\$code){
             throw new BusinessException(\$msg,\$code);
         }

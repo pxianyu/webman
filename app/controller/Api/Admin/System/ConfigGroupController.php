@@ -15,7 +15,7 @@ class ConfigGroupController
      */
     public function index(Request $request,ConfigGroupService $Service): Response
     {
-        return $Service->getOrderByIdAllData();
+        return $Service->index($request);
     }
     public function store(Request $request,ConfigGroupService $Service): Response
     {

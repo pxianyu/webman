@@ -103,4 +103,22 @@ class BaseService
         return successJsonData($this->model->findorfail($id));
     }
 
+    /** 列表
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response
+    {
+        $data=$this->model->orderBy('sort','desc')->paginate($request->input('limit',10))
+            ->appends($request->all());;
+        return $this->paginate($data);
+    }
+    protected function paginate($data): Response
+    {
+        $res['total']=$data->total();
+        $res['data']=$data->items();
+        $res['current_page']=$data->currentPage();
+        $res['lastPage']=$data->lastPage();
+        return successData($res);
+    }
 }

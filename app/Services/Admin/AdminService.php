@@ -4,15 +4,16 @@ namespace app\Services\Admin;
 
 use app\model\Admin;
 use app\model\UserRoles;
+use app\Services\BaseService;
 use app\Validate\Admin\Admin\AdminValidate;
 use app\Validate\Admin\Admin\UserRoleValidate;
-use app\Services\BaseService;
 use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
+use support\exception\BusinessException;
 use support\Request;
 use support\Response;
-use support\exception\BusinessException;
+
 class AdminService extends BaseService
 {
     #[Inject(Admin::class)]
@@ -57,5 +58,29 @@ class AdminService extends BaseService
         }
         (new UserRoles())->addAdmin($data['admin_id'],$data['role_ids']);
         return ok();
+    }
+
+    public function index(Request $request): Response
+    {
+        $limit=$request->input('limit',10);
+        if ($limit>100){
+            $limit=100;
+        }
+       $data= Admin::query()
+           ->when($request->input('username'),function ($query) use ($request){
+                $query->username($request->input('username'));
+            })
+           ->when($request->input('nickname'),function ($query) use ($request){
+                $query->nickname($request->input('nickname'));
+            })
+           ->when($request->input('status'),function ($query) use ($request){
+                $query->status($request->input('status'));
+            })
+           ->when($request->input('is_root'),function ($query) use ($request){
+                $query->isRoot($request->input('is_root'));
+            })
+           ->paginate($limit)
+           ->appends($request->all());
+        return $this->paginate($data);
     }
 }

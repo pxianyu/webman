@@ -10,7 +10,7 @@ class BannerGroupController
 {
     public function index(Request $request,BannerGroupService $Service): Response
     {
-        return $Service->getOrderByIdAllData();
+        return $Service->index($request);
     }
     public function store(Request $request,BannerGroupService $Service): Response
     {

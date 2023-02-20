@@ -11,7 +11,7 @@ class AdminController
 {
     public function index(Request $request,AdminService $adminService): Response
     {
-        return $adminService->getOrderByIdAllData();
+        return $adminService->index($request);
     }
     public function store(Request $request,AdminService $adminService): Response
     {

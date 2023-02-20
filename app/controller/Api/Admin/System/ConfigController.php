@@ -10,7 +10,7 @@ class ConfigController
 {
     public function index(Request $request,ConfigService $Service): Response
     {
-        return $Service->getOrderByIdAllData();
+        return $Service->index($request);
     }
     public function store(Request $request,ConfigService $Service): Response
     {

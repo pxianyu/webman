@@ -9,12 +9,8 @@ class BannerValidate extends BaseValidate
 {
     public function getRulesByStore(): array
     {
-        $route=request()->route;
         return [
-            'name'  =>  [
-                'required',
-                Rule::unique('banners')->ignore($route?$route->param('id'):'')
-            ],
+            'name'  => 'required|unique:banners',
             'desc'  =>  'required|string',
             'group_id'  =>  'required|integer|exists:banner_groups,id',
             'image'  =>  'required|string',

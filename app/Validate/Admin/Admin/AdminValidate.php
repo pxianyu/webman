@@ -9,12 +9,8 @@ class AdminValidate extends BaseValidate
 {
     public function getRulesByStore(): array
     {
-        $route=request()->route;
         return [
-            'username'  =>  [
-                'required',
-                Rule::unique('admins')->ignore($route?$route->param('id'):'')
-            ],
+            'username'  => 'required|unique:admins',
             'password'  =>  'required',
             'status'    =>  'sometimes|required|in_array:0,1',
             'nickname'  =>  'required'

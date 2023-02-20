@@ -29,7 +29,7 @@ class AdminService extends BaseService
      */
     public function setForm(Request $request): void
     {
-        list('code'=>$code,'data'=>$data,'msg'=>$msg)=  $this->validate->goCheck($request->all());
+        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  $this->validate->goCheck($request->all());
         if ($code){
             throw new BusinessException($msg,$code);
         }
@@ -42,16 +42,20 @@ class AdminService extends BaseService
         $data['status']=$data['status']??1;
         $this->form= $data;
     }
+
+    /**
+     *
+     * @param Request $request
+     * @return Response
+     * @throws ValidationException
+     */
     public function empower(Request $request): Response
     {
-        list('code'=>$code,'data'=>$data,'msg'=>$msg)=  (new UserRoleValidate())->goCheck($request->all());
+        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  (new UserRoleValidate())->goCheck($request->all());
         if ($code){
             return error($msg,$code);
         }
-        UserRoles::create([
-            'admin_id' => $data['admin_id'],
-            'role_id' => $data['role_id']
-        ]);
+        (new UserRoles())->addAdmin($data['admin_id'],$data['role_ids']);
         return ok();
     }
 }

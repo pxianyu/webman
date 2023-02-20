@@ -32,15 +32,15 @@ Route::group('/api/admin', function () {
     Route::post('/me', [AuthController::class,'me'])->name('admin.me');
 })->middleware([AuthCheckTest::class]);
 Route::group('/api/admin',function (){
-    Route::resource('/admins', AdminController::class);
-    Route::resource('/roles', RoleController::class);
+    Route::resource('/admins', AdminController::class,['index','show','store','update','destroy']);
+    Route::resource('/roles', RoleController::class,['index','show','store','update','destroy']);
     Route::post('/roles/empower',[AdminController::class,'empower'])->name('roles.empower');
-    Route::resource('/permissions', PermissionController::class);
-    Route::resource('/menus', MenuController::class);
-    Route::resource('/configs', ConfigController::class);
-    Route::resource('/configGroups', ConfigGroupController::class);
-    Route::resource('/bannerGroups', BannerGroupController::class);
-    Route::resource('/banners', BannerController::class);
+    Route::resource('/permissions', PermissionController::class,['index','show','store','update','destroy']);
+    Route::resource('/menus', MenuController::class,['index','show','store','update','destroy']);
+    Route::resource('/configs', ConfigController::class,['index','show','store','update','destroy']);
+    Route::resource('/configGroups', ConfigGroupController::class,['index','show','store','update','destroy']);
+    Route::resource('/bannerGroups', BannerGroupController::class,['index','show','store','update','destroy']);
+    Route::resource('/banners', BannerController::class,['index','show','store','update','destroy']);
 
 })->middleware([AuthCheckTest::class]);
 

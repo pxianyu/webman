@@ -102,9 +102,5 @@ class BaseService
     {
         return successJsonData($this->model->findorfail($id));
     }
-    public function update()
-    {
-
-    }
 
 }

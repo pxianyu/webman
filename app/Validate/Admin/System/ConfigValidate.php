@@ -9,12 +9,8 @@ class ConfigValidate extends BaseValidate
 {
     public function getRulesStore(): array
     {
-        $route=request()->route;
         return [
-            'name'  =>  [
-                'required',
-                Rule::unique('configs')->ignore($route?$route->param('id'):'')
-            ],
+            'name'  => 'required|unique:configs',
             'value'  =>  'required|string',
             'type'  =>  'required|integer',
             'group'  =>  'required|string',

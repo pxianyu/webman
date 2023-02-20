@@ -16,7 +16,10 @@ class BaseExceptionHandler extends  Handler
 
     public $dontReport = [
         BusinessException::class,
-        BusinessException::class
+        BusinessException::class,
+        ValidationException::class,
+        ModelNotFoundException::class,
+        QueryException::class,
     ];
     public function render(Request $request, Throwable $exception) : Response
     {

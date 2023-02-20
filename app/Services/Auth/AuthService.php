@@ -8,6 +8,7 @@ use app\Services\BaseService;
 use app\Validate\Admin\Auth\AuthValidate;
 use Exception;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Log;
 use support\Redis;
@@ -18,30 +19,25 @@ use Tinywan\Captcha\Captcha;
 class AuthService extends BaseService
 {
     /**
+     * 登录
      * @param array $input
      * @return Response
+     * @throws ValidationException
      */
     public static function login(array $input): Response
-    {
-        try {
-            list('code'=>$code,'data'=>$data,'msg'=>$msg)=  (new AuthValidate())->goCheck($input);
-            if ($code){
-                return error($msg,$code);
-            }
-            if (config('plugin.tinywan.captcha.app.enable')){
-                if (checkCode($data['code'],$data['key'])){
-                    if (self::checkLoginLimit($data['username'])){
-                        return error(Enum::LOGIN_COUNT_ERROR);
-                    }
-                    return error(Enum::CAPTCHA_ERROR);
-                }
-            }
-
-         return   self::doLogin($data);
-        }catch (Exception $exception){
-            Log::error($exception->getMessage());
-            return error(Enum::SYSTEM_ERROR);
+    {['code'=>$code,'data'=>$data,'msg'=>$msg]=  (new AuthValidate())->goCheck($input);
+        if ($code){
+            return error($msg,$code);
         }
+        if (config('plugin.tinywan.captcha.app.enable')){
+            if (checkCode($data['code'],$data['key'])){
+                if (self::checkLoginLimit($data['username'])){
+                    return error(Enum::LOGIN_COUNT_ERROR);
+                }
+                return error(Enum::CAPTCHA_ERROR);
+            }
+        }
+        return   self::doLogin($data);
 
     }
 
@@ -71,6 +67,7 @@ class AuthService extends BaseService
     }
 
     /**
+     * 验证码
      * @return Response
      */
     public static function captcha(): Response
@@ -105,7 +102,7 @@ class AuthService extends BaseService
                 return true;
             }
         }else{
-            $value=Redis::incr($username);
+            Redis::incr($username);
             Redis::expire($username,300);
         }
         return false;

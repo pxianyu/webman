@@ -3,6 +3,7 @@
 namespace app\controller\Api\Admin\Permission;
 
 use app\Services\Admin\AdminService;
+use Illuminate\Validation\ValidationException;
 use support\Request;
 use support\Response;
 
@@ -28,7 +29,14 @@ class AdminController
     {
         return $adminService->destroyById($id);
     }
-    public function empower(Request $request,AdminService $adminService): Response
+
+    /**
+     * @param Request $request
+     * @param AdminService $adminService
+     * @return Response
+     * @throws ValidationException
+     */
+    public function empower(Request $request, AdminService $adminService): Response
     {
         return $adminService->empower($request);
     }

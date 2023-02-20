@@ -4,6 +4,8 @@ namespace app\model;
 
 
 
+use Illuminate\Database\Eloquent\Model;
+
 class Admin extends BaseModel
 {
     protected $table = 'admins';
@@ -31,7 +33,7 @@ class Admin extends BaseModel
     protected $hidden = [
         'password',
     ];
-    public static function  getByUserName(string $username): \Illuminate\Database\Eloquent\Model|null
+    public static function  getByUserName(string $username): Model|null
     {
         return self::username($username)->first();
     }

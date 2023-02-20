@@ -32,12 +32,12 @@ class BaseModel extends Model
 
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
         foreach (class_uses_recursive(static::class) as $trait) {
             if (str_contains($trait, 'DataRange')) {
                 $this->setDataRange();
             }
         }
+        parent::__construct($attributes);
     }
 
     protected function serializeDate(DateTimeInterface $date): string
@@ -77,7 +77,6 @@ class BaseModel extends Model
 
     public function ScopeSelects($query)
     {
-        Log::info(property_exists($this, 'fields'));
         return $query->select(property_exists($this, 'fields') ?$this->fields :'*');
 
     }
@@ -85,7 +84,7 @@ class BaseModel extends Model
 
     public function getDataList($request)
     {
-        $this->selects()->paginate($request->input('limit',$this->perPage))
+       return $this->selects()->datarange()->paginate($request->input('limit',$this->perPage))
         ->appends($request->all());
     }
 

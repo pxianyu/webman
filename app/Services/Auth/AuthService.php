@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace app\Services\Auth;
 
-use app\Exception\Enum;
+use app\Enum\Message;
 use app\model\Admin;
 use app\Services\BaseService;
 use app\Validate\Admin\Auth\AuthValidate;
@@ -25,17 +25,16 @@ class AuthService extends BaseService
      * @throws ValidationException
      */
     public static function login(array $input): Response
-    {['code'=>$code,'data'=>$data,'msg'=>$msg]=  (new AuthValidate())->goCheck($input);
+    {
+        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  (new AuthValidate())->goCheck($input);
         if ($code){
             return error($msg,$code);
         }
-        if (config('plugin.tinywan.captcha.app.enable')){
-            if (checkCode($data['code'],$data['key'])){
-                if (self::checkLoginLimit($data['username'])){
-                    return error(Enum::LOGIN_COUNT_ERROR);
-                }
-                return error(Enum::CAPTCHA_ERROR);
+        if (config('plugin.tinywan.captcha.app.enable') && checkCode($data['code'], $data['key'])) {
+            if (self::checkLoginLimit($data['username'])){
+                return error(Message::LOGIN_COUNT_ERROR);
             }
+            return error(Message::CAPTCHA_ERROR);
         }
         return   self::doLogin($data);
 
@@ -50,12 +49,12 @@ class AuthService extends BaseService
         $user=Admin::getByUserName($data['username']);
         if (!$user || !password_verify($data['password'],$user['password'])){
             if (self::checkLoginLimit($data['username'])){
-                return error(Enum::LOGIN_COUNT_ERROR);
+                return error(Message::LOGIN_COUNT_ERROR);
             }
-            return error(Enum::PASSWORD_ERROR);
+            return error(Message::PASSWORD_ERROR);
         }
         if ($user->status !=1){
-            return  error(Enum::ACCOUNT_ERROR);
+            return  error(Message::ACCOUNT_ERROR);
         }
 
         $user->last_login_ip=request()->getRealIp();
@@ -63,7 +62,7 @@ class AuthService extends BaseService
         $user->increment('login_num');
         $user->save();
         $tokenObject=Auth::guard('admin_api')->login( $user);
-        return successJsonData($tokenObject,Enum::LOGIN_SUCCESS);
+        return successJsonData($tokenObject,Message::LOGIN_SUCCESS);
     }
 
     /**
@@ -76,13 +75,13 @@ class AuthService extends BaseService
             if (config('plugin.tinywan.captcha.app.enable')){
                 $captcha=Captcha::base64();
                 return successData($captcha);
-            }else{
-                return error('验证码功能没有打开',423);
             }
+
+            return error('验证码功能没有打开',423);
 
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return error(Enum::CAPTCHA_CREATE_ERROR);
+            return error(Message::CAPTCHA_CREATE_ERROR);
         }
     }
 

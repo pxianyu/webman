@@ -6,10 +6,10 @@ use Webman\RedisQueue\Consumer;
 class MailSend implements Consumer
 {
     // 要消费的队列名
-    public $queue = 'send-mail';
+    public string $queue = 'send-mail';
 
     // 连接名，对应 plugin/webman/redis-queue/redis.php 里的连接`
-    public $connection = 'default';
+    public string $connection = 'default';
 
     // 消费
     public function consume($data)

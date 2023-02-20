@@ -4,6 +4,7 @@ namespace app\controller\Api\Admin\Auth;
 
 
 use app\Services\Auth\AuthService;
+use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Request;
 use support\Response;
@@ -14,6 +15,7 @@ class AuthController
     /** 登录
      * @param Request $request
      * @return Response
+     * @throws ValidationException
      */
     public function login(Request $request): Response
     {

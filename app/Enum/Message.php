@@ -1,8 +1,8 @@
 <?php
 
-namespace app\Exception;
+namespace app\Enum;
 
-class Enum
+class Message
 {
     public const USER_NOT_FOUND='账号不存在';
     public const PASSWORD_ERROR='账号或者密码不正确';

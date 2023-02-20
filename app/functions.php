@@ -37,47 +37,39 @@ function successJsonData(object $data ,string $message='操作成功',int $code=
  *
  * @return    string    返回大小
  */
-if ( ! function_exists('sizeCount')) {
-    function sizeCount($filesize): string
-    {
-        if ($filesize >= 1073741824) {
-            $filesize = round($filesize / 1073741824 * 100) / 100 .' GB';
-        } elseif ($filesize >= 1048576) {
-            $filesize = round($filesize / 1048576 * 100) / 100 .' MB';
-        } elseif ($filesize >= 1024) {
-            $filesize = round($filesize / 1024 * 100) / 100 .' KB';
-        } else {
-            $filesize = $filesize.' Bytes';
-        }
-
-        return $filesize;
+function sizeCount($filesize): string
+{
+    if ($filesize >= 1073741824) {
+        $filesize = round($filesize / 1073741824 * 100) / 100 .' GB';
+    } elseif ($filesize >= 1048576) {
+        $filesize = round($filesize / 1048576 * 100) / 100 .' MB';
+    } elseif ($filesize >= 1024) {
+        $filesize = round($filesize / 1024 * 100) / 100 .' KB';
+    } else {
+        $filesize .= ' Bytes';
     }
+
+    return $filesize;
 }
 /**
  * 验证码检查
  */
-if (! function_exists('checkCode')){
-    function checkCode($code,$key): bool
-    {
-        return false === Captcha::check($code,$key);
-    }
+function checkCode($code,$key): bool
+{
+    return false === Captcha::check($code,$key);
 }
 
-if (! function_exists('returnData')){
-    function returnData(string $msg,array $data=[],int $code=0): array
-    {
-        return ['code'=>$code,'data'=>$data, 'msg' => $msg];
-    }
+function returnData(string $msg,array $data=[],int $code=0): array
+{
+    return ['code'=>$code,'data'=>$data, 'msg' => $msg];
 }
-if (! function_exists('getUserId')){
-    function getUserId()
-    {
-        $user=Auth::guard('admin_api')->user(true);
-        if (!$user){
-            return  null;
-        }
-        return $user['id'];
+function getUserId()
+{
+    $user=Auth::guard('admin_api')->user(true);
+    if (!$user){
+        return  null;
     }
+    return $user['id'];
 }
 
 function paginate($data): Response

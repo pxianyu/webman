@@ -354,11 +354,11 @@ function not_found(): Response
  * @param bool $overwrite
  * @return void
  */
-function copy_dir(string $source, string $dest, bool $overwrite = false)
+function copy_dir(string $source, string $dest, bool $overwrite = false): void
 {
     if (is_dir($source)) {
-        if (!is_dir($dest)) {
-            mkdir($dest);
+        if (!is_dir($dest) && !mkdir($dest) && !is_dir($dest)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dest));
         }
         $files = scandir($source);
         foreach ($files as $file) {

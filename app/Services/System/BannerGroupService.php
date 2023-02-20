@@ -25,7 +25,7 @@ class BannerGroupService extends BaseService
      */
     public function setForm(Request $request): void
     {
-        list('code'=>$code,'data'=>$data,'msg'=>$msg)=  $this->validate->goCheck($request->all());
+        ['code' => $code, 'data' => $data, 'msg' => $msg] = $this->validate->goCheck($request->all());
         if ($code){
             throw new BusinessException($msg,$code);
         }

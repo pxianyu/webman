@@ -17,7 +17,7 @@ class BaseService
     public function updateStatus(Request $request,int $id): Response
     {
         $type=$request->input('type');
-        if (!$type || !is_integer($type)){
+        if (!$type || !is_int($type)){
             return error('参数错误');
         }
         $model=$this->model->findorfail($id);
@@ -109,8 +109,7 @@ class BaseService
      */
     public function index(Request $request): Response
     {
-        $data=$this->model->selects()->datarange()->paginate($request->input('limit',10))
-            ->appends($request->all());
+        $data=$this->model->getDataList();
         return paginate($data);
     }
 }

@@ -8,11 +8,12 @@ use app\model\Department;
 use app\model\Role;
 use Illuminate\Support\Collection;
 use Shopwwi\WebmanAuth\Facade\Auth;
+use support\Log;
 
 trait DataRange
 {
     /**
-     *
+     * 数据权限作用域
      * @param $query
      * @param array|Collection $roles
      * @return mixed
@@ -24,14 +25,14 @@ trait DataRange
         if ($currenUser->isSuperAdmin()) {
             return $query;
         }
-
         $userIds = $this->getDepartmentUserIdsBy($roles, $currenUser);
-
         if (empty($userIds)) {
             return $query;
         }
-
-        return $query->whereIn('creator_id', $userIds);
+        if ($this->dataRange){
+            return $query->whereIn('creator_id', $userIds);
+        }
+        return $query;
     }
 
     /**

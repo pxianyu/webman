@@ -6,6 +6,7 @@ namespace app\model;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Shopwwi\WebmanAuth\Facade\Auth;
 
 class Admin extends BaseModel
@@ -28,10 +29,9 @@ class Admin extends BaseModel
 
     protected $fillable=['username','password','nickname','status','is_root'];
 
-    protected $attributes=[
-        'status'=>1,
-        'is_root'=>1
-    ];
+    protected array $fields=['id','username','nickname','status','is_root','created_at','updated_at'];
+
+    protected bool $dataRange=true;
     protected $hidden = [
         'password',
     ];
@@ -58,5 +58,21 @@ class Admin extends BaseModel
     public function isSuperAdmin(): bool
     {
         return $this->is_root;
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'admin_has_roles', 'admin_id', 'role_id');
+    }
+
+    public function getPaginateData($username, $nickname, $status, $limit)
+    {
+      return  $this->selects()
+        ->username($username)
+        ->datarange()
+        ->nickname($nickname)
+        ->status($status)
+        ->paginate($limit)
+        ->appends(request()->all());
     }
 }

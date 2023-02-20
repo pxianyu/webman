@@ -2,7 +2,6 @@
 
 namespace app\model;
 
-use support\Model;
 
 /**
  * @property integer $id (主键)
@@ -15,7 +14,7 @@ use support\Model;
  * @property mixed $created_at 
  * @property mixed $updated_at
  */
-class Banner extends Model
+class Banner extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -38,5 +37,7 @@ class Banner extends Model
      */
     public $timestamps = true;
     protected $fillable=['banner_group_id','pic','link','title','subtitle','sort','created_at','updated_at'];
+
+    protected array $fields=['id','banner_group_id','pic','link','title','subtitle','sort','created_at','updated_at'];
     
 }

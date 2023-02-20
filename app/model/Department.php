@@ -2,8 +2,6 @@
 
 namespace app\model;
 
-use support\Model;
-
 /**
  * @property integer $id (主键)
  * @property integer $parent_id 父级ID
@@ -18,7 +16,7 @@ use support\Model;
  * @property string $updated_at 
  * @property string $deleted_at
  */
-class Department extends Model
+class Department extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -40,8 +38,10 @@ class Department extends Model
      * @var bool
      */
     public $timestamps = true;
+
     protected $fillable=['parent_id','department_name','principals','mobile','email','status','sort','creator_id','created_at','updated_at','deleted_at'];
 
+    protected array $fields=['id','parent_id','department_name','principals','mobile','email','status','sort','creator_id','created_at','updated_at','deleted_at'];
     public function findFollowDepartments(int|array $id): array
     {
         if (!is_array($id)) {

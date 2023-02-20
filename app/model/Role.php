@@ -4,9 +4,8 @@ namespace app\model;
 
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use support\Model;
 
-class Role extends Model
+class Role extends BaseModel
 {
     protected $table = 'roles';
 
@@ -26,6 +25,7 @@ class Role extends Model
 
     protected $fillable=['name','desc','delete_flg','data_range'];
 
+    protected array $fields=['id','name','desc','delete_flg','data_range'];
     /**
      *
      * @return BelongsToMany

@@ -2,13 +2,11 @@
 
 namespace app\model;
 
-use support\Model;
-
 /**
  * @property integer $id (主键)
  * @property string $name 组名称
  */
-class ConfigGroup extends Model
+class ConfigGroup extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -31,5 +29,5 @@ class ConfigGroup extends Model
      */
     public $timestamps = false;
     protected $fillable=['name'];
-    
+    protected array $fields=['id','name'];
 }

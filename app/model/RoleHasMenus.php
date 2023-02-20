@@ -2,10 +2,7 @@
 
 namespace app\model;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use support\Model;
-
-class RoleHasMenus extends Model
+class RoleHasMenus extends BaseModel
 {
     protected $table = 'role_has_menus';
 
@@ -25,5 +22,5 @@ class RoleHasMenus extends Model
 
     protected $fillable=['menu_id','role_id'];
 
-
+    protected array $fields =['id','menu_id','role_id','created_at','updated_at'];
 }

@@ -10,7 +10,7 @@ use support\Model;
  * @property mixed $created_at 
  * @property mixed $updated_at
  */
-class BannerGroup extends Model
+class BannerGroup extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -33,5 +33,5 @@ class BannerGroup extends Model
      */
     public $timestamps = true;
     protected $fillable=['name','created_at','updated_at'];
-    
+    protected array $fields=['id','name','created_at','updated_at'];
 }

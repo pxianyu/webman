@@ -2,8 +2,6 @@
 
 namespace app\model;
 
-use support\Model;
-
 /**
  * @property integer $id (主键)
  * @property string $name 配置名称
@@ -15,7 +13,7 @@ use support\Model;
  * @property string $remark 备注
  * @property string $suffix 默认值的后缀
  */
-class Config extends Model
+class Config extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -38,5 +36,5 @@ class Config extends Model
      */
     public $timestamps = false;
     protected $fillable=['name','key','option','value','type','config_group_id','remark','suffix'];
-    
+    protected array $fields=['id','name','key','option','value','type','config_group_id','remark','suffix'];
 }

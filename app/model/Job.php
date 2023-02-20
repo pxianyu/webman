@@ -2,8 +2,6 @@
 
 namespace app\model;
 
-use support\Model;
-
 /**
  * @property integer $id (主键)
  * @property string $job_name 
@@ -15,7 +13,7 @@ use support\Model;
  * @property string $updated_at 
  * @property string $deleted_at
  */
-class Job extends Model
+class Job extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -37,6 +35,8 @@ class Job extends Model
      * @var bool
      */
     public $timestamps = true;
+
     protected $fillable=['job_name','status','sort','description','creator_id','created_at','updated_at','deleted_at'];
-    
+
+    protected array $fields=['id','job_name','status','sort','description','creator_id','created_at','updated_at','deleted_at'];
 }

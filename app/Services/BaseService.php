@@ -109,16 +109,8 @@ class BaseService
      */
     public function index(Request $request): Response
     {
-        $data=$this->model->orderBy('sort','desc')->paginate($request->input('limit',10))
-            ->appends($request->all());;
-        return $this->paginate($data);
-    }
-    protected function paginate($data): Response
-    {
-        $res['total']=$data->total();
-        $res['data']=$data->items();
-        $res['current_page']=$data->currentPage();
-        $res['lastPage']=$data->lastPage();
-        return successData($res);
+        $data=$this->model->selects()->datarange()->paginate($request->input('limit',10))
+            ->appends($request->all());
+        return paginate($data);
     }
 }

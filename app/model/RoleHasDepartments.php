@@ -2,10 +2,7 @@
 
 namespace app\model;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use support\Model;
-
-class RoleHasDepartments extends Model
+class RoleHasDepartments extends BaseModel
 {
     protected $table = 'role_has_departments';
 
@@ -25,5 +22,5 @@ class RoleHasDepartments extends Model
 
     protected $fillable=['department_id','role_id'];
 
-
+    protected array $fields =['id','department_id','role_id','created_at','updated_at'];
 }

@@ -2,8 +2,6 @@
 
 namespace app\model;
 
-use support\Model;
-
 /**
  * @property integer $id (主键)
  * @property integer $pid 父ID
@@ -24,7 +22,7 @@ use support\Model;
  * @property mixed $created_at 
  * @property mixed $updated_at
  */
-class Menu extends Model
+class Menu extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -47,5 +45,10 @@ class Menu extends Model
      */
     public $timestamps = true;
     protected $fillable=['pid','title','name','icon','path','component','roles','menuType','redirect','sort','isHide','isAffix','isLink','isKeepAlive','isIframe','created_at','updated_at'];
-    
+
+    protected array $fields=['id','pid','title','name','icon','path','component','roles','menuType','redirect','sort','isHide','isAffix','isLink','isKeepAlive','isIframe','created_at','updated_at'];
+
+    protected bool $asTree=true;
+
+    protected bool $isPaginate=false;
 }

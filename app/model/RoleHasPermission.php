@@ -5,7 +5,7 @@ namespace app\model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use support\Model;
 
-class RoleHasPermission extends Model
+class RoleHasPermission extends BaseModel
 {
     protected $table = 'role_has_permissions';
 
@@ -25,5 +25,5 @@ class RoleHasPermission extends Model
 
     protected $fillable=['permission_id','role_id'];
 
-
+    protected array $fields=['id','permission_id','role_id','created_at','updated_at'];
 }

@@ -2,9 +2,7 @@
 
 namespace app\model;
 
-use support\Model;
-
-class Permission extends Model
+class Permission extends BaseModel
 {
     protected $table = 'permissions';
 
@@ -24,4 +22,9 @@ class Permission extends Model
 
     protected $fillable=['pid','title','route','sort','isHide','auth_open'];
 
+    protected array $fields =['id','pid','title','route','sort','isHide','auth_open','created_at','updated_at'];
+
+    protected bool $asTree=true;
+
+    protected bool $isPaginate=false;
 }

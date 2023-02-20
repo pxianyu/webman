@@ -68,18 +68,6 @@ class AdminService extends BaseService
         $username=$request->input('username');
         $nickname=$request->input('nickname');
         $status=$request->input('status');
-       $data= Admin::query()
-           ->when($username,function ($query) use ($username){
-                $query->username($username);
-            })
-           ->when($nickname,function ($query) use ($nickname){
-                $query->nickname($nickname);
-            })
-           ->when($status,function ($query) use ($status){
-                $query->status($status);
-            })
-           ->paginate($limit)
-           ->appends($request->all());
-        return $this->paginate($data);
+        return paginate($this->model->getPaginateData($username,$nickname,$status,$limit));
     }
 }

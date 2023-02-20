@@ -2,9 +2,7 @@
 
 namespace app\model;
 
-use support\Model;
-
-class AdminHasRole extends Model
+class AdminHasRole extends BaseModel
 {
     protected $table = 'admin_has_roles';
 
@@ -24,7 +22,7 @@ class AdminHasRole extends Model
 
     protected $fillable=['admin_id','role_id'];
 
-
+    protected array $fields =['id','admin_id','role_id','created_at','updated_at'];
 
     /**
      * @param $admin_id

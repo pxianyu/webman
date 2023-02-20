@@ -56,8 +56,7 @@
     "ext-simplexml": "*",
     "psr/container": "^2.0",
     "php-di/php-di": "^7.0",
-    "doctrine/annotations": "^2.0",
-    "tucker-eric/eloquentfilter": "^3.2"
+    "doctrine/annotations": "^2.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

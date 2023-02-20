@@ -2,6 +2,8 @@
 
 namespace app\model;
 
+
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use support\Model;
 
 class Role extends Model
@@ -22,6 +24,25 @@ class Role extends Model
      */
     public $timestamps = true;
 
-    protected $fillable=['name','desc','delete_flg'];
+    protected $fillable=['name','desc','delete_flg','data_range'];
 
+    /**
+     *
+     * @return BelongsToMany
+     */
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'role_has_permissions', 'role_id', 'permission_id');
+    }
+
+
+    /**
+     * departments
+     *
+     * @return BelongsToMany
+     */
+    public function departments(): BelongsToMany
+    {
+        return $this->belongsToMany(Department::class, 'role_has_departments', 'role_id', 'department_id');
+    }
 }

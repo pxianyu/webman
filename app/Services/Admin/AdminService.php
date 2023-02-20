@@ -3,7 +3,8 @@
 namespace app\Services\Admin;
 
 use app\model\Admin;
-use app\model\UserRoles;
+use app\model\AdminHasRole;
+use app\model\RoleHasDepartments;
 use app\Services\BaseService;
 use app\Validate\Admin\Admin\AdminValidate;
 use app\Validate\Admin\Admin\UserRoleValidate;
@@ -34,9 +35,7 @@ class AdminService extends BaseService
         if ($code){
             throw new BusinessException($msg,$code);
         }
-        if (array_key_exists('password',$data)){
-            $data['password']=Auth::bcrypt($data['password']);
-        }else{
+        if (!array_key_exists('password',$data)){
             unset($data['password']);
         }
         $data['is_root']=$data['is_root']??1;
@@ -56,7 +55,7 @@ class AdminService extends BaseService
         if ($code){
             return error($msg,$code);
         }
-        (new UserRoles())->addAdmin($data['admin_id'],$data['role_ids']);
+        (new AdminHasRole())->addAdmin($data['admin_id'],$data['role_ids']);
         return ok();
     }
 
@@ -66,18 +65,18 @@ class AdminService extends BaseService
         if ($limit>100){
             $limit=100;
         }
+        $username=$request->input('username');
+        $nickname=$request->input('nickname');
+        $status=$request->input('status');
        $data= Admin::query()
-           ->when($request->input('username'),function ($query) use ($request){
-                $query->username($request->input('username'));
+           ->when($username,function ($query) use ($username){
+                $query->username($username);
             })
-           ->when($request->input('nickname'),function ($query) use ($request){
-                $query->nickname($request->input('nickname'));
+           ->when($nickname,function ($query) use ($nickname){
+                $query->nickname($nickname);
             })
-           ->when($request->input('status'),function ($query) use ($request){
-                $query->status($request->input('status'));
-            })
-           ->when($request->input('is_root'),function ($query) use ($request){
-                $query->isRoot($request->input('is_root'));
+           ->when($status,function ($query) use ($status){
+                $query->status($status);
             })
            ->paginate($limit)
            ->appends($request->all());

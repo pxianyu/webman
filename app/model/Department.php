@@ -41,5 +41,20 @@ class Department extends Model
      */
     public $timestamps = true;
     protected $fillable=['parent_id','department_name','principals','mobile','email','status','sort','creator_id','created_at','updated_at','deleted_at'];
-    
+
+    public function findFollowDepartments(int|array $id): array
+    {
+        if (!is_array($id)) {
+            $id = [$id];
+        }
+
+        $followDepartmentIds = $this->whereIn('parent_id', $id)->pluck('id')->toArray();
+
+        if (! empty($followDepartmentIds)) {
+            $followDepartmentIds = array_merge($followDepartmentIds, $this->findFollowDepartments($followDepartmentIds));
+        }
+
+        return $followDepartmentIds;
+    }
+
 }

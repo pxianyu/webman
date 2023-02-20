@@ -19,6 +19,7 @@ class RoleService extends BaseService
         $data=[
             'name'=>$request->input('name') ,
             'desc'=>$request->input('desc'),
+            'data_range'=>$request->input('data_range') ?? 0,
         ];
 
         $this->form= $data;

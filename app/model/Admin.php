@@ -4,7 +4,9 @@ namespace app\model;
 
 
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Shopwwi\WebmanAuth\Facade\Auth;
 
 class Admin extends BaseModel
 {
@@ -38,4 +40,23 @@ class Admin extends BaseModel
         return self::username($username)->first();
     }
 
+    /**
+     * password
+     *
+     * @return Attribute
+     */
+    protected function password(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => Auth::bcrypt($value),
+        );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->is_root;
+    }
 }

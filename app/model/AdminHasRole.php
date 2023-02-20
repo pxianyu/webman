@@ -4,9 +4,9 @@ namespace app\model;
 
 use support\Model;
 
-class UserRoles extends Model
+class AdminHasRole extends Model
 {
-    protected $table = 'user_roles';
+    protected $table = 'admin_has_roles';
 
     /**
      * The primary key associated with the table.
@@ -24,21 +24,14 @@ class UserRoles extends Model
 
     protected $fillable=['admin_id','role_id'];
 
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class);
-    }
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
+
 
     /**
      * @param $admin_id
      * @param $role_id
      * @return void
      */
-    public function addAdmin($admin_id,$role_id)
+    public function addAdmin($admin_id,$role_id): void
     {
         $this->create([
             'admin_id' => $admin_id,

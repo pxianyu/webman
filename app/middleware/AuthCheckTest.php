@@ -4,8 +4,7 @@ namespace app\middleware;
 
 
 
-use app\Enum\Message;
-use Shopwwi\WebmanAuth\Facade\Auth;
+use app\Enum\MessageEnum;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
@@ -18,8 +17,8 @@ class AuthCheckTest implements MiddlewareInterface
         $notLoinAction=['admin.login','admin.captcha'];
         $route=$request->route;
         // 用户未登录
-        if ($route && !in_array($request->route->getName(), $notLoinAction, true) && !Auth::guard('admin_api')->user(true)) {
-            return error(Message::NOT_LOGIN,401);
+        if ($route && !in_array($request->route->getName(), $notLoinAction, true) && !getUserId()) {
+            return error(MessageEnum::NOT_LOGIN,401);
         }
         return $handler($request);
     }

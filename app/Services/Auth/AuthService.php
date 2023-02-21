@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace app\Services\Auth;
 
-use app\Enum\Message;
+use app\Enum\MessageEnum;
 use app\model\Admin;
 use app\Services\BaseService;
 use app\Validate\Admin\Auth\AuthValidate;
@@ -32,9 +32,9 @@ class AuthService extends BaseService
         }
         if (config('plugin.tinywan.captcha.app.enable') && checkCode($data['code'], $data['key'])) {
             if (self::checkLoginLimit($data['username'])){
-                return error(Message::LOGIN_COUNT_ERROR);
+                return error(MessageEnum::LOGIN_COUNT_ERROR);
             }
-            return error(Message::CAPTCHA_ERROR);
+            return error(MessageEnum::CAPTCHA_ERROR);
         }
         return   self::doLogin($data);
 
@@ -49,12 +49,12 @@ class AuthService extends BaseService
         $user=Admin::getByUserName($data['username']);
         if (!$user || !password_verify($data['password'],$user['password'])){
             if (self::checkLoginLimit($data['username'])){
-                return error(Message::LOGIN_COUNT_ERROR);
+                return error(MessageEnum::LOGIN_COUNT_ERROR);
             }
-            return error(Message::PASSWORD_ERROR);
+            return error(MessageEnum::PASSWORD_ERROR);
         }
         if ($user->status !=1){
-            return  error(Message::ACCOUNT_ERROR);
+            return  error(MessageEnum::ACCOUNT_ERROR);
         }
 
         $user->last_login_ip=request()->getRealIp();
@@ -62,7 +62,7 @@ class AuthService extends BaseService
         $user->increment('login_num');
         $user->save();
         $tokenObject=Auth::guard('admin_api')->login( $user);
-        return successJsonData($tokenObject,Message::LOGIN_SUCCESS);
+        return successJsonData($tokenObject,MessageEnum::LOGIN_SUCCESS);
     }
 
     /**
@@ -81,7 +81,7 @@ class AuthService extends BaseService
 
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return error(Message::CAPTCHA_CREATE_ERROR);
+            return error(MessageEnum::CAPTCHA_CREATE_ERROR);
         }
     }
 

@@ -2,6 +2,8 @@
 
 namespace app\controller\Api\Admin\Permission;
 
+use app\Enum\DataRangeEnum;
+use app\Options\DataRangeOption;
 use app\Services\Admin\AdminService;
 use Illuminate\Validation\ValidationException;
 use support\Request;
@@ -31,6 +33,7 @@ class AdminController
     }
 
     /**
+     * 授权
      * @param Request $request
      * @param AdminService $adminService
      * @return Response
@@ -39,5 +42,27 @@ class AdminController
     public function empower(Request $request, AdminService $adminService): Response
     {
         return $adminService->empower($request);
+    }
+
+    /**
+     * 切换状态
+     * @param Request $request
+     * @param int $id
+     * @param AdminService $adminService
+     * @return Response
+     */
+    public function enable(Request $request,int $id,AdminService $adminService): Response
+    {
+        return $adminService->toggleBy($id);
+    }
+
+    /** 获取数据范围
+     * @param Request $request
+     * @param DataRangeOption $dataRangeOption
+     * @return Response
+     */
+    public function dataRange(Request $request,DataRangeOption $dataRangeOption): Response
+    {
+        return successData($dataRangeOption->get());
     }
 }

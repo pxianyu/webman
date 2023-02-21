@@ -35,6 +35,8 @@ Route::group('/api/admin', function () {
     Route::post('/me', [AuthController::class,'me'])->name('admin.me');
 })->middleware([AuthCheckTest::class]);
 Route::group('/api/admin',function (){
+    Route::put('/admins/enable/{id}', [AdminController::class,'enable'])->name('admins.enable');
+    Route::get('/admins/dataRange', [AdminController::class,'dataRange'])->name('admins.dataRange');
     ApiRoute::resource('/admins', AdminController::class);
     ApiRoute::resource('/roles', RoleController::class);
     Route::post('/roles/empower',[AdminController::class,'empower'])->name('roles.empower');

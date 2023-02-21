@@ -69,7 +69,7 @@ function getUserId()
     if (!$user){
         return  null;
     }
-    return $user['id'];
+    return $user;
 }
 
 function paginate($data): Response

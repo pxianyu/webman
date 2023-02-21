@@ -2,6 +2,7 @@
 
 namespace app\Services;
 
+use app\Enum\StatusEnum;
 use support\Request;
 use support\Response;
 class BaseService
@@ -14,14 +15,10 @@ class BaseService
      * @param int $id
      * @return Response
      */
-    public function updateStatus(Request $request,int $id): Response
+    public function toggleBy(int $id, string $field = 'status'): Response
     {
-        $type=$request->input('type');
-        if (!$type || !is_int($type)){
-            return error('参数错误');
-        }
         $model=$this->model->findorfail($id);
-        $model->$type=$model->$type?0:1;
+        $model->$field=$model->$field===StatusEnum::Enable->value()?StatusEnum::Disable->value():StatusEnum::Enable->value();
         $model->save();
         return ok();
     }
@@ -48,9 +45,15 @@ class BaseService
      */
     public function destroyById(int $id): Response
     {
-        $res=$this->model->destroy($id);
-        if($res===false){
-            return error();
+        if ($this->model->where($this->model->getParentIdColumn(),$id)->exists()) {
+            return error('无法进行删除，请先删除子级');
+        }
+        if ($this->model->dataRange) {
+            $this->model->where($this->model->getKeyName(),$id)->datarange()->delete();
+        }else{
+            if ($this->model->destroy($id)===false){
+                return error();
+            }
         }
         return ok();
     }
@@ -60,7 +63,7 @@ class BaseService
      */
     public function getOrderByIdAllData(): Response
     {
-        return successData($this->model->orderBy('id','asc')->get()->toArray());
+        return successData($this->model->orderBy($this->model->getKeyName(),'asc')->get()->toArray());
     }
 
 
@@ -69,7 +72,7 @@ class BaseService
      */
     public function getAll(): Response
     {
-        return successData($this->model->all()->toArray());
+        return successData($this->model->all($this->model->fields)->toArray());
     }
 
     /** 设置表单字段

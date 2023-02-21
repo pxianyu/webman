@@ -10,12 +10,10 @@ class BannerValidate extends BaseValidate
     public function getRulesByStore(): array
     {
         return [
-            'name'  => 'required|unique:banners',
-            'desc'  =>  'required|string',
-            'group_id'  =>  'required|integer|exists:banner_groups,id',
-            'image'  =>  'required|string',
-            'url'  =>  'required|string',
-            'sort'  =>  'required|integer',
+            'title'  => 'required|unique:banners',
+            'banner_group_id'  =>  'required|integer|exists:banner_groups,id',
+            'pic'  =>  'required|string',
+            'link'  =>  'sometimes|string',
         ];
     }
 
@@ -23,31 +21,27 @@ class BannerValidate extends BaseValidate
     {
         $route=request()->route;
         return [
-            'name'  =>  [
+            'title'  =>  [
                 'required',
                 Rule::unique('banners')->ignore($route?$route->param('id'):'')
             ],
-            'desc'  =>  'required|string',
-            'group_id'  =>  'required|integer|exists:banner_groups,id',
-            'image'  =>  'required|string',
-            'url'  =>  'required|string',
-            'sort'  =>  'required|integer',
+            'banner_group_id'  =>  'required|integer|exists:banner_groups,id',
+            'pic'  =>  'required|string',
+            'link'  =>  'sometimes|string',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => '名称不能为空',
-            'name.unique' => '名称不能重复',
+            'title.required' => '名称不能为空',
+            'title.unique' => '名称不能重复',
             'desc.required' => '描述不能为空',
-            'group_id.required' => '分组id不能为空',
-            'group_id.integer' => '分组id必须为整数',
-            'group_id.exists' => '分组不存在',
-            'image.required' => '图片不能为空',
-            'url.required' => '链接不能为空',
-            'sort.required' => '排序不能为空',
-            'sort.integer' => '排序必须为整数',
+            'banner_group_id.required' => '分组id不能为空',
+            'banner_group_id.integer' => '分组id必须为整数',
+            'banner_group_id.exists' => '分组不存在',
+            'pic.required' => '图片不能为空',
+            'link.string' => '链接不对'
         ];
     }
 }

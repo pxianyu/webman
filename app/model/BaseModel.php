@@ -64,6 +64,10 @@ class BaseModel extends Model
         return 'creator_id';
     }
 
+    public function getParentIdColumn(): string
+    {
+        return $this->parentIdColumn;
+    }
     /**
      *
      * @return $this
@@ -82,10 +86,10 @@ class BaseModel extends Model
     }
 
 
-    public function getDataList($request)
+    public function getDataList()
     {
-       return $this->selects()->datarange()->paginate($request->input('limit',$this->perPage))
-        ->appends($request->all());
+       return $this->selects()->datarange()->paginate(request()->input('limit',$this->perPage))
+        ->appends(request()->all());
     }
 
 }

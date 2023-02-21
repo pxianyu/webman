@@ -2,7 +2,7 @@
 
 namespace app\Enum;
 
-class Message
+class MessageEnum
 {
     public const USER_NOT_FOUND='账号不存在';
     public const PASSWORD_ERROR='账号或者密码不正确';

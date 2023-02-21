@@ -2,7 +2,7 @@
 
 namespace app\Enum;
 
-class Code
+class CodeEnum
 {
     public const HTTP_OK =200;
     public const HTTP_FAIL =400;

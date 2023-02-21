@@ -4,14 +4,15 @@ namespace app\model;
 
 use app\Traits\DataRange;
 use app\Traits\ModelTrait;
+use app\Traits\WithAttr;
+use app\Traits\WithRelations;
 use DateTimeInterface;
 use Shopwwi\WebmanAuth\Facade\Auth;
-use support\Log;
 use support\Model;
 
 class BaseModel extends Model
 {
-    use ModelTrait, DataRange;
+    use ModelTrait, DataRange,WithAttr,WithRelations;
 
 
     protected bool $asTree = false;
@@ -92,4 +93,29 @@ class BaseModel extends Model
         ->appends(request()->all());
     }
 
+    protected function filterData(array $data): array
+    {
+        // 表单保存的数据集合
+        $fillable = array_unique(array_merge($this->getFillable(), property_exists($this, 'form') ? $this->form : []));
+
+        foreach ($data as $k => $val) {
+            if (is_null($val) || (is_string($val) && ! $val)) {
+                unset($data[$k]);
+            }
+
+            if (! empty($fillable) && ! in_array($k, $fillable)) {
+                unset($data[$k]);
+            }
+
+            if (in_array($k, [$this->getUpdatedAtColumn(), $this->getCreatedAtColumn()])) {
+                unset($data[$k]);
+            }
+        }
+
+        if (in_array($this->getCreatorIdColumn(), $this->getFillable())) {
+            $data['creator_id'] = getAdminId();
+        }
+
+        return $data;
+    }
 }

@@ -17,7 +17,7 @@ class AuthCheckTest implements MiddlewareInterface
         $notLoinAction=['admin.login','admin.captcha'];
         $route=$request->route;
         // 用户未登录
-        if ($route && !in_array($request->route->getName(), $notLoinAction, true) && !getUserId()) {
+        if ($route && !in_array($request->route->getName(), $notLoinAction, true) && !getAdminId()) {
             return error(MessageEnum::NOT_LOGIN,401);
         }
         return $handler($request);

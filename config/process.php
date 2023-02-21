@@ -41,6 +41,6 @@ return [
     ],
     'task'  => [
         'handler'  => process\CrontabTask::class,
-        'count'   => 8,
+        'count'   => cpu_count() * 4,
     ],
 ];

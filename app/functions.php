@@ -63,7 +63,8 @@ function returnData(string $msg,array $data=[],int $code=0): array
 {
     return ['code'=>$code,'data'=>$data, 'msg' => $msg];
 }
-function getUserId()
+
+function getAdmin()
 {
     $user=Auth::guard('admin_api')->user(true);
     if (!$user){
@@ -72,6 +73,39 @@ function getUserId()
     return $user;
 }
 
+function getAdminId()
+{
+    $user=Auth::guard('admin_api')->user(true);
+    if (!$user){
+        return  null;
+    }
+    return $user->id;
+}
+function getAdminUserName()
+{
+    $user=Auth::guard('admin_api')->user(true);
+    if (!$user){
+        return  null;
+    }
+    return $user->username;
+}
+function getAdminStatus()
+{
+    $user=Auth::guard('admin_api')->user(true);
+    if (!$user){
+        return  null;
+    }
+    return $user->status;
+}
+
+function getAdminNickname()
+{
+    $user=Auth::guard('admin_api')->user(true);
+    if (!$user){
+        return  null;
+    }
+    return $user->nickname;
+}
 function paginate($data): Response
 {
     $res['total']=$data->total();

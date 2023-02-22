@@ -2,7 +2,7 @@
 
 namespace app\controller\Api\Admin\Permission;
 
-use support\Request;
+use app\Request;
 use support\Response;
 use app\Services\System\DepartmentService;
 class DepartmentController

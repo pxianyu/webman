@@ -8,7 +8,7 @@ use app\Services\BaseService;
 use app\Validate\Admin\System\ConfigGroupValidate;
 use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
-use support\Request;
+use app\Request;
 
 class ConfigGroupService extends BaseService
 {

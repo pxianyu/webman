@@ -4,7 +4,7 @@ namespace app\Services\Admin;
 
 use app\Validate\Admin\Admin\MenuValidate;
 use DI\Attribute\Inject;
-use support\Request;
+use app\Request;
 use Illuminate\Validation\ValidationException;
 use support\exception\BusinessException;
 use app\Services\BaseService;

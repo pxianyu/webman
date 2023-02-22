@@ -3,21 +3,11 @@
 namespace app\controller;
 
 use support\Log;
-use support\Request;
+use app\Request;
 use Webman\RedisQueue\Redis;
 
 class IndexController
 {
-    public function index(Request $request)
-    {
-        return response('hello webman');
-    }
-
-    public function view(Request $request)
-    {
-        return view('index/view', ['name' => 'webman']);
-    }
-
     public function json(Request $request)
     {
         // 队列名

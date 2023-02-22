@@ -6,7 +6,7 @@ namespace app\controller\Api\Admin\Auth;
 use app\Services\Auth\AuthService;
 use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
-use support\Request;
+use app\Request;
 use support\Response;
 
 

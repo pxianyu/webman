@@ -5,7 +5,7 @@ namespace app\Services\Admin;
 use app\model\Permission;
 use app\Services\BaseService;
 use DI\Attribute\Inject;
-use support\Request;
+use app\Request;
 
 class PermissionService extends BaseService
 {

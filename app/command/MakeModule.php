@@ -76,7 +76,7 @@ class MakeModule extends Command
 
 namespace $namespace;
 
-use support\Request;
+use app\Request;
 use support\Response;
 use $service;
 class $name
@@ -220,7 +220,7 @@ EOF;
 
 namespace $serviceNameSpace;
 use app\Services\BaseService;
-use support\Request;
+use app\Request;
 use Illuminate\Validation\ValidationException;
 use support\\exception\BusinessException;
 use DI\Attribute\Inject;

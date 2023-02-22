@@ -2,11 +2,10 @@
 
 namespace app\controller\Api\Admin\Permission;
 
-use app\Enum\DataRangeEnum;
 use app\Options\DataRangeOption;
+use app\Request;
 use app\Services\Admin\AdminService;
 use Illuminate\Validation\ValidationException;
-use support\Request;
 use support\Response;
 
 class AdminController

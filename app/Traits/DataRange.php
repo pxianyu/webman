@@ -8,7 +8,6 @@ use app\model\Department;
 use app\model\Role;
 use Illuminate\Support\Collection;
 use Shopwwi\WebmanAuth\Facade\Auth;
-use support\Log;
 
 trait DataRange
 {

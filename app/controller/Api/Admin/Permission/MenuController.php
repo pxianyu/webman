@@ -3,7 +3,7 @@
 namespace app\controller\Api\Admin\Permission;
 
 use app\Services\Admin\MenuService;
-use support\Request;
+use app\Request;
 use support\Response;
 
 class MenuController

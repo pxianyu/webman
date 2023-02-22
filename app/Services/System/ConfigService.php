@@ -9,7 +9,7 @@ use app\Services\BaseService;
 use app\Validate\Admin\System\ConfigValidate;
 use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
-use support\Request;
+use app\Request;
 
 class ConfigService extends BaseService
 {

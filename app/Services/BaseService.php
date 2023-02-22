@@ -3,7 +3,7 @@
 namespace app\Services;
 
 use app\Enum\StatusEnum;
-use support\Request;
+use app\Request;
 use support\Response;
 class BaseService
 {

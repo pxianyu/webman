@@ -3,7 +3,7 @@
 namespace app\controller\Api\Admin\System;
 
 use app\Services\System\ConfigGroupService;
-use support\Request;
+use app\Request;
 use support\Response;
 
 class ConfigGroupController

@@ -12,7 +12,7 @@ use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
 use support\exception\BusinessException;
-use support\Request;
+use app\Request;
 use support\Response;
 
 class AdminService extends BaseService

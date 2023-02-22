@@ -12,4 +12,8 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-return [];
+return [
+    \app\Request::class=> function (\DI\Container $container) {
+        return $container->get(\support\Request::class);
+    },
+];

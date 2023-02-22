@@ -3,7 +3,7 @@
 namespace app\controller\Api\Admin\Permission;
 
 use app\Services\Admin\PermissionService;
-use support\Request;
+use app\Request;
 use support\Response;
 
 class PermissionController

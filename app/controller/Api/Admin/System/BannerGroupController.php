@@ -3,7 +3,7 @@
 namespace app\controller\Api\Admin\System;
 
 use app\Services\System\BannerGroupService;
-use support\Request;
+use app\Request;
 use support\Response;
 
 class BannerGroupController

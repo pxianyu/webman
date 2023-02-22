@@ -2,7 +2,7 @@
 
 namespace app\Services\System;
 use app\Services\BaseService;
-use support\Request;
+use app\Request;
 use Illuminate\Validation\ValidationException;
 use support\exception\BusinessException;
 use DI\Attribute\Inject;

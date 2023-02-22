@@ -6,9 +6,9 @@ use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
 
-class Cors implements  MiddlewareInterface
+class Cors implements MiddlewareInterface
 {
-    public function process(Request $request, callable $next) : Response
+    public function process(Request $request, callable $next): Response
     {
         $response = $request->method() === 'OPTIONS' ? response('') : $next($request);
         $response->withHeaders([

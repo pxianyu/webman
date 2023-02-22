@@ -19,7 +19,7 @@ namespace app\model;
  * @property string $isLink 是否跳转(0:禁用,1:启用)
  * @property integer $isKeepAlive 是否缓存(0:禁用,1:启用)
  * @property integer $isIframe 是否iframe(0:禁用,1:启用)
- * @property mixed $created_at 
+ * @property mixed $created_at
  * @property mixed $updated_at
  */
 class Menu extends BaseModel
@@ -44,11 +44,11 @@ class Menu extends BaseModel
      * @var bool
      */
     public $timestamps = true;
-    protected $fillable=['pid','title','name','icon','path','component','roles','menuType','redirect','sort','isHide','isAffix','isLink','isKeepAlive','isIframe','created_at','updated_at'];
+    protected $fillable = ['pid', 'title', 'name', 'icon', 'path', 'component', 'roles', 'menuType', 'redirect', 'sort', 'isHide', 'isAffix', 'isLink', 'isKeepAlive', 'isIframe', 'created_at', 'updated_at'];
 
-    protected array $fields=['id','pid','title','name','icon','path','component','roles','menuType','redirect','sort','isHide','isAffix','isLink','isKeepAlive','isIframe','created_at','updated_at'];
+    protected array $fields = ['id', 'pid', 'title', 'name', 'icon', 'path', 'component', 'roles', 'menuType', 'redirect', 'sort', 'isHide', 'isAffix', 'isLink', 'isKeepAlive', 'isIframe', 'created_at', 'updated_at'];
 
-    protected bool $asTree=true;
+    protected bool $asTree = true;
 
-    protected bool $isPaginate=false;
+    protected bool $isPaginate = false;
 }

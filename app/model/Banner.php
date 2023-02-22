@@ -11,7 +11,7 @@ namespace app\model;
  * @property string $title 标题
  * @property string $subtitle 副标题/描述
  * @property integer $sort 排序
- * @property mixed $created_at 
+ * @property mixed $created_at
  * @property mixed $updated_at
  */
 class Banner extends BaseModel
@@ -36,8 +36,8 @@ class Banner extends BaseModel
      * @var bool
      */
     public $timestamps = true;
-    protected $fillable=['banner_group_id','pic','link','title','subtitle','sort','created_at','updated_at'];
+    protected $fillable = ['banner_group_id', 'pic', 'link', 'title', 'subtitle', 'sort', 'created_at', 'updated_at'];
 
-    protected array $fields=['id','banner_group_id','pic','link','title','subtitle','sort','created_at','updated_at'];
-    
+    protected array $fields = ['id', 'banner_group_id', 'pic', 'link', 'title', 'subtitle', 'sort', 'created_at', 'updated_at'];
+
 }

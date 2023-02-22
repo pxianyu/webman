@@ -1,7 +1,7 @@
 <?php
 
 namespace app;
-use support\Log;
+
 use support\Request as BaseRequest;
 
 class Request extends BaseRequest
@@ -29,7 +29,7 @@ class Request extends BaseRequest
 
     public function filter($value)
     {
-        if ( ! $value) {
+        if (!$value) {
             return $value;
         }
         if (is_array($value)) {
@@ -44,6 +44,7 @@ class Request extends BaseRequest
 
         return $value;
     }
+
     /**
      * 当前是否ssl
      * @access public
@@ -73,6 +74,7 @@ class Request extends BaseRequest
     {
         return $this->isSsl() ? 'https' : 'http';
     }
+
     public function server($name = null)
     {
         return $name ? ($_SERVER[$name] ?? null) : $_SERVER;
@@ -107,6 +109,7 @@ class Request extends BaseRequest
     {
         return $this->method() == 'PUT';
     }
+
     /**
      * 获取应用
      * @return string
@@ -160,11 +163,11 @@ class Request extends BaseRequest
 
         return false;
     }
+
     /**
      * 获取客户端IP
      * @param bool $save_mode
      * @return string
-     * Author: fudaoji<fdj@kuryun.cn>
      */
     public function ip(bool $save_mode = true): string
     {

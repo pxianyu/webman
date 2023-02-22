@@ -8,23 +8,27 @@ use support\Response;
 
 class BannerGroupController
 {
-    public function index(Request $request,BannerGroupService $Service): Response
+    public function index(Request $request, BannerGroupService $Service): Response
     {
         return $Service->index($request);
     }
-    public function store(Request $request,BannerGroupService $Service): Response
+
+    public function store(Request $request, BannerGroupService $Service): Response
     {
         return $Service->store($request);
     }
-    public function show(Request $request,int $id,BannerGroupService $Service): Response
+
+    public function show(Request $request, int $id, BannerGroupService $Service): Response
     {
         return $Service->show($id);
     }
-    public function update(Request $request,int $id,BannerGroupService $Service): Response
+
+    public function update(Request $request, int $id, BannerGroupService $Service): Response
     {
-        return $Service->updateById($request,$id);
+        return $Service->updateById($request, $id);
     }
-    public function destroy(Request $request,int $id,BannerGroupService $Service): Response
+
+    public function destroy(Request $request, int $id, BannerGroupService $Service): Response
     {
         return $Service->destroyById($id);
     }

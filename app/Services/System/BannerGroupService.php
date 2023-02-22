@@ -19,6 +19,7 @@ class BannerGroupService extends BaseService
 
     #[Inject(BannerGroupValidate::class)]
     protected BannerGroupValidate $validate;
+
     /**
      * @throws ValidationException
      * @throws BusinessException
@@ -26,9 +27,9 @@ class BannerGroupService extends BaseService
     public function setForm(Request $request): void
     {
         ['code' => $code, 'data' => $data, 'msg' => $msg] = $this->validate->goCheck($request->all());
-        if ($code){
-            throw new BusinessException($msg,$code);
+        if ($code) {
+            throw new BusinessException($msg, $code);
         }
-        $this->form= $data;
+        $this->form = $data;
     }
 }

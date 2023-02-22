@@ -4,13 +4,13 @@ namespace app\model;
 
 /**
  * @property integer $id (主键)
- * @property string $job_name 
- * @property integer $status 
- * @property integer $sort 
- * @property string $description 
- * @property integer $creator_id 
- * @property string $created_at 
- * @property string $updated_at 
+ * @property string $job_name
+ * @property integer $status
+ * @property integer $sort
+ * @property string $description
+ * @property integer $creator_id
+ * @property string $created_at
+ * @property string $updated_at
  * @property string $deleted_at
  */
 class Job extends BaseModel
@@ -36,7 +36,7 @@ class Job extends BaseModel
      */
     public $timestamps = true;
 
-    protected $fillable=['job_name','status','sort','description','creator_id','created_at','updated_at','deleted_at'];
+    protected $fillable = ['job_name', 'status', 'sort', 'description', 'creator_id', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected array $fields=['id','job_name','status','sort','description','creator_id','created_at','updated_at','deleted_at'];
+    protected array $fields = ['id', 'job_name', 'status', 'sort', 'description', 'creator_id', 'created_at', 'updated_at', 'deleted_at'];
 }

@@ -18,7 +18,7 @@ trait WithRelations
     {
         foreach ($this->getRelationsData($data) as $relation => $relationData) {
             $isRelation = $this->{$relation}();
-            if (! count($relationData)) {
+            if (!count($relationData)) {
                 continue;
             }
 
@@ -87,7 +87,7 @@ trait WithRelations
         $relationsData = [];
 
         foreach ($relations as $relation) {
-            if (! isset($data[$relation]) || ! $this->isRelation($relation)) {
+            if (!isset($data[$relation]) || !$this->isRelation($relation)) {
                 continue;
             }
 

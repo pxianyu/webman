@@ -8,23 +8,27 @@ use support\Response;
 
 class MenuController
 {
-    public function index(Request $request,MenuService $Service): Response
+    public function index(Request $request, MenuService $Service): Response
     {
         return $Service->getOrderByIdAllData();
     }
-    public function store(Request $request,MenuService $Service): Response
+
+    public function store(Request $request, MenuService $Service): Response
     {
         return $Service->store($request);
     }
-    public function show(Request $request,int $id,MenuService $Service): Response
+
+    public function show(Request $request, int $id, MenuService $Service): Response
     {
         return $Service->show($id);
     }
-    public function update(Request $request,int $id,MenuService $Service): Response
+
+    public function update(Request $request, int $id, MenuService $Service): Response
     {
-        return $Service->updateById($request,$id);
+        return $Service->updateById($request, $id);
     }
-    public function destroy(Request $request,int $id,MenuService $Service): Response
+
+    public function destroy(Request $request, int $id, MenuService $Service): Response
     {
         return $Service->destroyById($id);
     }

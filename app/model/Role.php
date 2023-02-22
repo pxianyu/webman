@@ -23,9 +23,10 @@ class Role extends BaseModel
      */
     public $timestamps = true;
 
-    protected $fillable=['name','desc','delete_flg','data_range'];
+    protected $fillable = ['name', 'desc', 'delete_flg', 'data_range'];
 
-    protected array $fields=['id','name','desc','delete_flg','data_range'];
+    protected array $fields = ['id', 'name', 'desc', 'delete_flg', 'data_range'];
+
     /**
      *
      * @return BelongsToMany

@@ -2,7 +2,7 @@
 
 namespace app\Enum;
 
-enum StatusEnum :int
+enum StatusEnum: int
 {
     case Enable = 1;
 

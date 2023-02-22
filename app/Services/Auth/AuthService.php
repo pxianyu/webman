@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace app\Services\Auth;
 
 use app\Enum\MessageEnum;
@@ -26,17 +27,17 @@ class AuthService extends BaseService
      */
     public static function login(array $input): Response
     {
-        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  (new AuthValidate())->goCheck($input);
-        if ($code){
-            return error($msg,$code);
+        ['code' => $code, 'data' => $data, 'msg' => $msg] = (new AuthValidate())->goCheck($input);
+        if ($code) {
+            return error($msg, $code);
         }
         if (config('plugin.tinywan.captcha.app.enable') && checkCode($data['code'], $data['key'])) {
-            if (self::checkLoginLimit($data['username'])){
+            if (self::checkLoginLimit($data['username'])) {
                 return error(MessageEnum::LOGIN_COUNT_ERROR);
             }
             return error(MessageEnum::CAPTCHA_ERROR);
         }
-        return   self::doLogin($data);
+        return self::doLogin($data);
 
     }
 
@@ -46,23 +47,23 @@ class AuthService extends BaseService
      */
     public static function doLogin(array $data): Response
     {
-        $user=Admin::getByUserName($data['username']);
-        if (!$user || !password_verify($data['password'],$user['password'])){
-            if (self::checkLoginLimit($data['username'])){
+        $user = Admin::getByUserName($data['username']);
+        if (!$user || !password_verify($data['password'], $user['password'])) {
+            if (self::checkLoginLimit($data['username'])) {
                 return error(MessageEnum::LOGIN_COUNT_ERROR);
             }
             return error(MessageEnum::PASSWORD_ERROR);
         }
-        if ($user->status !=1){
-            return  error(MessageEnum::ACCOUNT_ERROR);
+        if ($user->status != 1) {
+            return error(MessageEnum::ACCOUNT_ERROR);
         }
 
-        $user->last_login_ip=request()->getRealIp();
-        $user->last_login_time=Carbon::now();
+        $user->last_login_ip = request()->getRealIp();
+        $user->last_login_time = Carbon::now();
         $user->increment('login_num');
         $user->save();
-        $tokenObject=Auth::guard('admin_api')->login( $user);
-        return successJsonData($tokenObject,MessageEnum::LOGIN_SUCCESS);
+        $tokenObject = Auth::guard('admin_api')->login($user);
+        return successJsonData($tokenObject, MessageEnum::LOGIN_SUCCESS);
     }
 
     /**
@@ -72,12 +73,12 @@ class AuthService extends BaseService
     public static function captcha(): Response
     {
         try {
-            if (config('plugin.tinywan.captcha.app.enable')){
-                $captcha=Captcha::base64();
+            if (config('plugin.tinywan.captcha.app.enable')) {
+                $captcha = Captcha::base64();
                 return successData($captcha);
             }
 
-            return error('验证码功能没有打开',423);
+            return error('验证码功能没有打开', 423);
 
         } catch (Exception $e) {
             Log::error($e->getMessage());
@@ -92,17 +93,17 @@ class AuthService extends BaseService
      * @param int $limit
      * @return bool
      */
-    protected static function checkLoginLimit(string $username,int $limit=5): bool
+    protected static function checkLoginLimit(string $username, int $limit = 5): bool
     {
-        if (Redis::exists($username)){
+        if (Redis::exists($username)) {
             Redis::incr($username);
-            $count=Redis::get($username);
-            if ($limit<(int)$count){
+            $count = Redis::get($username);
+            if ($limit < (int)$count) {
                 return true;
             }
-        }else{
+        } else {
             Redis::incr($username);
-            Redis::expire($username,300);
+            Redis::expire($username, 300);
         }
         return false;
     }

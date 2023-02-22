@@ -16,12 +16,12 @@ class RoleService extends BaseService
 
     public function setForm(Request $request): void
     {
-        $data=[
-            'name'=>$request->input('name') ,
-            'desc'=>$request->input('desc'),
-            'data_range'=>$request->input('data_range') ?? 0,
+        $data = [
+            'name' => $request->input('name'),
+            'desc' => $request->input('desc'),
+            'data_range' => $request->input('data_range') ?? 0,
         ];
 
-        $this->form= $data;
+        $this->form = $data;
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
 namespace app\queue\redis;
+
 use support\Log;
 use Webman\RedisQueue\Consumer;
+
 class MailSend implements Consumer
 {
     // 要消费的队列名
@@ -15,7 +17,7 @@ class MailSend implements Consumer
     public function consume($data)
     {
         // 无需反序列化
-        Log::error(print_r($data,true));
+        Log::error(print_r($data, true));
         var_export($data); // 输出 ['to' => 'tom@gmail.com', 'content' => 'hello']
     }
 }

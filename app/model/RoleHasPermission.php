@@ -23,7 +23,7 @@ class RoleHasPermission extends BaseModel
      */
     public $timestamps = true;
 
-    protected $fillable=['permission_id','role_id'];
+    protected $fillable = ['permission_id', 'role_id'];
 
-    protected array $fields=['id','permission_id','role_id','created_at','updated_at'];
+    protected array $fields = ['id', 'permission_id', 'role_id', 'created_at', 'updated_at'];
 }

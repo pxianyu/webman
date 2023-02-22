@@ -27,10 +27,10 @@ class ConfigService extends BaseService
      */
     public function setForm(Request $request): void
     {
-        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  $this->validate->goCheck($request->all());
-        if ($code){
-            throw new BusinessException($msg,$code);
+        ['code' => $code, 'data' => $data, 'msg' => $msg] = $this->validate->goCheck($request->all());
+        if ($code) {
+            throw new BusinessException($msg, $code);
         }
-        $this->form= $data;
+        $this->form = $data;
     }
 }

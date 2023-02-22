@@ -20,7 +20,7 @@ class RoleHasMenus extends BaseModel
      */
     public $timestamps = true;
 
-    protected $fillable=['menu_id','role_id'];
+    protected $fillable = ['menu_id', 'role_id'];
 
-    protected array $fields =['id','menu_id','role_id','created_at','updated_at'];
+    protected array $fields = ['id', 'menu_id', 'role_id', 'created_at', 'updated_at'];
 }

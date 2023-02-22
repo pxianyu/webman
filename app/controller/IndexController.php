@@ -17,7 +17,7 @@ class IndexController
         // 投递消息
         Redis::send($queue, $data);
         // 投递延迟消息，消息会在60秒后处理
-        $data['yanchi']=1;
+        $data['yanchi'] = 1;
         Redis::send($queue, $data, 60);
 
         return ok();

@@ -14,7 +14,7 @@ use Throwable;
 use Webman\Http\Request;
 use Webman\Http\Response;
 
-class BaseExceptionHandler extends  Handler
+class BaseExceptionHandler extends Handler
 {
 
     public $dontReport = [
@@ -24,21 +24,22 @@ class BaseExceptionHandler extends  Handler
         ModelNotFoundException::class,
         QueryException::class,
     ];
-    public function render(Request $request, Throwable $exception) : Response
+
+    public function render(Request $request, Throwable $exception): Response
     {
         // 数据验证异常
         if ($exception->getCode() === CodeEnum::VALIDATE_ERR) {
             return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
         }
-        if ($exception instanceof ValidationException){
+        if ($exception instanceof ValidationException) {
             return json(['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
         }
         // 模型异常
-        if ($exception instanceof  ModelNotFoundException) {
+        if ($exception instanceof ModelNotFoundException) {
             return json(['message' => MessageEnum::NOT_FOUND_ERROR, 'code' => CodeEnum::NOT_FOUND]);
         }
         // 查询异常
-        if ($exception instanceof  QueryException) {
+        if ($exception instanceof QueryException) {
             return json(['message' => MessageEnum::QUERY_ERROR, 'code' => CodeEnum::QUERY_ERR]);
         }
         // 业务异常

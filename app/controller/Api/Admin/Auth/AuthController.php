@@ -19,7 +19,7 @@ class AuthController
      */
     public function login(Request $request): Response
     {
-          return AuthService::login($request->all());
+        return AuthService::login($request->all());
     }
 
     /** 生成验证码

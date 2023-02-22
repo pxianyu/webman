@@ -20,11 +20,11 @@ class Permission extends BaseModel
      */
     public $timestamps = true;
 
-    protected $fillable=['pid','title','route','sort','isHide','auth_open'];
+    protected $fillable = ['pid', 'title', 'route', 'sort', 'isHide', 'auth_open'];
 
-    protected array $fields =['id','pid','title','route','sort','isHide','auth_open','created_at','updated_at'];
+    protected array $fields = ['id', 'pid', 'title', 'route', 'sort', 'isHide', 'auth_open', 'created_at', 'updated_at'];
 
-    protected bool $asTree=true;
+    protected bool $asTree = true;
 
-    protected bool $isPaginate=false;
+    protected bool $isPaginate = false;
 }

@@ -12,7 +12,7 @@ use support\Model;
 
 class BaseModel extends Model
 {
-    use ModelTrait, DataRange,WithAttr,WithRelations;
+    use ModelTrait, DataRange, WithAttr, WithRelations;
 
 
     protected bool $asTree = false;
@@ -29,7 +29,7 @@ class BaseModel extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
-    protected $perPage=10;
+    protected $perPage = 10;
 
     public function __construct(array $attributes = [])
     {
@@ -69,6 +69,7 @@ class BaseModel extends Model
     {
         return $this->parentIdColumn;
     }
+
     /**
      *
      * @return $this
@@ -82,15 +83,15 @@ class BaseModel extends Model
 
     public function ScopeSelects($query)
     {
-        return $query->select(property_exists($this, 'fields') ?$this->fields :'*');
+        return $query->select(property_exists($this, 'fields') ? $this->fields : '*');
 
     }
 
 
     public function getDataList()
     {
-       return $this->selects()->datarange()->paginate(request()->input('limit',$this->perPage))
-        ->appends(request()->all());
+        return $this->selects()->datarange()->paginate(request()->input('limit', $this->perPage))
+            ->appends(request()->all());
     }
 
     protected function filterData(array $data): array
@@ -99,11 +100,11 @@ class BaseModel extends Model
         $fillable = array_unique(array_merge($this->getFillable(), property_exists($this, 'form') ? $this->form : []));
 
         foreach ($data as $k => $val) {
-            if (is_null($val) || (is_string($val) && ! $val)) {
+            if (is_null($val) || (is_string($val) && !$val)) {
                 unset($data[$k]);
             }
 
-            if (! empty($fillable) && ! in_array($k, $fillable)) {
+            if (!empty($fillable) && !in_array($k, $fillable)) {
                 unset($data[$k]);
             }
 

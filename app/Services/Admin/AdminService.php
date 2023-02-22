@@ -31,16 +31,16 @@ class AdminService extends BaseService
      */
     public function setForm(Request $request): void
     {
-        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  $this->validate->goCheck($request->all());
-        if ($code){
-            throw new BusinessException($msg,$code);
+        ['code' => $code, 'data' => $data, 'msg' => $msg] = $this->validate->goCheck($request->all());
+        if ($code) {
+            throw new BusinessException($msg, $code);
         }
-        if (!array_key_exists('password',$data)){
+        if (!array_key_exists('password', $data)) {
             unset($data['password']);
         }
-        $data['is_root']=$data['is_root']??1;
-        $data['status']=$data['status']??1;
-        $this->form= $data;
+        $data['is_root'] = $data['is_root'] ?? 1;
+        $data['status'] = $data['status'] ?? 1;
+        $this->form = $data;
     }
 
     /**
@@ -51,23 +51,23 @@ class AdminService extends BaseService
      */
     public function empower(Request $request): Response
     {
-        ['code'=>$code,'data'=>$data,'msg'=>$msg]=  (new UserRoleValidate())->goCheck($request->all());
-        if ($code){
-            return error($msg,$code);
+        ['code' => $code, 'data' => $data, 'msg' => $msg] = (new UserRoleValidate())->goCheck($request->all());
+        if ($code) {
+            return error($msg, $code);
         }
-        (new AdminHasRole())->addAdmin($data['admin_id'],$data['role_ids']);
+        (new AdminHasRole())->addAdmin($data['admin_id'], $data['role_ids']);
         return ok();
     }
 
     public function index(Request $request): Response
     {
-        $limit=$request->input('limit',10);
-        if ($limit>100){
-            $limit=100;
+        $limit = $request->input('limit', 10);
+        if ($limit > 100) {
+            $limit = 100;
         }
-        $username=$request->input('username');
-        $nickname=$request->input('nickname');
-        $status=$request->input('status');
-        return successData($this->model->getPaginateData($username,$nickname,$status,$limit)->toArray());
+        $username = $request->input('username');
+        $nickname = $request->input('nickname');
+        $status = $request->input('status');
+        return successData($this->model->getPaginateData($username, $nickname, $status, $limit)->toArray());
     }
 }

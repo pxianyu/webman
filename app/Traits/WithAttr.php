@@ -96,7 +96,7 @@ trait WithAttr
      */
     public function withoutForm(): static
     {
-        if (property_exists($this, 'form') && ! empty($this->form)) {
+        if (property_exists($this, 'form') && !empty($this->form)) {
             $this->form = [];
         }
 
@@ -108,7 +108,7 @@ trait WithAttr
      */
     public function getForm(): array
     {
-        if (property_exists($this, 'form') && ! empty($this->form)) {
+        if (property_exists($this, 'form') && !empty($this->form)) {
             return $this->form;
         }
 
@@ -131,7 +131,7 @@ trait WithAttr
      */
     public function getFormRelations(): array
     {
-        if (property_exists($this, 'formRelations') && ! empty($this->form)) {
+        if (property_exists($this, 'formRelations') && !empty($this->form)) {
             return $this->formRelations;
         }
 

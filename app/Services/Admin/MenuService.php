@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 use support\exception\BusinessException;
 use app\Services\BaseService;
 use app\model\Menu;
+
 class MenuService extends BaseService
 {
     #[Inject(Menu::class)]
@@ -26,9 +27,9 @@ class MenuService extends BaseService
     public function setForm(Request $request): void
     {
         ['code' => $code, 'data' => $data, 'msg' => $msg] = $this->validate->goCheck($request->all());
-        if ($code){
-            throw new BusinessException($msg,$code);
+        if ($code) {
+            throw new BusinessException($msg, $code);
         }
-        $this->form= $data;
+        $this->form = $data;
     }
 }

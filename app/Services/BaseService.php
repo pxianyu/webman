@@ -5,6 +5,7 @@ namespace app\Services;
 use app\Enum\StatusEnum;
 use app\Request;
 use support\Response;
+
 class BaseService
 {
     protected $form;
@@ -17,8 +18,8 @@ class BaseService
      */
     public function toggleBy(int $id, string $field = 'status'): Response
     {
-        $model=$this->model->findorfail($id);
-        $model->$field=$model->$field===StatusEnum::Enable->value()?StatusEnum::Disable->value():StatusEnum::Enable->value();
+        $model = $this->model->findorfail($id);
+        $model->$field = $model->$field === StatusEnum::Enable->value() ? StatusEnum::Disable->value() : StatusEnum::Enable->value();
         $model->save();
         return ok();
     }
@@ -28,12 +29,12 @@ class BaseService
      * @param int $id
      * @return Response
      */
-    public function updateById(Request $request,int $id): Response
+    public function updateById(Request $request, int $id): Response
     {
         $this->setForm($request);
-        $model=$this->model->findorfail($id);
-        $res=$model->update($this->form);
-        if($res===false){
+        $model = $this->model->findorfail($id);
+        $res = $model->update($this->form);
+        if ($res === false) {
             return error();
         }
         return ok();
@@ -45,13 +46,13 @@ class BaseService
      */
     public function destroyById(int $id): Response
     {
-        if ($this->model->where($this->model->getParentIdColumn(),$id)->exists()) {
+        if ($this->model->where($this->model->getParentIdColumn(), $id)->exists()) {
             return error('无法进行删除，请先删除子级');
         }
         if ($this->model->dataRange) {
-            $this->model->where($this->model->getKeyName(),$id)->datarange()->delete();
-        }else{
-            if ($this->model->destroy($id)===false){
+            $this->model->where($this->model->getKeyName(), $id)->datarange()->delete();
+        } else {
+            if ($this->model->destroy($id) === false) {
                 return error();
             }
         }
@@ -63,7 +64,7 @@ class BaseService
      */
     public function getOrderByIdAllData(): Response
     {
-        return successData($this->model->orderBy($this->model->getKeyName(),'asc')->get()->toArray());
+        return successData($this->model->orderBy($this->model->getKeyName(), 'asc')->get()->toArray());
     }
 
 
@@ -81,8 +82,9 @@ class BaseService
      */
     public function setForm(Request $request): void
     {
-        $this->form=$request->all();
+        $this->form = $request->all();
     }
+
     /** 新增数据
      * @param Request $request
      * @return Response
@@ -90,8 +92,8 @@ class BaseService
     public function store(Request $request): Response
     {
         $this->setForm($request);
-        $res=$this->model->create($this->form);
-        if(!$res){
+        $res = $this->model->create($this->form);
+        if (!$res) {
             return error();
         }
         return ok();

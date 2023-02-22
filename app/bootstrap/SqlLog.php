@@ -1,6 +1,7 @@
 <?php
 
 namespace app\bootstrap;
+
 use Illuminate\Database\Events\QueryExecuted;
 use support\Db;
 use support\Log;
@@ -34,9 +35,9 @@ class SqlLog implements Bootstrap
             } elseif ($sqlTime >= config('log-ext.sql.error_time', 10000)) {
                 $sqlLevel = 'error';
             }
-            Log::channel('sql')->log($sqlLevel,'', [
-                'time' => $event->time.'ms',
-                'url'=>request()->url(),
+            Log::channel('sql')->log($sqlLevel, '', [
+                'time' => $event->time . 'ms',
+                'url' => request()->url(),
                 'sql' => $sql,
             ]);
         });

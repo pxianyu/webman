@@ -10,23 +10,27 @@ use support\Response;
 
 class AdminController
 {
-    public function index(Request $request,AdminService $adminService): Response
+    public function index(Request $request, AdminService $adminService): Response
     {
         return $adminService->index($request);
     }
-    public function store(Request $request,AdminService $adminService): Response
+
+    public function store(Request $request, AdminService $adminService): Response
     {
         return $adminService->store($request);
     }
-    public function show(Request $request,int $id,AdminService $adminService): Response
+
+    public function show(Request $request, int $id, AdminService $adminService): Response
     {
         return $adminService->show($id);
     }
-    public function update(Request $request,int $id,AdminService $adminService): Response
+
+    public function update(Request $request, int $id, AdminService $adminService): Response
     {
-        return $adminService->updateById($request,$id);
+        return $adminService->updateById($request, $id);
     }
-    public function destroy(Request $request,int $id,AdminService $adminService): Response
+
+    public function destroy(Request $request, int $id, AdminService $adminService): Response
     {
         return $adminService->destroyById($id);
     }
@@ -50,7 +54,7 @@ class AdminController
      * @param AdminService $adminService
      * @return Response
      */
-    public function enable(Request $request,int $id,AdminService $adminService): Response
+    public function enable(Request $request, int $id, AdminService $adminService): Response
     {
         return $adminService->toggleBy($id);
     }
@@ -60,7 +64,7 @@ class AdminController
      * @param DataRangeOption $dataRangeOption
      * @return Response
      */
-    public function dataRange(Request $request,DataRangeOption $dataRangeOption): Response
+    public function dataRange(Request $request, DataRangeOption $dataRangeOption): Response
     {
         return successData($dataRangeOption->get());
     }

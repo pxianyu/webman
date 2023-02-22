@@ -28,6 +28,6 @@ class ConfigGroup extends BaseModel
      * @var bool
      */
     public $timestamps = false;
-    protected $fillable=['name'];
-    protected array $fields=['id','name'];
+    protected $fillable = ['name'];
+    protected array $fields = ['id', 'name'];
 }

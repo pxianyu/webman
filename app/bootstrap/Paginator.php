@@ -23,7 +23,7 @@ class Paginator implements Bootstrap
                         'data' => $this->items->toArray(),
                         'total' => $this->total(),
                         'per_page' => $this->perPage(),
-                        'lastPage'=>$this->lastPage(),
+                        'lastPage' => $this->lastPage(),
                     ];
                 }
             };

@@ -39,20 +39,20 @@ class MakeModule extends Command
         $name = $input->getArgument('name');
         $output->writeln("Make controller $name");
 
-        $serviceName=$input->getArgument('service');
+        $serviceName = $input->getArgument('service');
         $output->writeln("Make service $name");
         $name = str_replace('\\', '/', $name);
 
         ['name' => $controller_name, 'file' => $controller_file, 'namespace' => $controller_namespace] = $this->getControllerName($name);
-        $serviceName= str_replace('\\', '/', $serviceName);
+        $serviceName = str_replace('\\', '/', $serviceName);
         ['name' => $serviceName, 'file' => $serviceFile, 'namespace' => $serviceNameSpace] = $this->getServicesName($serviceName);
-        $this->createController($controller_name, $controller_namespace, $controller_file,$serviceName,$serviceNameSpace);
+        $this->createController($controller_name, $controller_namespace, $controller_file, $serviceName, $serviceNameSpace);
         $modelName = $input->getArgument('model');
         $modelName = Util::nameToClass($modelName);
         $output->writeln("Make model $modelName");
         ['name' => $modelName, 'file' => $file, 'namespace' => $namespace] = $this->getModelName($modelName);
         $this->createModel($modelName, $namespace, $file);
-        $this->createService($serviceName, $serviceNameSpace, $serviceFile,$modelName,$namespace);
+        $this->createService($serviceName, $serviceNameSpace, $serviceFile, $modelName, $namespace);
         return self::SUCCESS;
     }
 
@@ -64,13 +64,13 @@ class MakeModule extends Command
      * @param $serviceNameSpace
      * @return void
      */
-    protected function createController($name, $namespace, $file,$serviceName,$serviceNameSpace): void
+    protected function createController($name, $namespace, $file, $serviceName, $serviceNameSpace): void
     {
         $path = pathinfo($file, PATHINFO_DIRNAME);
         if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
-        $service=$serviceNameSpace.'\\'.$serviceName;
+        $service = $serviceNameSpace . '\\' . $serviceName;
         $controller_content = <<<EOF
 <?php
 
@@ -135,22 +135,23 @@ EOF;
                 $table_val = "'$table'";
                 $table = "$prefix$table";
             }
-            $fillable=[];
+            $fillable = [];
             foreach (Db::select("select COLUMN_NAME,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS where table_name = '$table' and table_schema = '$database'") as $item) {
                 if ($item->COLUMN_KEY === 'PRI') {
                     $pk = $item->COLUMN_NAME;
                     $item->COLUMN_COMMENT .= "(主键)";
                 }
-                if ($item->COLUMN_NAME!='id'){
-                    $fillable[]="'$item->COLUMN_NAME'";
+                if ($item->COLUMN_NAME != 'id') {
+                    $fillable[] = "'$item->COLUMN_NAME'";
                 }
                 $type = $this->getType($item->DATA_TYPE);
                 $properties .= " * @property $type \$$item->COLUMN_NAME $item->COLUMN_COMMENT\n";
             }
-        } catch (Throwable $e) {}
+        } catch (Throwable $e) {
+        }
         $properties = rtrim($properties) ?: ' *';
-        $tableName=$table?:$table_val;
-        $fillable='['.implode(',',$fillable).']';
+        $tableName = $table ?: $table_val;
+        $fillable = '[' . implode(',', $fillable) . ']';
         $model_content = <<<EOF
 <?php
 
@@ -208,13 +209,13 @@ EOF;
         };
     }
 
-    private function createService(string $serviceName, string $serviceNameSpace, string $serviceFile,$modelName,$modelNameSpace): void
+    private function createService(string $serviceName, string $serviceNameSpace, string $serviceFile, $modelName, $modelNameSpace): void
     {
         $path = pathinfo($serviceFile, PATHINFO_DIRNAME);
         if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
-        $m_name=$modelNameSpace.'\\'.$modelName;
+        $m_name = $modelNameSpace . '\\' . $modelName;
         $controller_content = <<<EOF
 <?php
 
@@ -251,6 +252,7 @@ class $serviceName extends BaseService
 EOF;
         file_put_contents($serviceFile, $controller_content);
     }
+
     protected function getControllerName($name): array
     {
         if (!($pos = strrpos($name, '/'))) {
@@ -260,7 +262,7 @@ EOF;
             $namespace = 'app\controller';
         } else {
             $name_str = substr($name, 0, $pos);
-            if($real_name_str = Util::guessPath(app_path(), $name_str)) {
+            if ($real_name_str = Util::guessPath(app_path(), $name_str)) {
                 $name_str = $real_name_str;
             } else if ($real_section_name = Util::guessPath(app_path(), strstr($name_str, '/', true))) {
                 $upper = strtolower($real_section_name[0]) !== $real_section_name[0];
@@ -273,13 +275,14 @@ EOF;
                     return '/' . strtoupper($matches[1]);
                 }, ucfirst($name_str));
             }
-            $path = 'controller'."/$name_str" ;
+            $path = 'controller' . "/$name_str";
             $name = ucfirst(substr($name, $pos + 1));
             $file = app_path() . "/$path/$name.php";
             $namespace = str_replace('/', '\\', 'app/' . $path);
         }
-        return ['name'=>$name,'file'=>$file,'namespace'=>$namespace];
+        return ['name' => $name, 'file' => $file, 'namespace' => $namespace];
     }
+
     protected function getServicesName($name): array
     {
         if (!($pos = strrpos($name, '/'))) {
@@ -289,7 +292,7 @@ EOF;
             $namespace = 'app\Services';
         } else {
             $name_str = substr($name, 0, $pos);
-            if($real_name_str = Util::guessPath(app_path(), $name_str)) {
+            if ($real_name_str = Util::guessPath(app_path(), $name_str)) {
                 $name_str = $real_name_str;
             } else if ($real_section_name = Util::guessPath(app_path(), strstr($name_str, '/', true))) {
                 $upper = strtolower($real_section_name[0]) !== $real_section_name[0];
@@ -302,23 +305,24 @@ EOF;
                     return '/' . strtoupper($matches[1]);
                 }, ucfirst($name_str));
             }
-            $path = 'Services'."/$name_str" ;
+            $path = 'Services' . "/$name_str";
             $name = ucfirst(substr($name, $pos + 1));
             $file = app_path() . "/$path/$name.php";
             $namespace = str_replace('/', '\\', 'app/' . $path);
         }
-        return ['name'=>$name,'file'=>$file,'namespace'=>$namespace];
+        return ['name' => $name, 'file' => $file, 'namespace' => $namespace];
     }
+
     protected function getModelName($name): array
     {
         if (!($pos = strrpos($name, '/'))) {
             $name = ucfirst($name);
             $model_str = Util::guessPath(app_path(), 'model') ?: 'model';
             $file = app_path() . "/$model_str/$name.php";
-            $namespace =  'app\model';
+            $namespace = 'app\model';
         } else {
             $name_str = substr($name, 0, $pos);
-            if($real_name_str = Util::guessPath(app_path(), $name_str)) {
+            if ($real_name_str = Util::guessPath(app_path(), $name_str)) {
                 $name_str = $real_name_str;
             } else if ($real_section_name = Util::guessPath(app_path(), strstr($name_str, '/', true))) {
                 $upper = strtolower($real_section_name[0]) !== $real_section_name[0];
@@ -336,6 +340,6 @@ EOF;
             $file = app_path() . "/$path/$name.php";
             $namespace = str_replace('/', '\\', 'app/' . $path);
         }
-        return ['name'=>$name,'file'=>$file,'namespace'=>$namespace];
+        return ['name' => $name, 'file' => $file, 'namespace' => $namespace];
     }
 }

@@ -106,11 +106,3 @@ function getAdminNickname()
     }
     return $user->nickname;
 }
-function paginate($data): Response
-{
-    $res['total']=$data->total();
-    $res['data']=$data->items();
-    $res['current_page']=$data->currentPage();
-    $res['lastPage']=$data->lastPage();
-    return successData($res);
-}

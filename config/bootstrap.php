@@ -16,4 +16,5 @@ return [
     support\bootstrap\Session::class,
     support\bootstrap\LaravelDb::class,
     //app\Lib\SqlLog::class  记录sql
+    app\bootstrap\Paginator::class,
 ];

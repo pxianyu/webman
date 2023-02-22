@@ -112,7 +112,6 @@ class BaseService
      */
     public function index(Request $request): Response
     {
-        $data=$this->model->getDataList();
-        return paginate($data);
+        return successData($this->model->getDataList()->toArray());
     }
 }

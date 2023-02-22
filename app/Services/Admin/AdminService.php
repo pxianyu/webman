@@ -68,6 +68,6 @@ class AdminService extends BaseService
         $username=$request->input('username');
         $nickname=$request->input('nickname');
         $status=$request->input('status');
-        return paginate($this->model->getPaginateData($username,$nickname,$status,$limit));
+        return successData($this->model->getPaginateData($username,$nickname,$status,$limit)->toArray());
     }
 }

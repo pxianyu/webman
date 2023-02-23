@@ -12,7 +12,7 @@ use support\Model;
 
 class BaseModel extends Model
 {
-    use ModelTrait, DataRange, WithAttr, WithRelations;
+    use ModelTrait, DataRange, WithAttr;
 
 
     protected bool $asTree = false;

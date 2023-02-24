@@ -10,7 +10,7 @@ class RoleController
 {
     public function index(Request $request, RoleService $service): Response
     {
-        return $service->getOrderByIdAllData();
+        return $service->index($request);
     }
 
     public function store(Request $request, RoleService $service): Response

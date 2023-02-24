@@ -10,7 +10,7 @@ class MenuController
 {
     public function index(Request $request, MenuService $Service): Response
     {
-        return $Service->getOrderByIdAllData();
+        return $Service->index($request);
     }
 
     public function store(Request $request, MenuService $Service): Response

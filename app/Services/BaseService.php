@@ -2,8 +2,10 @@
 
 namespace app\Services;
 
+use app\Common\ArrUtil;
 use app\Enum\StatusEnum;
 use app\Request;
+use support\Log;
 use support\Response;
 
 class BaseService
@@ -12,8 +14,8 @@ class BaseService
     protected $model;
 
     /** 更新状态
-     * @param Request $request
      * @param int $id
+     * @param string $field
      * @return Response
      */
     public function toggleBy(int $id, string $field = 'status'): Response
@@ -46,10 +48,10 @@ class BaseService
      */
     public function destroyById(int $id): Response
     {
-        if ($this->model->where($this->model->getParentIdColumn(), $id)->exists()) {
+        if ($this->model->getAsTree() && $this->model->where($this->model->getParentIdColumn(), $id)->exists()) {
             return error('无法进行删除，请先删除子级');
         }
-        if ($this->model->dataRange) {
+        if ($this->model->getDataRange()) {
             $this->model->where($this->model->getKeyName(), $id)->datarange()->delete();
         } else {
             if ($this->model->destroy($id) === false) {
@@ -73,9 +75,13 @@ class BaseService
      */
     public function getAll(): Response
     {
-        return successData($this->model->all($this->model->fields)->toArray());
+        return successData($this->model->all($this->model->getFields())->toArray());
     }
 
+    public function getTreeData():array
+    {
+        return ArrUtil::toTreeAssoc($this->model->all($this->model->getFields())->toArray(),$this->model->getKeyName(), $this->model->getParentIdColumn() );
+    }
     /** 设置表单字段
      * @param Request $request
      * @return void
@@ -114,6 +120,11 @@ class BaseService
      */
     public function index(Request $request): Response
     {
-        return successData($this->model->getDataList()->toArray());
+        if ($this->model->getAsTree()) {
+            $data= $this->getTreeData();
+        }else{
+            $data= $this->model->getDataList()->toArray();
+        }
+        return successData($data);
     }
 }

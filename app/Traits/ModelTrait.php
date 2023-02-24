@@ -31,4 +31,9 @@ trait ModelTrait
             return $builder->where('is_root', $is_root);
         });
     }
+    public function ScopeSelects($query)
+    {
+        return $query->select(property_exists($this, 'fields') ? $this->fields : '*');
+
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace app\Traits;
 
+use Shopwwi\WebmanAuth\Facade\Auth;
+
 trait WithAttr
 {
     /**
@@ -19,12 +21,6 @@ trait WithAttr
      */
     protected bool $sortDesc = true;
 
-    /**
-     * as tress which is show in list as tree data
-     *
-     * @var bool
-     */
-    protected bool $asTree = false;
 
     /**
      * columns which show in list
@@ -33,11 +29,6 @@ trait WithAttr
      */
     protected array $fields = [];
 
-
-    /**
-     * @var bool
-     */
-    protected bool $isPaginate = true;
 
     /**
      * @var array
@@ -77,7 +68,26 @@ trait WithAttr
 
         return $this;
     }
+    /**
+     *
+     * @return $this
+     */
+    protected function setCreatorId(): static
+    {
+        $this->setAttribute($this->getCreatorIdColumn(), Auth::guard('admin_api')->id());
 
+        return $this;
+    }
+
+    public function getCreatorIdColumn(): string
+    {
+        return 'creator_id';
+    }
+
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
     /**
      *
      * @return $this
@@ -149,5 +159,13 @@ trait WithAttr
         $this->dataRange = $use;
 
         return $this;
+    }
+    public function getAsTree(): bool
+    {
+        return $this->asTree;
+    }
+    public function getDataRange() :bool
+    {
+        return $this->dataRange;
     }
 }

@@ -23,6 +23,7 @@ class Permission extends BaseModel
     protected $fillable = ['pid', 'title', 'route', 'sort', 'isHide', 'auth_open'];
 
     protected array $fields = ['id', 'pid', 'title', 'route', 'sort', 'isHide', 'auth_open', 'created_at', 'updated_at'];
+    protected string $parentIdColumn='pid';
 
     protected bool $asTree = true;
 

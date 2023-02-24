@@ -6,10 +6,12 @@ namespace app\model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Shopwwi\WebmanAuth\Facade\Auth;
 
 class Admin extends BaseModel
 {
+    use SoftDeletes;
     protected $table = 'admins';
 
     /**
@@ -34,7 +36,6 @@ class Admin extends BaseModel
     protected $hidden = [
         'password',
     ];
-
     public static function getByUserName(string $username): Model|null
     {
         return self::username($username)->first();

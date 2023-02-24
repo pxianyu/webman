@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Lib;
+namespace app\bootstrap;
 
 use Webman\Route;
 

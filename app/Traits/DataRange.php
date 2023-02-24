@@ -28,7 +28,7 @@ trait DataRange
         if (empty($userIds)) {
             return $query;
         }
-        if ($this->dataRange) {
+        if ($this->getDataRange()) {
             return $query->whereIn('creator_id', $userIds);
         }
         return $query;

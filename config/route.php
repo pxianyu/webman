@@ -13,21 +13,22 @@
  */
 
 
+use app\bootstrap\ApiRoute;
 use app\controller\Api\Admin\Auth\AuthController;
 use app\controller\Api\Admin\Permission\AdminController;
 use app\controller\Api\Admin\Permission\DepartmentController;
 use app\controller\Api\Admin\Permission\JobController;
 use app\controller\Api\Admin\Permission\MenuController;
-use app\controller\Api\Admin\Permission\RoleController;
 use app\controller\Api\Admin\Permission\PermissionController;
+use app\controller\Api\Admin\Permission\RoleController;
 use app\controller\Api\Admin\System\BannerController;
 use app\controller\Api\Admin\System\BannerGroupController;
 use app\controller\Api\Admin\System\ConfigController;
 use app\controller\Api\Admin\System\ConfigGroupController;
+use app\middleware\AuthCheckTest;
 use support\Response;
 use Webman\Route;
-use app\Lib\ApiRoute;
-use app\middleware\AuthCheckTest;
+
 Route::post('/api/admin/login', [AuthController::class,'login'])->name('admin.login');
 Route::get('/api/admin/captcha', [AuthController::class,'captcha'])->name('admin.captcha');
 Route::group('/api/admin', function () {

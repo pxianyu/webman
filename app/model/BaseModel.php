@@ -46,47 +46,6 @@ class BaseModel extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    private function setDataRange(bool $use = true): static
-    {
-        $this->dataRange = $use;
-
-        return $this;
-    }
-
-    public function setParentIdColumn(string $parentId): static
-    {
-        $this->parentIdColumn = $parentId;
-
-        return $this;
-    }
-
-    public function getCreatorIdColumn(): string
-    {
-        return 'creator_id';
-    }
-
-    public function getParentIdColumn(): string
-    {
-        return $this->parentIdColumn;
-    }
-
-    /**
-     *
-     * @return $this
-     */
-    protected function setCreatorId(): static
-    {
-        $this->setAttribute($this->getCreatorIdColumn(), Auth::guard('admin_api')->id());
-
-        return $this;
-    }
-
-    public function ScopeSelects($query)
-    {
-        return $query->select(property_exists($this, 'fields') ? $this->fields : '*');
-
-    }
-
 
     public function getDataList()
     {
@@ -97,7 +56,7 @@ class BaseModel extends Model
     protected function filterData(array $data): array
     {
         // 表单保存的数据集合
-        $fillable = array_unique(array_merge($this->getFillable(), property_exists($this, 'form') ? $this->form : []));
+        $fillable = array_unique(array_merge($this->getFillable(), property_exists($this, 'form') ? $this->getForm() : []));
 
         foreach ($data as $k => $val) {
             if (is_null($val) || (is_string($val) && !$val)) {

@@ -2,8 +2,8 @@
 
 namespace app\Exception;
 
-use Throwable;
+use Exception;
 
-class BusinessException extends \Exception
+class BusinessException extends Exception
 {
 }

@@ -63,6 +63,7 @@ class AuthService extends BaseService
         $user->increment('login_num');
         $user->save();
         $tokenObject = Auth::guard('admin_api')->login($user);
+        $tokenObject->users= $user->with(['roles','roles.menus','roles.departments','roles.permissions'])->first();
         return successJsonData($tokenObject, MessageEnum::LOGIN_SUCCESS);
     }
 

@@ -3,10 +3,10 @@
 namespace app\controller\Api\Admin\Auth;
 
 
+use app\Request;
 use app\Services\Auth\AuthService;
 use Illuminate\Validation\ValidationException;
 use Shopwwi\WebmanAuth\Facade\Auth;
-use app\Request;
 use support\Response;
 
 
@@ -44,6 +44,8 @@ class AuthController
      */
     public function me(): Response
     {
-        return successJsonData(Auth::guard('admin_api')->user());
+        $admin=Auth::guard('admin_api')->user();
+        $admin=$admin->with(['roles','roles.menus','roles.departments','roles.permissions'])->first();
+        return successJsonData($admin);
     }
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2023-02-21 16:34:21
+Date: 2023-02-24 16:20:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,19 +32,17 @@ CREATE TABLE `admins` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `company_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '公司id',
-  `delete_flg` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除flg',
+  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除flg',
   `department_id` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`) USING HASH
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
-INSERT INTO `admins` VALUES ('1', 'admins1', '$2y$07$68tutssSF7bmmLW3IPUF8uhY/syXrtplmQYhKJWReTNbk0gUpJ7IO', '1', '127.0.0.1', '2023-02-20 17:09:27', '王旋', '109', '1', '2023-02-20 17:09:27', '2023-01-31 18:24:01', '0', '0', '0');
-INSERT INTO `admins` VALUES ('3', '112345', '$2y$07$68tutssSF7bmmLW3IPUF8uhY/syXrtplmQYhKJWReTNbk0gUpJ7IO', '1', '127.0.0.1', '2023-02-08 10:49:30', '456', '2', '1', '2023-02-08 10:49:30', null, '0', '0', '0');
-INSERT INTO `admins` VALUES ('9', '999999', '$2y$07$n.FTPW7YVGX5MjzrZznroOg9vLCvo/EWjeGgEokp6.h7f0CUZdjXK', '1', '', '2023-02-03 14:37:37', '\'\'', '0', '1', '2023-02-03 13:37:37', '2023-02-03 13:33:11', '0', '0', '0');
-INSERT INTO `admins` VALUES ('10', '987654321', '$2y$07$68tutssSF7bmmLW3IPUF8uhY/syXrtplmQYhKJWReTNbk0gUpJ7IO', '1', '127.0.0.1', '2023-02-21 15:11:00', '123', '3', '1', '2023-02-21 15:11:00', '2023-02-17 17:55:40', '0', '0', '0');
+INSERT INTO `admins` VALUES ('1', 'admins1', '$2y$07$68tutssSF7bmmLW3IPUF8uhY/syXrtplmQYhKJWReTNbk0gUpJ7IO', '1', '127.0.0.1', '2023-02-24 10:45:54', '王旋', '109', '1', '2023-02-20 17:09:27', '2023-01-31 18:24:01', '0', null, '0');
+INSERT INTO `admins` VALUES ('4', 'ceshi1223', '$2y$07$pKHrOHaVBANQMtdnvFn.1u/XWaq9SHIoTwgCdqSgie.5tWfdW9Cre', '1', '', null, '123', '0', '0', '2023-02-24 15:12:19', '2023-02-24 15:12:19', '0', null, '0');
 
 -- ----------------------------
 -- Table structure for admin_has_roles
@@ -54,16 +52,14 @@ CREATE TABLE `admin_has_roles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` int(11) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `admin_id` (`admin_id`,`role_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of admin_has_roles
 -- ----------------------------
-INSERT INTO `admin_has_roles` VALUES ('1', '10', '3', '2023-02-01 14:31:48', '2023-02-01 14:31:48');
+INSERT INTO `admin_has_roles` VALUES ('3', '4', '8');
 
 -- ----------------------------
 -- Table structure for admin_logs
@@ -105,6 +101,7 @@ CREATE TABLE `banners` (
   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `banner_group_id` (`banner_group_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='轮播图表';
@@ -112,10 +109,10 @@ CREATE TABLE `banners` (
 -- ----------------------------
 -- Records of banners
 -- ----------------------------
-INSERT INTO `banners` VALUES ('1', '1', '1', '123', '123', null, '1', '0', null, null);
-INSERT INTO `banners` VALUES ('2', '1', '2', '3333', '222', null, '1', '0', null, null);
-INSERT INTO `banners` VALUES ('3', '1', '3', '22223', '4444', null, '10', '0', null, null);
-INSERT INTO `banners` VALUES ('4', '1', '2223', '333333333', '11231231231', null, null, '0', '2023-02-21 15:18:40', '2023-02-21 15:18:40');
+INSERT INTO `banners` VALUES ('1', '1', '1', '123', '123', null, '1', '0', null, null, null);
+INSERT INTO `banners` VALUES ('2', '1', '2', '3333', '222', null, '1', '0', null, null, null);
+INSERT INTO `banners` VALUES ('3', '1', '3', '22223', '4444', null, '10', '0', null, null, null);
+INSERT INTO `banners` VALUES ('4', '1', '2223', '333333333', '11231231231', null, null, '0', '2023-02-21 15:18:40', '2023-02-21 15:18:40', null);
 
 -- ----------------------------
 -- Table structure for banner_groups
@@ -126,15 +123,16 @@ CREATE TABLE `banner_groups` (
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分组名称',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='轮播分组表';
 
 -- ----------------------------
 -- Records of banner_groups
 -- ----------------------------
-INSERT INTO `banner_groups` VALUES ('1', '13', '2023-02-17 18:03:26', '2023-02-17 18:03:26');
-INSERT INTO `banner_groups` VALUES ('2', '13', '2023-02-17 18:04:13', '2023-02-17 18:04:13');
-INSERT INTO `banner_groups` VALUES ('3', '14', '2023-02-17 18:10:36', '2023-02-17 18:10:36');
+INSERT INTO `banner_groups` VALUES ('1', '13', '2023-02-17 18:03:26', '2023-02-17 18:03:26', null);
+INSERT INTO `banner_groups` VALUES ('2', '13', '2023-02-17 18:04:13', '2023-02-17 18:04:13', null);
+INSERT INTO `banner_groups` VALUES ('3', '14', '2023-02-17 18:10:36', '2023-02-17 18:10:36', null);
 
 -- ----------------------------
 -- Table structure for configs
@@ -190,11 +188,13 @@ CREATE TABLE `departments` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of departments
 -- ----------------------------
+INSERT INTO `departments` VALUES ('1', '0', '总公司', '大王', '1224564312', '20123@qq.com', '1', '1', '1', null, null, null);
+INSERT INTO `departments` VALUES ('2', '1', '第一个部门', '小', '123123123', '123123@123.com', '1', '1', '3', null, null, null);
 
 -- ----------------------------
 -- Table structure for jobs
@@ -211,7 +211,7 @@ CREATE TABLE `jobs` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of jobs
@@ -224,29 +224,29 @@ DROP TABLE IF EXISTS `menus`;
 CREATE TABLE `menus` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组件key',
-  `icon` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '菜单图标',
-  `path` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'vue路由',
-  `component` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组件地址',
-  `roles` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '权限标识',
-  `menuType` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '菜单类型',
-  `redirect` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '重定向地址',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组件key',
+  `icon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '菜单图标',
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'vue路由',
+  `component` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组件地址',
+  `roles` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限标识',
+  `menuType` tinyint(1) DEFAULT '1' COMMENT '菜单类型',
+  `redirect` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '重定向地址',
   `sort` int(10) unsigned DEFAULT '255' COMMENT '菜单排序',
-  `isHide` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态(0:禁用,1:启用)',
-  `isAffix` tinyint(1) NOT NULL DEFAULT '0' COMMENT '固定(0:禁用,1:启用)',
-  `isLink` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否跳转(0:禁用,1:启用)',
-  `isKeepAlive` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否缓存(0:禁用,1:启用)',
-  `isIframe` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否iframe(0:禁用,1:启用)',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `isHide` tinyint(1) DEFAULT '0' COMMENT '状态(0:禁用,1:启用)',
+  `isAffix` tinyint(1) DEFAULT '0' COMMENT '固定(0:禁用,1:启用)',
+  `isLink` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '是否跳转(0:禁用,1:启用)',
+  `isKeepAlive` tinyint(1) DEFAULT '0' COMMENT '是否缓存(0:禁用,1:启用)',
+  `isIframe` tinyint(1) DEFAULT '0' COMMENT '是否iframe(0:禁用,1:启用)',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `title` (`title`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of menus
 -- ----------------------------
+INSERT INTO `menus` VALUES ('1', '0', 'home', 'home', null, 'home', 'home', 'home', '1', null, '255', '0', '0', null, '0', '0');
+INSERT INTO `menus` VALUES ('2', '0', 'inde', 'index', null, 'index', 'index', 'index', '1', null, '255', '0', '0', null, '0', '0');
 
 -- ----------------------------
 -- Table structure for permissions
@@ -260,16 +260,16 @@ CREATE TABLE `permissions` (
   `sort` int(10) unsigned DEFAULT '255' COMMENT '菜单排序',
   `isHide` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态(0:禁用,1:启用)',
   `auth_open` tinyint(1) NOT NULL DEFAULT '0' COMMENT '权限验证1验证0不验证',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `title` (`title`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='APi权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='APi权限表';
 
 -- ----------------------------
 -- Records of permissions
 -- ----------------------------
-INSERT INTO `permissions` VALUES ('1', '0', 'title', null, '255', '0', '0', null, null);
+INSERT INTO `permissions` VALUES ('1', '0', 'title', null, '255', '0', '0');
+INSERT INTO `permissions` VALUES ('2', '1', 'title1', null, '255', '0', '0');
+INSERT INTO `permissions` VALUES ('3', '1', 'titie1_1', null, '255', '0', '0');
 
 -- ----------------------------
 -- Table structure for roles
@@ -282,15 +282,14 @@ CREATE TABLE `roles` (
   `desc` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `delete_flg` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
-INSERT INTO `roles` VALUES ('3', '你家婆', '3', null, '2023-02-01 14:01:15', '2023-02-01 14:01:15', '0');
-INSERT INTO `roles` VALUES ('4', '超级管理员', '1', '123', '2023-02-20 15:52:41', '2023-02-20 15:52:41', '0');
+INSERT INTO `roles` VALUES ('1', '超管', '1', null, '2023-02-24 14:10:22', '2023-02-24 14:10:22', null);
 
 -- ----------------------------
 -- Table structure for role_has_departments
@@ -301,7 +300,7 @@ CREATE TABLE `role_has_departments` (
   `role_id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_has_departments
@@ -316,7 +315,7 @@ CREATE TABLE `role_has_menus` (
   `role_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_has_menus
@@ -331,22 +330,8 @@ CREATE TABLE `role_has_permissions` (
   `permission_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_has_permissions
--- ----------------------------
-
--- ----------------------------
--- Table structure for tests
--- ----------------------------
-DROP TABLE IF EXISTS `tests`;
-CREATE TABLE `tests` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `names` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of tests
 -- ----------------------------

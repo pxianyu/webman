@@ -5,7 +5,6 @@ namespace app\Services;
 use app\Common\ArrUtil;
 use app\Enum\StatusEnum;
 use app\Request;
-use support\Log;
 use support\Response;
 
 class BaseService
@@ -80,7 +79,7 @@ class BaseService
 
     public function getTreeData():array
     {
-        return ArrUtil::toTreeAssoc($this->model->all($this->model->getFields())->toArray(),$this->model->getKeyName(), $this->model->getParentIdColumn() );
+        return ArrUtil::toTreeAssoc($this->model->all($this->model->getFields())->toArray(),$this->model->getKeyName(), $this->model->getParentIdColumn());
     }
     /** 设置表单字段
      * @param Request $request

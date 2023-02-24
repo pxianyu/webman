@@ -8,8 +8,8 @@ use app\Enum\MessageEnum;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
-use support\exception\BusinessException;
 use support\exception\Handler;
+use support\Log;
 use Throwable;
 use Webman\Http\Request;
 use Webman\Http\Response;
@@ -19,12 +19,24 @@ class BaseExceptionHandler extends Handler
 
     public $dontReport = [
         BusinessException::class,
-        BusinessException::class,
         ValidationException::class,
         ModelNotFoundException::class,
         QueryException::class,
     ];
 
+    public function report(Throwable $exception)
+    {
+        if ($this->shouldntReport($exception)) {
+            Log::info(123456);
+            return;
+        }
+        $logs = '';
+        if ($request = \request()) {
+            $logs = $request->getRealIp() . ' ' . $request->method() . ' ' . trim($request->fullUrl(), '/');
+        }
+        Log::info(789);
+        $this->logger->error($logs . PHP_EOL . $exception);
+    }
     public function render(Request $request, Throwable $exception): Response
     {
         // 数据验证异常

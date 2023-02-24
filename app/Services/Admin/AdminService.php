@@ -2,18 +2,16 @@
 
 namespace app\Services\Admin;
 
+use app\Exception\BusinessException;
 use app\model\Admin;
-use app\model\AdminHasRole;
-use app\model\RoleHasDepartments;
+use app\Request;
 use app\Services\BaseService;
 use app\Validate\Admin\Admin\AdminValidate;
-use app\Validate\Admin\Admin\UserRoleValidate;
 use DI\Attribute\Inject;
 use Illuminate\Validation\ValidationException;
-use Shopwwi\WebmanAuth\Facade\Auth;
-use support\exception\BusinessException;
-use app\Request;
+use support\Db;
 use support\Response;
+use Throwable;
 
 class AdminService extends BaseService
 {
@@ -26,8 +24,7 @@ class AdminService extends BaseService
     protected AdminValidate $validate;
 
     /**
-     * @throws ValidationException
-     * @throws BusinessException
+     * @throws ValidationException|BusinessException
      */
     public function setForm(Request $request): void
     {
@@ -35,27 +32,31 @@ class AdminService extends BaseService
         if ($code) {
             throw new BusinessException($msg, $code);
         }
-        if (!array_key_exists('password', $data)) {
+        if (!array_key_exists('password', $data) || empty($data['password'])) {
             unset($data['password']);
         }
-        $data['is_root'] = $data['is_root'] ?? 1;
+        $data['is_root'] = $data['is_root'] ?? 0;
         $data['status'] = $data['status'] ?? 1;
         $this->form = $data;
     }
 
+
     /**
-     *
-     * @param Request $request
-     * @return Response
      * @throws ValidationException
+     * @throws BusinessException|Throwable
      */
-    public function empower(Request $request): Response
+    public function store(Request $request): Response
     {
-        ['code' => $code, 'data' => $data, 'msg' => $msg] = (new UserRoleValidate())->goCheck($request->all());
-        if ($code) {
-            return error($msg, $code);
+        Db::beginTransaction();
+        try {
+            $this->setForm($request);
+            $admin=$this->model->create($this->form);
+            $admin->roles()->attach($this->form['role_id']);
+            Db::commit();
+        }catch (Throwable $e){
+            Db::rollBack();
+            throw $e;
         }
-        (new AdminHasRole())->addAdmin($data['admin_id'], $data['role_ids']);
         return ok();
     }
 

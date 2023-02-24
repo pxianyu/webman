@@ -16,11 +16,11 @@ class BannerGroupValidate extends BaseValidate
 
     public function getRulesUpdate(): array
     {
-        $route = request()->route;
+        $id= request()->route?->param('id');
         return [
             'name' => [
                 'required',
-                Rule::unique('banner_groups')->ignore($route ? $route->param('id') : '')
+                Rule::unique('banner_groups')->ignore($id)
             ],
         ];
     }

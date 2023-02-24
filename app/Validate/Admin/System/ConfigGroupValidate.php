@@ -17,11 +17,11 @@ class ConfigGroupValidate extends BaseValidate
 
     public function getRulesUpdate(): array
     {
-        $route = request()->route;
+        $id= request()->route?->param('id');
         return [
             'name' => [
                 'required',
-                Rule::unique('config_groups')->ignore($route ? $route->param('id') : '')
+                Rule::unique('config_groups')->ignore($id)
             ],
             'sort' => 'sometimes|integer',
         ];

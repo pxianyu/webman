@@ -12,22 +12,24 @@ class AdminValidate extends BaseValidate
         return [
             'username' => 'required|alpha_dash|unique:admins',
             'password' => 'required',
-            'status' => 'sometimes|required|in_array:0,1',
-            'nickname' => 'required'
+            'status' => 'sometimes|required|in:0,1',
+            'nickname' => 'required',
+            'role_id'=>'required|integer|exists:roles,id'
         ];
     }
 
     public function getRulesByUpdate(): array
     {
-        $route = request()->route;
+        $id= request()->route?->param('id');
         return [
             'username' => [
                 'required',
                 'alpha_dash',
-                Rule::unique('admins')->ignore($route ? $route->param('id') : '')
+                Rule::unique('admins')->ignore($id)
             ],
             'status' => 'sometimes|required|in_array:0,1',
-            'nickname' => 'required'
+            'nickname' => 'required',
+            'role_id'=>'required|integer|exists:roles,id'
         ];
     }
 
@@ -41,6 +43,9 @@ class AdminValidate extends BaseValidate
             'password.required' => '密码不能为空',
             'status.required' => '状态参数不能为空',
             'status.in_array' => '状态参数异常',
+            'role_id.required'=>'角色不能为空',
+            'role_id.integer'=>'角色参数异常',
+            'role_id.exists'=>'角色不存在'
         ];
     }
 }

@@ -22,11 +22,11 @@ class ConfigValidate extends BaseValidate
 
     public function getRulesUpdate(): array
     {
-        $route = request()->route;
+        $id= request()->route?->param('id');
         return [
             'name' => [
                 'required',
-                Rule::unique('configs')->ignore($route ? $route->param('id') : '')
+                Rule::unique('configs')->ignore($id)
             ],
             'value' => 'required|string',
             'type' => 'sometimes|integer',

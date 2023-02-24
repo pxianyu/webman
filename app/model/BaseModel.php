@@ -7,12 +7,11 @@ use app\Traits\ModelTrait;
 use app\Traits\WithAttr;
 use app\Traits\WithRelations;
 use DateTimeInterface;
-use Shopwwi\WebmanAuth\Facade\Auth;
 use support\Model;
 
 class BaseModel extends Model
 {
-    use ModelTrait, DataRange, WithAttr;
+    use ModelTrait, DataRange, WithAttr,WithRelations;
 
 
     protected bool $asTree = false;
@@ -77,5 +76,54 @@ class BaseModel extends Model
         }
 
         return $data;
+    }
+    public function updateBy($id, array $data): mixed
+    {
+        $updated = $this->where($this->getKeyName(), $id)->update($this->filterData($data));
+
+        if ($updated) {
+            $this->updateRelations($this->find($id), $data);
+        }
+
+        return $updated;
+    }
+    public function storeBy(array $data): mixed
+    {
+        if ($this->fill($this->filterData($data))->save()) {
+            if ($this->getKey()) {
+                $this->createRelations($data);
+            }
+
+            return $this->getKey();
+        }
+
+        return false;
+    }
+    public function createBy(array $data): mixed
+    {
+        $model = $this->newInstance();
+
+        if ($model->fill($this->filterData($data))->save()) {
+            return $model->getKey();
+        }
+
+        return false;
+    }
+    public function deleteBy($id, bool $force = false): ?bool
+    {
+        /* @var \Illuminate\Database\Eloquent\Model $model */
+        $model = static::find($id);
+
+        if ($force) {
+            $deleted = $model->forceDelete();
+        } else {
+            $deleted = $model->delete();
+        }
+
+        if ($deleted) {
+            $this->deleteRelations($model);
+        }
+
+        return $deleted;
     }
 }

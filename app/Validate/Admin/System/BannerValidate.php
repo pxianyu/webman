@@ -19,11 +19,11 @@ class BannerValidate extends BaseValidate
 
     public function getRulesByUpdate(): array
     {
-        $route = request()->route;
+        $id= request()->route?->param('id');
         return [
             'title' => [
                 'required',
-                Rule::unique('banners')->ignore($route ? $route->param('id') : '')
+                Rule::unique('banners')->ignore($id)
             ],
             'banner_group_id' => 'required|integer|exists:banner_groups,id',
             'pic' => 'required|string',

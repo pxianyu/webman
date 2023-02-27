@@ -6,7 +6,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 return [
-    'enable' => true,
+    'enable' => false,
     'exception' => [
         // 是否记录异常到日志
         'enable' => true,

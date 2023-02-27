@@ -10,7 +10,7 @@ use Tinywan\Captcha\Captcha;
 function ok(string $message = '操作成功', int $code = 200, array $data = []): Response
 {
     $result = ['code' => $code, 'message' => $message, 'data' => $data];
-    return new Response($code, ['Content-Type' => 'application/json'], json_encode($result, JSON_UNESCAPED_UNICODE || JSON_FORCE_OBJECT));
+    return new Response(200, ['Content-Type' => 'application/json'], json_encode($result, JSON_UNESCAPED_UNICODE || JSON_FORCE_OBJECT));
 }
 
 function success(string $message, int $code = 200): Response

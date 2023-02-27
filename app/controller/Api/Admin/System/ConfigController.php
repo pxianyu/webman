@@ -18,19 +18,22 @@ class ConfigController
         return $Service->store($request);
     }
 
-    public function show(Request $request, int $id, ConfigService $Service): Response
+    public function show(Request $request,  ConfigService $Service): Response
     {
-        return $Service->show($id);
+        $id=$request->input('id');
+        return $Service->show((int)$id);
     }
 
-    public function update(Request $request, int $id, ConfigService $Service): Response
+    public function update(Request $request, ConfigService $Service): Response
     {
-        return $Service->updateById($request, $id);
+        $id=$request->input('id');
+        return $Service->updateById($request, (int)$id);
     }
 
-    public function destroy(Request $request, int $id, ConfigService $Service): Response
+    public function destroy(Request $request,  ConfigService $Service): Response
     {
-        return $Service->destroyById($id);
+        $id=$request->input('id');
+        return $Service->destroyById((int)$id);
     }
 
 }

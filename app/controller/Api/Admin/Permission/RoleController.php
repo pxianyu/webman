@@ -7,6 +7,7 @@ use app\Services\Admin\RoleService;
 use app\Request;
 use Illuminate\Validation\ValidationException;
 use support\Response;
+use Throwable;
 
 class RoleController
 {
@@ -15,6 +16,14 @@ class RoleController
         return $service->index($request);
     }
 
+    /**
+     * @param Request $request
+     * @param RoleService $service
+     * @return Response
+     * @throws BusinessException
+     * @throws ValidationException
+     * @throws Throwable
+     */
     public function store(Request $request, RoleService $service): Response
     {
         return $service->store($request);
@@ -23,31 +32,33 @@ class RoleController
     /**
      * 添加角色相关权限
      * @param Request $request
-     * @param int $id
      * @param RoleService $service
      * @return Response
      */
-    public function show(Request $request, int $id, RoleService $service): Response
+    public function show(Request $request, RoleService $service): Response
     {
-        return $service->show($id);
+        $id=$request->input('id');
+        return $service->show((int)$id);
     }
 
     /**
      * 更新角色相关权限
      * @param Request $request
-     * @param int $id
      * @param RoleService $service
      * @return Response
-     * @throws ValidationException
      * @throws BusinessException
+     * @throws Throwable
+     * @throws ValidationException
      */
-    public function update(Request $request, int $id, RoleService $service): Response
+    public function update(Request $request, RoleService $service): Response
     {
-        return $service->updateById($request, $id);
+        $id=$request->input('id');
+        return $service->updateById($request, (int)$id);
     }
 
-    public function destroy(Request $request, int $id, RoleService $service): Response
+    public function destroy(Request $request, RoleService $service): Response
     {
-        return $service->destroyById($id);
+        $id=$request->input('id');
+        return $service->destroyById((int)$id);
     }
 }

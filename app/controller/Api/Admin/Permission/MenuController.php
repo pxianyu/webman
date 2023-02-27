@@ -18,19 +18,22 @@ class MenuController
         return $Service->store($request);
     }
 
-    public function show(Request $request, int $id, MenuService $Service): Response
+    public function show(Request $request, MenuService $Service): Response
     {
-        return $Service->show($id);
+        $id=$request->input('id');
+        return $Service->show((int)$id);
     }
 
-    public function update(Request $request, int $id, MenuService $Service): Response
+    public function update(Request $request, MenuService $Service): Response
     {
-        return $Service->updateById($request, $id);
+        $id=$request->input('id');
+        return $Service->updateById($request, (int)$id);
     }
 
-    public function destroy(Request $request, int $id, MenuService $Service): Response
+    public function destroy(Request $request, MenuService $Service): Response
     {
-        return $Service->destroyById($id);
+        $id=$request->input('id');
+        return $Service->destroyById((int)$id);
     }
 
 }

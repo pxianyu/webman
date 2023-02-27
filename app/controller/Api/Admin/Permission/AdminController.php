@@ -2,11 +2,15 @@
 
 namespace app\controller\Api\Admin\Permission;
 
+use app\Exception\BusinessException;
 use app\Options\DataRangeOption;
 use app\Request;
 use app\Services\Admin\AdminService;
 use Illuminate\Validation\ValidationException;
+use support\Db;
+use support\Redis;
 use support\Response;
+use Throwable;
 
 class AdminController
 {
@@ -15,48 +19,48 @@ class AdminController
         return $adminService->index($request);
     }
 
+    /**
+     * @param Request $request
+     * @param AdminService $adminService
+     * @return Response
+     * @throws ValidationException
+     * @throws Throwable
+     * @throws BusinessException
+     */
     public function store(Request $request, AdminService $adminService): Response
     {
         return $adminService->store($request);
     }
 
-    public function show(Request $request, int $id, AdminService $adminService): Response
+    public function show(Request $request, AdminService $adminService): Response
     {
-        return $adminService->show($id);
+        $id=$request->input('id');
+        return $adminService->show((int)$id);
     }
 
-    public function update(Request $request, int $id, AdminService $adminService): Response
+    public function update(Request $request, AdminService $adminService): Response
     {
-        return $adminService->updateById($request, $id);
+        $id=$request->input('id');
+        return $adminService->updateById($request, (int)$id);
     }
 
-    public function destroy(Request $request, int $id, AdminService $adminService): Response
+    public function destroy(Request $request, AdminService $adminService): Response
     {
-        return $adminService->destroyById($id);
+        $id=$request->input('id');
+        return $adminService->destroyById((int)$id);
     }
 
-    /**
-     * 授权
-     * @param Request $request
-     * @param AdminService $adminService
-     * @return Response
-     * @throws ValidationException
-     */
-    public function empower(Request $request, AdminService $adminService): Response
-    {
-        return $adminService->empower($request);
-    }
 
     /**
      * 切换状态
      * @param Request $request
-     * @param int $id
      * @param AdminService $adminService
      * @return Response
      */
-    public function enable(Request $request, int $id, AdminService $adminService): Response
+    public function enable(Request $request, AdminService $adminService): Response
     {
-        return $adminService->toggleBy($id);
+        $id=$request->input('id');
+        return $adminService->toggleBy((int)$id);
     }
 
     /** 获取数据范围
@@ -67,5 +71,12 @@ class AdminController
     public function dataRange(Request $request, DataRangeOption $dataRangeOption): Response
     {
         return successData($dataRangeOption->get());
+    }
+
+    public function test(): Response
+    {
+       $i= Redis::incr('test');
+        Db::table('tests')->insert(['name'=>'test'.$i]);
+        return ok();
     }
 }

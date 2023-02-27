@@ -18,18 +18,21 @@ class PermissionController
         return $service->store($request);
     }
 
-    public function show(Request $request, int $id, PermissionService $service): Response
+    public function show(Request $request,  PermissionService $service): Response
     {
-        return $service->show($id);
+        $id=$request->input('id');
+        return $service->show((int)$id);
     }
 
-    public function update(Request $request, int $id, PermissionService $service): Response
+    public function update(Request $request, PermissionService $service): Response
     {
-        return $service->updateById($request, $id);
+        $id=$request->input('id');
+        return $service->updateById($request, (int)$id);
     }
 
-    public function destroy(Request $request, int $id, PermissionService $service): Response
+    public function destroy(Request $request, PermissionService $service): Response
     {
-        return $service->destroyById($id);
+        $id=$request->input('id');
+        return $service->destroyById((int)$id);
     }
 }

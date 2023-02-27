@@ -40,7 +40,6 @@ Route::group('/api/admin',function (){
     Route::get('/admins/dataRange', [AdminController::class,'dataRange'])->name('admins.dataRange');
     ApiRoute::resource('/admins', AdminController::class);
     ApiRoute::resource('/roles', RoleController::class);
-    Route::post('/roles/empower',[AdminController::class,'empower'])->name('roles.empower');
     ApiRoute::resource('/permissions', PermissionController::class);
     ApiRoute::resource('/menus', MenuController::class);
     ApiRoute::resource('/configs', ConfigController::class);

@@ -3,6 +3,8 @@
 namespace app\Services;
 
 use app\Common\ArrUtil;
+use app\Enum\CodeEnum;
+use app\Enum\MessageEnum;
 use app\Enum\StatusEnum;
 use app\Request;
 use support\Response;
@@ -19,6 +21,9 @@ class BaseService
      */
     public function toggleBy(int $id, string $field = 'status'): Response
     {
+        if (!is_numeric($id) || !$id) {
+            return error(MessageEnum::NOT_FOUND_ERROR,CodeEnum::NOT_FOUND);
+        }
         $model = $this->model->findorfail($id);
         $model->$field = $model->$field === StatusEnum::Enable->value() ? StatusEnum::Disable->value() : StatusEnum::Enable->value();
         $model->save();
@@ -32,6 +37,9 @@ class BaseService
      */
     public function updateById(Request $request, int $id): Response
     {
+        if (!is_numeric($id) || !$id) {
+            return error(MessageEnum::NOT_FOUND_ERROR,CodeEnum::NOT_FOUND);
+        }
         $this->setForm($request);
         $model = $this->model->findorfail($id);
         $res = $model->update($this->form);
@@ -47,6 +55,9 @@ class BaseService
      */
     public function destroyById(int $id): Response
     {
+        if (!is_numeric($id) || !$id) {
+            return error(MessageEnum::NOT_FOUND_ERROR,CodeEnum::NOT_FOUND);
+        }
         if ($this->model->getAsTree() && $this->model->where($this->model->getParentIdColumn(), $id)->exists()) {
             return error('无法进行删除，请先删除子级');
         }
@@ -110,6 +121,9 @@ class BaseService
      */
     public function show(int $id): Response
     {
+        if (!is_numeric($id) || !$id) {
+            return error(MessageEnum::NOT_FOUND_ERROR,CodeEnum::NOT_FOUND);
+        }
         return successJsonData($this->model->findorfail($id));
     }
 

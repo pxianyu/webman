@@ -20,13 +20,14 @@ use support\Translation;
 use support\view\Blade;
 use support\view\Raw;
 use support\view\ThinkPHP;
+use support\view\Twig;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Webman\App;
 use Webman\Config;
 use Webman\Route;
 use Workerman\Worker;
-
-// Webman version
-const WEBMAN_VERSION = '1.4';
 
 // Project base path
 define('BASE_PATH', dirname(__DIR__));
@@ -188,14 +189,15 @@ function redirect(string $location, int $status = 302, array $headers = []): Res
  * @param string $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  */
-function view(string $template, array $vars = [], string $app = null): Response
+function view(string $template, array $vars = [], string $app = null, string $plugin = null): Response
 {
     $request = \request();
-    $plugin = $request->plugin ?? '';
+    $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
     $handler = \config($plugin ? "plugin.$plugin.view.handler" : 'view.handler');
-    return new Response(200, [], $handler::render($template, $vars, $app));
+    return new Response(200, [], $handler::render($template, $vars, $app, $plugin));
 }
 
 /**
@@ -235,6 +237,20 @@ function think_view(string $template, array $vars = [], string $app = null): Res
     return new Response(200, [], ThinkPHP::render($template, $vars, $app));
 }
 
+/**
+ * Twig view response
+ * @param string $template
+ * @param array $vars
+ * @param string|null $app
+ * @return Response
+ * @throws LoaderError
+ * @throws RuntimeError
+ * @throws SyntaxError
+ */
+function twig_view(string $template, array $vars = [], string $app = null): Response
+{
+    return new Response(200, [], Twig::render($template, $vars, $app));
+}
 
 /**
  * Get request
@@ -354,11 +370,11 @@ function not_found(): Response
  * @param bool $overwrite
  * @return void
  */
-function copy_dir(string $source, string $dest, bool $overwrite = false): void
+function copy_dir(string $source, string $dest, bool $overwrite = false)
 {
     if (is_dir($source)) {
-        if (!is_dir($dest) && !mkdir($dest) && !is_dir($dest)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dest));
+        if (!is_dir($dest)) {
+            mkdir($dest);
         }
         $files = scandir($source);
         foreach ($files as $file) {
@@ -403,7 +419,8 @@ function worker_bind($worker, $class)
         'onBufferFull',
         'onBufferDrain',
         'onWorkerStop',
-        'onWebSocketConnect'
+        'onWebSocketConnect',
+        'onWorkerReload'
     ];
     foreach ($callbackMap as $name) {
         if (method_exists($class, $name)) {
@@ -461,7 +478,7 @@ function worker_start($processName, $config)
  */
 function get_realpath(string $filePath): string
 {
-    if (str_starts_with($filePath, 'phar://')) {
+    if (strpos($filePath, 'phar://') === 0) {
         return $filePath;
     } else {
         return realpath($filePath);
